@@ -5,7 +5,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from callback_functions import get_browser, get_case, get_version, get_package
+from callback_functions import *
+from main import *
 
 ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
 

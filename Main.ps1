@@ -52,8 +52,8 @@ $ScreenshotPathBase = "C:\users\username\documents\ssl\screenshots"
 
 $Cases = @(
     @{ "filename" = "expired"         ; "url" = "https://expired.badssl.com/" }
-  , @{ "filename" = "wrong-host"      ; "url" = "https://wrong.host.badssl.com/" }
-  , @{ "filename" = "self-signed"     ; "url" = "https://self-signed.badssl.com/" }
+#  , @{ "filename" = "wrong-host"      ; "url" = "https://wrong.host.badssl.com/" }
+#  , @{ "filename" = "self-signed"     ; "url" = "https://self-signed.badssl.com/" }
 #  , @{ "filename" = "untrusted-root"  ; "url" = "https://untrusted-root.badssl.com/" }
 #  , @{ "filename" = "revoked"         ; "url" = "https://revoked.badssl.com/" }
 #  , @{ "filename" = "ok-ev"           ; "url" = "https://extended-validation.badssl.com/" }
@@ -63,9 +63,9 @@ $Cases = @(
 )
 
 $BrowserIDs = @(
-#   "firefox"
+   "firefox"
 #    ,
-   "chromium"
+#   "chromium"
 #    ,
 #    "chrome"
 #    ,
@@ -73,7 +73,7 @@ $BrowserIDs = @(
 #   ,
 #    "edge"
 #   ,
-   "opera"
+#   "opera"
 );
 
 $Browsers = @{
@@ -81,8 +81,8 @@ $Browsers = @{
        "arguments" = "-override firefox-override.ini" ;
 #       "arguments" = "-override firefox-override.ini -private-window" ;
 #       "versions" = @("64.0", "63.0", "62.0", "61.0", "60.0", "59.0", "58.0", "57.0", "56.0", "55.0", "54.0", "53.0", "52.0", "51.0", "50.0", "49.0", "48.0", "47.0", "46.0", "45.0", "44.0", "43.0", "42.0", "41.0", "40.0", "39.0", "38.0", "37.0", "36.0", "35.0", "33.1", "33.0", "32.0", "31.0", "30.0", "29.0", "28.0", "27.0", "26.0", "25.0", "24.0", "23.0", "22.0", "21.0", "19.0", "18.0", "15.0") ;
-       "versions" = @("62.0", "52.0", "45.0") ;
-#       "versions" = @("52.0") ;
+#       "versions" = @("62.0", "52.0", "45.0") ;
+       "versions" = @("51.0", "50.0", "49.0", "48.0", "47.0", "46.0") ;
        "installFolders" = @(
             "C:\Program Files\Mozilla Firefox",
             "C:\Program Files (x86)\Mozilla Firefox",
@@ -210,7 +210,7 @@ function Get-SSLScreenshots($Browser, [String] $Version) {
   # Loop through all cases
   foreach ($Case in $Cases) {
       Write-Host "`n#### Processing case $($Case.filename) ($($Case.url))`n"
-      python screenshot.py $Browser.binary $Version $Case.filename $Case.url $Browser.package
+      python main.py $Browser.binary $Version $Case.filename $Case.url $Browser.package
   }
 }
 
