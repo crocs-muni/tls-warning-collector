@@ -9,41 +9,6 @@ from selenium.webdriver.chrome.options import Options
 ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
 
 
-def get_browser():
-	"""Gets browser binary."""
-	args = sys.argv[1:]
-	browser = str(args[0])
-	return browser
-
-
-def get_package():
-	"""Gets browser package. In case of Chromium it is important because binary is chrome."""
-	args = sys.argv[1:]
-	package = str(args[4])
-	return package
-
-
-def get_version():
-	"""Gets browser version."""
-	args = sys.argv[1:]
-	version = str(args[1])
-	return version
-
-
-def get_case():
-	"""Gets case of SSL."""
-	args = sys.argv[1:]
-	case = str(args[2])
-	return case
-
-
-def get_case_url():
-	"""Gets URL for the required SSL warning page."""
-	args = sys.argv[1:]
-	url = str(args[3])
-	return url
-
-
 def chrome_driver_version(v_number):
 	"""Returns name of folder for chromedrivers given version"""
 	short_version = ''
@@ -148,14 +113,18 @@ def firefox(version, url):
 		short_version = '24'
 	if 52 <= v_number < 62:
 		short_version = '17'
+	if 47 <= v_number < 52:
+		short_version = '14'
 	if v_number <= 47:
 		short_version = '10'
-		capabilities = {'marionette': False}
+		capabilities = {'marionette': False, 'acceptInsecureCerts': True}
 	driver_path = driver_path + short_version + exe
 	driver = webdriver.Firefox(executable_path=driver_path, capabilities=capabilities)
 	driver.maximize_window()
-	driver.get(url)
 	try:
+		driver.get(url)
+		screenshot_website(driver)
+	except:
 		screenshot_website(driver)
 	finally:
 		driver.quit()
@@ -176,7 +145,7 @@ def opera(version, url):
 	driver.maximize_window()
 	driver.get(url)
 	try:
-		screenshot_website(driver, opera=True)
+		screenshot_website(driver)
 	finally:
 		driver.close()
 		driver.quit()

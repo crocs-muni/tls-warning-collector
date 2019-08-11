@@ -1,12 +1,12 @@
 from PIL import ImageGrab
 import os
 import time
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from callback_functions import get_browser, get_case, get_version, get_package
+from callback_functions import *
+from main import *
 
 ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
 
@@ -37,7 +37,7 @@ def get_screenshot_case_path(path, browser, version, case):
 	return screenshot_path
 
 
-def screenshot_website(driver, chromium=False, ie=False, opera=False):
+def screenshot_website(driver, chromium=False, ie=False):
 	"""Makes screenshot of the opened website."""
 	# ID for internet explorer page
 	id_ie = "invalidcert_mainTitle"
@@ -62,5 +62,3 @@ def screenshot_website(driver, chromium=False, ie=False, opera=False):
 	else:
 		save_screenshot(get_screenshot_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
 		save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
-		if opera:
-			driver.find_element_by_id(final_id).send_keys(Keys.ALT, Keys.F4)
