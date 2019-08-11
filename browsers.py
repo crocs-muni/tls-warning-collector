@@ -134,7 +134,10 @@ def opera(version, url):
 	driver_path = 'C:\\Users\\IEUser\\Downloads\\drivers\\operadrivers\\operadriver-'
 	full_version = version.split(".")
 	v_number = int(full_version[0])
+	old_opera = False
 	short_version = opera_driver_version(v_number)
+	if short_version == '0.2.2':
+		old_opera = True
 	driver_path = driver_path + short_version + '\\operadriver.exe'
 	webdriver_service = service.Service(driver_path)
 	webdriver_service.start()
@@ -144,9 +147,11 @@ def opera(version, url):
 	driver.maximize_window()
 	driver.get(url)
 	try:
-		screenshot_website(driver, opera=True)
+		if old_opera:
+			screenshot_website(driver, chromium=False, opera_old=True)
+		else:
+			screenshot_website(driver, chromium=False, opera_new=True)
 	finally:
-		driver.close()
 		driver.quit()
 
 
