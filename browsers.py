@@ -1,5 +1,3 @@
-import sys
-
 from screenshot import screenshot_website
 from selenium import webdriver
 from selenium.webdriver.chrome import service

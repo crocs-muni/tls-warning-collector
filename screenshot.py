@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from callback_functions import *
 from main import *
 
 ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
@@ -62,3 +61,5 @@ def screenshot_website(driver, chromium=False, ie=False):
 	else:
 		save_screenshot(get_screenshot_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
 		save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
+		if opera:
+			driver.find_element_by_id(final_id).send_keys(Keys.ALT, Keys.F4)
