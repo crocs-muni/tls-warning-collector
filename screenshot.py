@@ -36,7 +36,7 @@ def get_screenshot_case_path(path, browser, version, case):
 	return screenshot_path
 
 
-def screenshot_website(driver, chromium=False, ie=False):
+def screenshot_website(driver, chromium=False, ie=False, opera=False):
 	"""Makes screenshot of the opened website."""
 	# ID for internet explorer page
 	id_ie = "invalidcert_mainTitle"
@@ -49,7 +49,7 @@ def screenshot_website(driver, chromium=False, ie=False):
 	# If alert window appears, Accept and continue to the website.
 	try:
 		WebDriverWait(driver, 3).until(EC.alert_is_present())
-		alert = driver.switchTo().alert()
+		alert = driver.switch_to.alert
 		alert.accept()
 	except:
 		pass
@@ -62,4 +62,4 @@ def screenshot_website(driver, chromium=False, ie=False):
 		save_screenshot(get_screenshot_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
 		save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
 		if opera:
-			driver.find_element_by_id(final_id).send_keys(Keys.ALT, Keys.F4)
+			driver.find_element_by_id(final_id).send_keys(Keys.ARROW_LEFT + Keys.RETURN)

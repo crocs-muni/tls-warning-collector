@@ -144,7 +144,7 @@ def opera(version, url):
 	driver.maximize_window()
 	driver.get(url)
 	try:
-		screenshot_website(driver)
+		screenshot_website(driver, opera=True)
 	finally:
 		driver.close()
 		driver.quit()
