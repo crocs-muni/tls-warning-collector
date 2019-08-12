@@ -57,6 +57,7 @@ def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_
 	if opera_old:	
 		try:
 			print("Inside if opera is true.\r\n")
+			time.sleep(2)
 			webdriver.ActionChains(driver).send_keys(Keys.LEFT).perform()
 			webdriver.ActionChains(driver).send_keys(Keys.RETURN).perform()
 			print("Sent Keys.\r\n")
@@ -65,6 +66,9 @@ def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_
 	WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, final_id)))
 	time.sleep(2)
 	if chromium:
+		print("Sending action chain keys.")
+		webdriver.ActionChains(driver).key_down(Keys.ALT).key_down(Keys.SPACE).send_keys("x").key_up(Keys.ALT).key_up(Keys.SPACE).perform()
+		print("Keys sent.")
 		save_screenshot(get_screenshot_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
 		save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
 	else:
@@ -73,7 +77,7 @@ def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_
 		webdriver.ActionChains(driver).send_keys(Keys.TAB + Keys.TAB + Keys.TAB + Keys.RIGHT + Keys.RETURN).perform()
 		time.sleep(3)
 		if opera_new:
-			print("Sending keys.")
-			webdriver.ActionChains(driver).send_keys(Keys.ALT + Keys.F4).perform()
+			print("Sending action chain keys.")
+			webdriver.ActionChains(driver).key_down(Keys.ALT).send_keys(Keys.F4).key_up(Keys.ALT).perform()
 			print("Keys sent.")
 		sys.stdout.close()

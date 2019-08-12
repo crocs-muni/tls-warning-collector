@@ -91,9 +91,14 @@ def opera_driver_version(v_number):
 		short_version = '2.32'
 	if v_number == 48:
 		short_version = '2.30'
-	if v_number == 46:
+	if v_number == 47:
+		short_version = '2.30'
+	if 42 < v_number <= 46:
 		short_version = '2.29'
-	if v_number == 38:
+	# version 44 is not on the server so cannot be downloaded
+	if 40 < v_number <= 42:
+		short_version = '2.27'
+	if v_number <= 40:
 		short_version = '0.2.2'
 	return short_version
 
@@ -135,22 +140,30 @@ def opera(version, url):
 	full_version = version.split(".")
 	v_number = int(full_version[0])
 	old_opera = False
+	suffix = False
+	suffix_old = '_0'
 	short_version = opera_driver_version(v_number)
 	if short_version == '0.2.2':
-		old_opera = True
+		old_opera = True	
+	if 40 <= v_number < 43:
+		suffix = True
 	driver_path = driver_path + short_version + '\\operadriver.exe'
 	webdriver_service = service.Service(driver_path)
 	webdriver_service.start()
-	capabilities = {'operaOptions': {
+	if suffix:
+		capabilities = {'operaOptions': {
+		'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + get_version() + suffix_old + '\\opera.exe'}}
+	else:
+		capabilities = {'operaOptions': {
 		'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + get_version() + '\\opera.exe'}}
 	driver = webdriver.Remote(webdriver_service.service_url, capabilities)
 	driver.maximize_window()
 	driver.get(url)
 	try:
 		if old_opera:
-			screenshot_website(driver, chromium=False, opera_old=True)
+			screenshot_website(driver, opera_new=False, opera_old=True)
 		else:
-			screenshot_website(driver, chromium=False, opera_new=True)
+			screenshot_website(driver, opera_old=False, opera_new=True)
 	finally:
 		driver.quit()
 
@@ -158,7 +171,7 @@ def opera(version, url):
 def chromium(version, url):
 	"""Opens Chromium and makes screenshot of desired website"""
 	driver_path = 'C:\\Users\\IEUser\\Downloads\\drivers\\chromedrivers\\chromedriver-'
-	full_version = version().split(".")
+	full_version = version.split(".")
 	v_number = int(full_version[0])
 	short_version = chrome_driver_version(v_number)
 	driver_path = driver_path + short_version + '\\chromedriver.exe'
