@@ -1,6 +1,7 @@
 import sys
 from setup_logger import logger
 from browsers import *
+import time
 
 
 def get_browser():
@@ -43,8 +44,18 @@ def get_case_url():
     return url
 
 
+def output():
+	timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
+	logger.info('##################################################')
+	logger.info('#                                                #')
+	logger.info('#               %s              #', timestamp)
+	logger.info('#                                                #')
+	logger.info('##################################################')
+
+
 def main():
     """Function which makes it all work as a one function."""
+    output()
     open_webpage(get_browser(), get_case_url(), get_version(), get_package())
 
 

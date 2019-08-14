@@ -272,20 +272,20 @@ def edge(version, url):
 def open_webpage(browser, url, version, package):
     """Opens the URL in desired browser"""
     if browser == 'firefox':
-        logger.info('-------------- %s %s %s -------------', browser, version, url)
+        logger.info('-------------- %s %s %s --------------', browser, version, url)
         firefox(version, url)
     if browser == 'opera':
-        logger.info('-------------- %s %s %s -------------', browser, version, url)
+        logger.info('-------------- %s %s %s --------------', browser, version, url)
         opera(version, url)
     if package == 'chromium':
-        logger.info('-------------- %s %s %s -------------', package, version, url)
+        logger.info('-------------- %s %s %s --------------', package, version, url)
         chromium(version, url)
     if browser == 'chrome' and package != 'chromium':
-        logger.info('-------------- %s %s %s -------------', browser, version, url)
+        logger.info('-------------- %s %s %s --------------', browser, version, url)
         chrome(version, url)
     if browser == 'ie':
-        logger.info('-------------- %s %s %s -------------', browser, version, url)
+        logger.info('-------------- %s %s %s --------------', browser, version, url)
         iexplorer(version, url)
     if browser == 'edge':
-        logger.info('-------------- %s %s %s -------------', browser, version, url)
+        logger.info('-------------- %s %s %s --------------', browser, version, url)
         edge(version, url)
