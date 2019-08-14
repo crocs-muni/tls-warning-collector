@@ -163,14 +163,12 @@ def opera(version, url):
 	old_opera = False
 	suffix = False
 	suffix_old = '_0'
-	logger.info('Getting operadriver version')
 	driver_version = opera_driver_version(v_number)
 	logger.info('Checking if the Opera driver version is "0.2.2"')
 	if driver_version == '0.2.2':
 		old_opera = True
 	if 40 <= v_number < 43:
 		suffix = True
-	logger.info('Operadriver version - %s', driver_version)
 	logger.info('Preparing driver.')
 	driver_path = driver_path + driver_version + '\\operadriver.exe'
 	webdriver_service = service.Service(driver_path)
@@ -207,9 +205,7 @@ def chromium(version, url):
 	full_version = version.split(".")
 	v_number = int(full_version[0])
 	logger.info('Browser short version - %s', v_number)
-	logger.info('Getting chromedriver version.')
 	driver_version = chrome_driver_version(v_number)
-	logger.info('Chromedriver version - %s.', driver_version)
 	logger.info('Preparing driver.')
 	driver_path = driver_path + driver_version + '\\chromedriver.exe'
 	logger.info('Setting chromium options.')
