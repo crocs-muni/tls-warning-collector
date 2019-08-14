@@ -13,71 +13,81 @@ ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
 
 def save_screenshot(path):
     """Saves the screenshot into correct path."""
+    logger.info('Saving screenshot to - %s.', path)
     snapshot = ImageGrab.grab()
     snapshot.save(path)
 
 
 def get_screenshot_path(path, browser, version, case):
     """Gets path for browser directory where screenshot will be saved."""
+    logger.info('Preparing path where screenshot will be saved.')
     directory = path + '/browsers' + '/' + browser + '/' + version
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = case + '.png'
     screenshot_path = directory + '/' + screenshot_name
+    logger.info('Screenshot BROWSER path set - %s.', screenshot_path)
     return screenshot_path
 
 
 def get_screenshot_case_path(path, browser, version, case):
     """Gets path for case directory where screenshot will be saved."""
+    logger.info('Preparing path where screenshot will be saved.')
     directory = path + '/cases' + '/' + case + '/' + browser
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = version + '.png'
     screenshot_path = directory + '/' + screenshot_name
+    logger.info('Screenshot CASE path set - %s.', screenshot_path)
     return screenshot_path
 
 
 def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes screenshot of the opened website."""
-    print("Starting screenshot website")
-    print("Opera new is: ", opera_new)
-    print("Opera old is: ", opera_old)
+    logger.info('Preparing to screenshot website.')
+    logger.info('chromium=%s, ie=%s, opera_new=%s, opera_old=%s', chromium, ie, opera_new, opera_old)
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"
     # ID for other browsers page
     id_other = "content"
+    logger.info('Checking if IE is TRUE.')
     if ie:
+        logger.info('Setting the ID to - %s.', id_ie)
         final_id = id_ie
     else:
+        logger.info('Setting the ID to - %s.', id_other)
         final_id = id_other
     # If alert window appears, Accept and continue to the website.
     if opera_old:
         try:
-            print("Inside if opera is true.\r\n")
+            logger.info('Old opera version. Need to accept the alert.')
+            logger.info('Wait for 2 seconds.')
             time.sleep(2)
+            logger.info('Sending LEFT key.')
             webdriver.ActionChains(driver).send_keys(Keys.LEFT).perform()
+            logger.info('Sending RETURN key.')
             webdriver.ActionChains(driver).send_keys(Keys.RETURN).perform()
-            print("Sent Keys.\r\n")
-        except:
+            logger.info('Keys sent.')
+        except Exception as ex:
+            logger.error('Something went wrong. - %s', ex)
             pass
+    logger.info('Waiting until the website is loaded.')
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, final_id)))
     time.sleep(2)
     if chromium:
-        print("Sending action chain keys.")
+        logger.info('Sending ALT + SPACE + X to maximize screen.')
         webdriver.ActionChains(driver).key_down(Keys.ALT).key_down(Keys.SPACE).send_keys("x").key_up(Keys.ALT).key_up(
             Keys.SPACE).perform()
-        print("Keys sent.")
+        logger.info('Keys sent.')
         save_screenshot(get_screenshot_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
         save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
     else:
         save_screenshot(get_screenshot_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
         save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
-        webdriver.ActionChains(driver).send_keys(Keys.TAB + Keys.TAB + Keys.TAB + Keys.RIGHT + Keys.RETURN).perform()
         time.sleep(3)
         # In new versions of Opera the browser does not close after sending driver.close().
         if opera_new:
             # Trying to send ALT + F4 to close the browser.
-            print("Sending action chain keys.")
+            logger.info('Sending ALT + F4 to close the browser.')
             webdriver.ActionChains(driver).key_down(Keys.ALT).send_keys(Keys.F4).key_up(Keys.ALT).perform()
-            print("Keys sent.")
-        sys.stdout.close()
+            logger.info('Keys sent.')
