@@ -19,3 +19,9 @@ Go to the folder where you downloaded the whole project and run (in cmd or Power
 ```sh
 $ powershell .\Main.ps1
 ```
+
+## Authors
+The framework is developed at the Centre for Research on Cryptography and Security (formerly Laboratory of Security and Applied Cryptography), Masaryk University, Brno, Czech Republic.
+* Martin Ukrop 2018 - now (project lead, initial implementation)
+* Lydia Kraus 2018 - now (project lead, researcher)
+* Filip Gontko 2019 - now (main developer)
