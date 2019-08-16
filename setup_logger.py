@@ -14,3 +14,12 @@ logging.basicConfig(filename=LOG_FILE, filemode='a', format='%(asctime)s - %(lev
                     datefmt='%d-%b-%y %H:%M:%S', level=0)
 # Creating logger which will be used in other files.
 logger = logging.getLogger('tls-warning-collector')
+
+
+def output():
+    timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
+    logger.info('##################################################')
+    logger.info('#                                                #')
+    logger.info('#               %s              #', timestamp)
+    logger.info('#                                                #')
+    logger.info('##################################################')

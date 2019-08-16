@@ -1,7 +1,6 @@
 import sys
-from setup_logger import logger
+from setup_logger import output
 from browsers import *
-import time
 
 
 def get_browser():
@@ -42,15 +41,6 @@ def get_case_url():
     url = str(args[3])
     logger.info('Getting URL for badssl page. - %s', url)
     return url
-
-
-def output():
-	timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
-	logger.info('##################################################')
-	logger.info('#                                                #')
-	logger.info('#               %s              #', timestamp)
-	logger.info('#                                                #')
-	logger.info('##################################################')
 
 
 def main():

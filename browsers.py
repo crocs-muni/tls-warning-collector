@@ -13,8 +13,6 @@ def chrome_driver_version(v_number):
     """Returns name of folder for chromedrivers given version"""
     logger.info('Getting chromedriver version.')
     driver_version = ''
-    if v_number == 75:
-        driver_version = '75'
     if v_number == 76:
         driver_version = '76'
     if v_number == 75:
@@ -61,7 +59,7 @@ def chrome_driver_version(v_number):
         driver_version = '2.9'
     if 30 <= v_number < 32:
         driver_version = '2.8'
-    if 29 <= v_number < 30:
+    if v_number < 30:
         driver_version = '2.6'
     logger.info('Chromedriver version - %s.', driver_version)
     return driver_version
@@ -71,9 +69,9 @@ def opera_driver_version(v_number):
     """Returns name of folder for operadrivers given version"""
     logger.info('Getting operadriver version.')
     driver_version = ''
-    if v_number == 62:
+    if 60 < v_number <= 62:
         driver_version = '75'
-    if v_number == 60:
+    if 58 < v_number <= 60:
         driver_version = '2.45'
     if v_number == 58:
         driver_version = '2.42'
@@ -87,7 +85,7 @@ def opera_driver_version(v_number):
         driver_version = '2.37'
     if v_number == 53:
         driver_version = '2.36'
-    if v_number == 52:
+    if 50 < v_number <= 52:
         driver_version = '2.35'
     if v_number == 50:
         driver_version = '2.33'
