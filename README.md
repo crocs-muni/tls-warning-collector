@@ -2,9 +2,10 @@
 
 ## Installation
 Firstly, set the right execution policy.
-Run below line as Administrator via cmd.
+Run below lines as Administrator via cmd.
 ```sh
-$ powershell Set-ExecutionPolicy RemoteSigned
+$ powershell
+PS $ Set-ExecutionPolicy RemoteSigned
 ```
 If still not working, go to file properties and Allow it to run by checking the checkbox.
 
@@ -17,7 +18,8 @@ $ pip3 install selenium
 
 Go to the folder where you downloaded the whole project and run (in cmd or Powershell ISE)
 ```sh
-$ powershell .\Main.ps1
+$ powershell 
+PS $ .\Main.ps1
 ```
 
 ## Authors
