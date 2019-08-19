@@ -5,7 +5,7 @@ Firstly, set the right execution policy.
 Run below lines as Administrator via cmd.
 ```sh
 $ powershell
-PS $ Set-ExecutionPolicy RemoteSigned
+$ Set-ExecutionPolicy RemoteSigned
 ```
 If still not working, go to file properties and Allow it to run by checking the checkbox.
 
@@ -19,7 +19,7 @@ $ pip3 install selenium
 Go to the folder where you downloaded the whole project and run (in cmd or Powershell ISE)
 ```sh
 $ powershell 
-PS $ .\Main.ps1
+$ .\Main.ps1
 ```
 
 ## Authors
