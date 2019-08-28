@@ -1,52 +1,83 @@
-import sys
 from setup_logger import output
-from browsers import *
+from browsers import open_webpage
+import yaml
+import os.path
+import subprocess
+from setup_logger import logger
 
-
-def get_browser():
-    """Gets browser binary."""
-    args = sys.argv[1:]
-    browser = str(args[0])
-    logger.info('Getting browser binary. - %s', browser)
-    return browser
-
-
-def get_package():
-    """Gets browser package. In case of Chromium it is important because binary is chrome."""
-    args = sys.argv[1:]
-    package = str(args[4])
-    logger.info('Getting browser package. - %s', package)
-    return package
-
-
-def get_version():
-    """Gets browser version."""
-    args = sys.argv[1:]
-    version = str(args[1])
-    logger.info('Getting browser version. - %s', version)
-    return version
-
-
-def get_case():
-    """Gets case of SSL."""
-    args = sys.argv[1:]
-    case = str(args[2])
-    logger.info('Getting case of badssl. - %s', case)
-    return case
-
-
-def get_case_url():
-    """Gets URL for the required SSL warning page."""
-    args = sys.argv[1:]
-    url = str(args[3])
-    logger.info('Getting URL for badssl page. - %s', url)
-    return url
+try:
+    with open('config.yaml', 'r') as yamlfile:
+        cfg = yaml.safe_load(yamlfile)
+except:
+    logger.info("Some error occured while reading config.yaml")
 
 
 def main():
-    """Function which makes it all work as a one function."""
-    output()
-    open_webpage(get_browser(), get_case_url(), get_version(), get_package())
+    """Iterates over all of the browsers and versions and runs the script for screenshots"""
+    for browser in cfg['browsers']:
+        for version in cfg['browsers'][browser]['versions']:
+            logger.info('######## Processing %s v(%s)', browser, version)
+            if browser != 'edge':
+                install_browser(browser, version)
+            get_ssl_screenshot(browser, version)
+            uninstall_browser(browser)
+
+
+def remove_item(item):
+    """Removes the given directory"""
+    if os.path.exists(item):
+        logger.info("# Removing item: %s", item)
+        try:
+            os.rmdir(item)
+        except:
+            logger.error("Error occured while deleting item: %s", item)
+    else:
+        logger.info("# Item does not exist, not removing: %s", item)
+
+
+def new_directory(item):
+    """Creates new directory if not exists."""
+    if os.path.exists(item):
+        logger.info("# Directory exists, not creating: %s", item)
+    else:
+        logger.info("# Creating directory: %s", item)
+        try:
+            os.makedirs(item)
+        except:
+            logger.error("Error occured while creating: %s", item)
+    return
+
+
+def install_browser(browser, version):
+    """Installs given browser version."""
+    cmd = "choco install " + cfg['browsers'][browser]['package'] + " --force --version=" + version + \
+          "--yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
+    logger.info("# Installing the browser.")
+    subprocess.Popen(cmd)
+    logger.info("# Installation done.")
+
+
+def uninstall_browser(browser):
+    """Uninstalls given browser."""
+    cmd = "choco uninstall " + cfg['browsers'][browser]['package'] + \
+          " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
+    logger.info("# Uninstalling the browser.")
+    subprocess.Popen(cmd)
+    logger.info("# Uninstalling done.")
+    logger.info("# Removing installation folders.")
+    for folder in cfg['browsers'][browser]['installFolders']:
+        remove_item(folder)
+    logger.info("All folders are removed.")
+
+
+def get_ssl_screenshot(browser, version):
+    """Getting the screenshot of SSL warning in given browser version."""
+    # Loop through all cases
+    for case in cfg['cases']:
+        logger.info("#### Processing case %s %s", case, cfg['cases'][case]['url'])
+        output()
+        open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], version,
+                     cfg['browsers'][browser]['package'])
 
 
 if __name__ == '__main__':

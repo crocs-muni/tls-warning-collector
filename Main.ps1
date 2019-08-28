@@ -139,7 +139,7 @@ function New-Diretory-Test-Log([String] $Item) {
 function Install-BrowserVersion($Browser, [String] $Version) {
   choco install $($Browser.package) --force --version=$Version --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=$ChocoLog
 #  if ($Browser.package -like "*chrome*") {
-#    rename-item -path "C:\Program Files (x86)\Google\Update\GoogleUpdate.exe" -newname GoogleUpdate.exe.bak
+#    rename-item -path "C:\Program Files (x86)\Google\Updatew\GoogleUpdate.exe" -newname GoogleUpdate.exe.bak
 #  } 
 }
 

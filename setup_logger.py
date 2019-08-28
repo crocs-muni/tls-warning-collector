@@ -7,7 +7,10 @@ LOG_FILE = 'C:\\Users\\IEUser\\Desktop\\BP\\logs\\logfile' + TIMESTAMP + '.log'
 
 # Create directory logs if it does not already exist.
 if not os.path.exists('logs'):
-    os.makedirs('logs')
+    try:
+        os.makedirs('logs')
+    except OSError as e:
+        raise e
 
 # Set-up basic configuration. This needs to be set-up only once.
 logging.basicConfig(filename=LOG_FILE, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s',
@@ -17,6 +20,7 @@ logger = logging.getLogger('tls-warning-collector')
 
 
 def output():
+    """Output for the test iteration"""
     timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
     logger.info('##################################################')
     logger.info('#                                                #')
