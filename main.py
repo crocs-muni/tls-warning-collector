@@ -5,6 +5,7 @@ import os.path
 import subprocess
 from setup_logger import logger
 
+# Load data from config.yaml to cfg
 try:
     with open('config.yaml', 'r') as yamlfile:
         cfg = yaml.safe_load(yamlfile)
