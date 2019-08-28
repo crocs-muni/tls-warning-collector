@@ -1,6 +1,5 @@
 from screenshot import screenshot_website
 from selenium import webdriver
-import os
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InsecureCertificateException
