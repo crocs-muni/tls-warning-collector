@@ -45,6 +45,7 @@ def get_screenshot_case_path(path, browser, version, case):
 
 def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes screenshot of the opened website."""
+    new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
     logger.info('chromium=%s, ie=%s, opera_new=%s, opera_old=%s', chromium, ie, opera_new, opera_old)
     # ID for internet explorer page
