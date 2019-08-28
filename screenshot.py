@@ -8,7 +8,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from main import *
 
-ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
+CURRENT_DIRECTORY = os.getcwd()
+SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
 
 def save_screenshot(path):
@@ -78,11 +79,11 @@ def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_
         logger.info('Sending ALT + SPACE + X to maximize screen.')
         webdriver.ActionChains(driver).send_keys(Keys.ALT, Keys.SPACE, "x").perform()
         logger.info('Keys sent.')
-        save_screenshot(get_screenshot_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
-        save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_package(), get_version(), get_case()))
+        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, get_package(), get_version(), get_case()))
+        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, get_package(), get_version(), get_case()))
     else:
-        save_screenshot(get_screenshot_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
-        save_screenshot(get_screenshot_case_path(ScreenshotPathBase, get_browser(), get_version(), get_case()))
+        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, get_browser(), get_version(), get_case()))
+        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, get_browser(), get_version(), get_case()))
         time.sleep(3)
         # In new versions of Opera the browser does not close after sending driver.close().
         if opera_new:

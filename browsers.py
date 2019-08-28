@@ -1,12 +1,10 @@
-from main import get_version
 from screenshot import screenshot_website
 from selenium import webdriver
+import os
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InsecureCertificateException
 from setup_logger import logger
-
-ScreenshotPathBase = "C:\\users\\username\\documents\\ssl\\screenshots"
 
 
 def chrome_driver_version(v_number):
@@ -173,11 +171,11 @@ def opera(version, url):
     webdriver_service.start()
     if suffix:
         capabilities = {'operaOptions': {
-            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + get_version() + suffix_old + '\\opera.exe'}}
+            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + suffix_old + '\\opera.exe'}}
     else:
         logger.info('Capabilities are set.')
         capabilities = {'operaOptions': {
-            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + get_version() + '\\opera.exe'}}
+            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}}
     logger.info('Preparing driver.')
     driver = webdriver.Remote(webdriver_service.service_url, capabilities)
     driver.maximize_window()

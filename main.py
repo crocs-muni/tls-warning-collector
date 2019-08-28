@@ -5,17 +5,24 @@ import os.path
 import subprocess
 from setup_logger import logger
 
-# Load data from config.yaml to cfg
-try:
-    with open('config.yaml', 'r') as yamlfile:
-        cfg = yaml.safe_load(yamlfile)
-except:
-    logger.info("Some error occured while reading config.yaml")
+
+def read_config():
+    """Load data from config.yaml to cfg"""
+    try:
+        with open('config.yaml', 'r') as yamlfile:
+            conf = yaml.safe_load(yamlfile)
+    except:
+        logger.info("Some error occured while reading config.yaml")
+    return conf
+
+
+# Global variable cfg for configuration file
+cfg = read_config()
 
 
 def main():
     """Iterates over all of the browsers and versions and runs the script for screenshots"""
-    for browser in cfg['browsers']:
+    for browser in read_config()['browsers']:
         for version in cfg['browsers'][browser]['versions']:
             logger.info('######## Processing %s v(%s)', browser, version)
             if browser != 'edge':
@@ -75,10 +82,34 @@ def get_ssl_screenshot(browser, version):
     """Getting the screenshot of SSL warning in given browser version."""
     # Loop through all cases
     for case in cfg['cases']:
+        global curr_browser
+        curr_browser = browser
+        global curr_version
+        curr_version = version
+        global curr_case
+        curr_case = case
+        global curr_package
+        curr_package = cfg['browsers'][browser]['package']
         logger.info("#### Processing case %s %s", case, cfg['cases'][case]['url'])
         output()
         open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], version,
                      cfg['browsers'][browser]['package'])
+
+
+def get_browser():
+    return curr_browser
+
+
+def get_version():
+    return curr_version
+
+
+def get_case():
+    return curr_case
+
+
+def get_package():
+    return curr_package
 
 
 if __name__ == '__main__':

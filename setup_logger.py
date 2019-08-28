@@ -3,9 +3,10 @@ import time
 import os
 
 TIMESTAMP = time.strftime("%d-%m-%Y")
-LOG_FILE = 'C:\\Users\\IEUser\\Desktop\\BP\\logs\\logfile' + TIMESTAMP + '.log'
+CURRENT_DIR = os.getcwd()
+LOG_FILE = CURRENT_DIR + '\\logs\\logfile' + TIMESTAMP + '.log'
 
-# Create directory logs if it does not already exist.
+# Create directory logs in current dir if it does not already exist.
 if not os.path.exists('logs'):
     try:
         os.makedirs('logs')
