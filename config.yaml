@@ -18,6 +18,14 @@ cases:
   mixed-content:
     url: https://mixed.badssl.com/
 
+browserIDs:
+  - firefox
+  - chromium
+  - chrome
+  - opera
+  - ie
+  - edge
+
 browsers:
   firefox:
     name: Mozilla Firefox

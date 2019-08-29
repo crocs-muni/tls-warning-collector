@@ -1,9 +1,8 @@
 from setup_logger import output
-from browsers import open_webpage
+from browsers import *
 import yaml
 import os.path
 import subprocess
-from setup_logger import logger
 
 
 def read_config():
@@ -22,8 +21,9 @@ cfg = read_config()
 
 def main():
     """Iterates over all of the browsers and versions and runs the script for screenshots"""
-    for browser in read_config()['browsers']:
-        for version in cfg['browsers'][browser]['versions']:
+    for browserID in read_config()['browserIDs']:
+        browser = read_config()['browsers'][browserID]
+        for version in cfg['browsers'][browserID]['versions']:
             logger.info('######## Processing %s v(%s)', browser, version)
             if browser != 'edge':
                 install_browser(browser, version)
