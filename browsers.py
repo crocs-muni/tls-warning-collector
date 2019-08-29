@@ -8,6 +8,7 @@ import os
 
 CURRENT_DIR = os.getcwd()
 
+
 def chrome_driver_version(v_number):
     """Returns name of folder for chromedrivers given version"""
     logger.info('Getting chromedriver version.')
@@ -105,7 +106,7 @@ def opera_driver_version(v_number):
     return driver_version
 
 
-def firefox(version, url):
+def firefox(browser, version, case, package, url):
     """Opens Firefox and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\firefoxdrivers\\geckodriver-'
@@ -140,16 +141,16 @@ def firefox(version, url):
         logger.info('Opening %s', url)
         driver.get(url)
         logger.info('Going to make screenshot.')
-        screenshot_website(driver)
+        screenshot_website(driver, browser, version, package, case)
     except InsecureCertificateException:
         logger.error('Insecure certificate exception from Selenium but should create a screenshot.')
-        screenshot_website(driver)
+        screenshot_website(driver, browser, version, package, case)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def opera(version, url):
+def opera(browser, version, case, package, url):
     """Opens Opera and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\operadrivers\\operadriver-'
@@ -186,15 +187,15 @@ def opera(version, url):
     driver.get(url)
     try:
         if old_opera:
-            screenshot_website(driver, opera_new=False, opera_old=True)
+            screenshot_website(driver, browser, version, package, case, opera_new=False, opera_old=True)
         else:
-            screenshot_website(driver, opera_old=False, opera_new=True)
+            screenshot_website(driver, browser, version, package, case, opera_old=False, opera_new=True)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def chromium(version, url):
+def chromium(browser, version, case, package, url):
     """Opens Chromium and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-'
@@ -215,13 +216,13 @@ def chromium(version, url):
     logger.info('Opening %s', url)
     driver.get(url)
     try:
-        screenshot_website(driver, chromium=True)
+        screenshot_website(driver, browser, version, package, case, chromium=True)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def chrome(version, url):
+def chrome(browser, version, case, package, url):
     """Opens Google Chrome and makes screenshot of desired website"""
     logger.info('Preparing driver.')
     driver = webdriver.Chrome()
@@ -230,13 +231,13 @@ def chrome(version, url):
     logger.info('Opening %s', url)
     driver.get(url)
     try:
-        screenshot_website(driver)
+        screenshot_website(driver, browser, version, package, case)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def iexplorer(version, url):
+def iexplorer(browser, version, case, package, url):
     """Opens Internet Explorer and makes screenshot of desired website"""
     logger.info('Preparing driver.')
     driver = webdriver.Ie('C:\\Users\\IEUser\\Downloads\\IEDriverServer')
@@ -245,13 +246,13 @@ def iexplorer(version, url):
     logger.info('Opening %s', url)
     driver.get(url)
     try:
-        screenshot_website(driver, ie=True)
+        screenshot_website(driver, browser, version, package, case, ie=True)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def edge(version, url):
+def edge(browser, version, case, package, url):
     """Opens Edge browser and makes screenshot of desired website"""
     capabilities = webdriver.DesiredCapabilities.EDGE.copy()
     logger.info('Preparing driver.')
@@ -261,29 +262,29 @@ def edge(version, url):
     logger.info('Opening %s', url)
     driver.get(url)
     try:
-        screenshot_website(driver, ie=True)
+        screenshot_website(driver, browser, version, package, case, ie=True)
     finally:
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def open_webpage(browser, url, version, package):
+def open_webpage(browser, url, case, version, package):
     """Opens the URL in desired browser"""
     if browser == 'firefox':
         logger.info('-------------- %s %s %s --------------', browser, version, url)
-        firefox(version, url)
+        firefox(browser, version, case, package, url)
     if browser == 'opera':
         logger.info('-------------- %s %s %s --------------', browser, version, url)
-        opera(version, url)
+        opera(browser, version, case, package, url)
     if package == 'chromium':
         logger.info('-------------- %s %s %s --------------', package, version, url)
-        chromium(version, url)
+        chromium(browser, version, case, package, url)
     if browser == 'chrome' and package != 'chromium':
         logger.info('-------------- %s %s %s --------------', browser, version, url)
-        chrome(version, url)
+        chrome(browser, version, case, package, url)
     if browser == 'ie':
         logger.info('-------------- %s %s %s --------------', browser, version, url)
-        iexplorer(version, url)
+        iexplorer(browser, version, case, package, url)
     if browser == 'edge':
         logger.info('-------------- %s %s %s --------------', browser, version, url)
-        edge(version, url)
+        edge(browser, version, case, package, url)

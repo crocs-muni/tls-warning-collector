@@ -12,6 +12,7 @@ from setup_logger import logger
 CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
+
 def save_screenshot(path):
     """Saves the screenshot into correct path."""
     logger.info('Saving screenshot to - %s.', path)
@@ -43,7 +44,7 @@ def get_screenshot_case_path(path, browser, version, case):
     return screenshot_path
 
 
-def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_old=False):
+def screenshot_website(driver, browser, version, package, case, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes screenshot of the opened website."""
     logger.info('Checking if directory exists. If not, creating new.')
     new_directory(SCREENSHOT_PATH_BASE)
@@ -81,11 +82,11 @@ def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_
         logger.info('Sending ALT + SPACE + X to maximize screen.')
         webdriver.ActionChains(driver).send_keys(Keys.ALT, Keys.SPACE, "x").perform()
         logger.info('Keys sent.')
-        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, get_package(), get_version(), get_case()))
-        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, get_package(), get_version(), get_case()))
+        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
+        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
     else:
-        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, get_browser(), get_version(), get_case()))
-        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, get_browser(), get_version(), get_case()))
+        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
+        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
         time.sleep(3)
         # In new versions of Opera the browser does not close after sending driver.close().
         if opera_new:
