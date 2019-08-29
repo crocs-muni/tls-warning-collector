@@ -19,12 +19,12 @@ cases:
     url: https://mixed.badssl.com/
 
 browserIDs:
-#  - firefox
+  - firefox
 #  - chromium
 #  - chrome
-  - opera
-  - ie
-  - edge
+#  - opera
+#  - ie
+#  - edge
 
 browsers:
   firefox:
@@ -32,9 +32,9 @@ browsers:
     package: firefox
     binary: firefox
     test-versions:
-      - 62.0
-      - 52.0
-      - 45.0
+    #  - 62.0
+    #  - 53.0
+      - 36.0
     versions:
       - 64.0 
       - 63.0 
@@ -152,9 +152,9 @@ browsers:
     package: chromium
     binary: chrome
     test-versions:
-      - 75.0.3770.142
+      - 73.0.3683.75
       - 55.0.2882.0
-      - 54.0.2840.0
+      - 45.0.2454.0
     versions:
       - 75.0.3770.142
       - 73.0.3683.75

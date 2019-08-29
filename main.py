@@ -1,8 +1,34 @@
-from setup_logger import output
+from setup_logger import output, logger
 from browsers import *
 import yaml
 import os.path
 import subprocess
+
+class Iteration:
+	def __init__(self, browser, version, case, url, package):
+		self.browser = browser
+		self.version = version
+		self.case = case
+		self.url = url
+		self.package = package
+
+	def set_browser(self, browser):
+		self.browser = browser
+
+	def set_case(self, case):
+		self.case = case
+
+	def set_version(self, version):
+		self.version = version
+
+	def set_package(self, package):
+		self.package = package
+
+	def set_url(self, url):
+		self.url = url
+
+
+iteration = Iteration('','','','','')
 
 
 def read_config():
@@ -28,8 +54,8 @@ def main():
             		if browserID != 'edge':
                 		install_browser(browserID, version)
             		get_ssl_screenshot(browserID, version)
-            except:
-            	logger.error("Something went TERRIBLY wrong.")
+            except Exception as e:
+            	logger.error("Something went TERRIBLY wrong. - %s", e)
             finally:
             		uninstall_browser(browserID)
 
@@ -87,21 +113,17 @@ def get_ssl_screenshot(browser, version):
     logger.info("# Preparing iteration.")
     for case in cfg['cases']:
     	logger.info("# Setting global variable for browser.")
-    	global curr_browser
-    	curr_browser = browser
-    	logger.info("# Global variable for browser set - %s.", curr_browser)
+    	iteration.set_browser(browser)
+    	logger.info("# Global variable for browser set - %s.", get_browser())
     	logger.info("# Setting global variable for version.")
-    	global curr_version
-    	curr_version = version
-    	logger.info("# Global variable for version set - %s.", curr_version)
+    	iteration.set_version(str(version))
+    	logger.info("# Global variable for version set - %s.", get_version())
     	logger.info("# Setting global variable for case.")
-    	global curr_case
-    	curr_case = case
-    	logger.info("# Global variable for case set - %s.", curr_case)
+    	iteration.set_case(case)
+    	logger.info("# Global variable for case set - %s.", get_case())
     	logger.info("# Setting global variable for package.")
-    	global curr_package
-    	curr_package = cfg['browsers'][browser]['package']
-    	logger.info("# Global variable for package set - %s.", curr_package)
+    	iteration.set_package(cfg['browsers'][browser]['package'])
+    	logger.info("# Global variable for package set - %s.", get_package())
     	logger.info("#### Processing case %s %s", case, cfg['cases'][case]['url'])
     	output()
     	open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], str(version),
@@ -109,19 +131,23 @@ def get_ssl_screenshot(browser, version):
 
 
 def get_browser():
-    return curr_browser
+	logger.info('Browser is - %s', iteration.browser)
+	return iteration.browser
 
 
 def get_version():
-    return curr_version
+	logger.info('Version is - %s', iteration.version)
+	return iteration.version
 
 
 def get_case():
-    return curr_case
+	logger.info('Case is - %s', iteration.case)
+	return iteration.case
 
 
 def get_package():
-    return curr_package
+	logger.info('Package is - %s', iteration.package)
+	return iteration.package
 
 
 if __name__ == '__main__':

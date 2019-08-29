@@ -139,6 +139,7 @@ def firefox(version, url):
     try:
         logger.info('Opening %s', url)
         driver.get(url)
+        logger.info('Going to make screenshot.')
         screenshot_website(driver)
     except InsecureCertificateException:
         logger.error('Insecure certificate exception from Selenium but should create a screenshot.')

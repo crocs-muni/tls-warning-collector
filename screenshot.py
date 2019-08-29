@@ -6,12 +6,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from main import get_package, get_version, get_case, new_directory, get_browser
+from main import *
 from setup_logger import logger
 
 CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
-
 
 def save_screenshot(path):
     """Saves the screenshot into correct path."""
@@ -23,11 +22,11 @@ def save_screenshot(path):
 def get_screenshot_path(path, browser, version, case):
     """Gets path for browser directory where screenshot will be saved."""
     logger.info('Preparing path where screenshot will be saved.')
-    directory = path + '/browsers' + '/' + browser + '/' + version
+    directory = path + '\\browsers' + '\\' + browser + '\\' + version
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = case + '.png'
-    screenshot_path = directory + '/' + screenshot_name
+    screenshot_path = directory + '\\' + screenshot_name
     logger.info('Screenshot BROWSER path set - %s.', screenshot_path)
     return screenshot_path
 
@@ -35,17 +34,18 @@ def get_screenshot_path(path, browser, version, case):
 def get_screenshot_case_path(path, browser, version, case):
     """Gets path for case directory where screenshot will be saved."""
     logger.info('Preparing path where screenshot will be saved.')
-    directory = path + '/cases' + '/' + case + '/' + browser
+    directory = path + '\\cases' + '\\' + case + '\\' + browser
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = version + '.png'
-    screenshot_path = directory + '/' + screenshot_name
+    screenshot_path = directory + '\\' + screenshot_name
     logger.info('Screenshot CASE path set - %s.', screenshot_path)
     return screenshot_path
 
 
 def screenshot_website(driver, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes screenshot of the opened website."""
+    logger.info('Checking if directory exists. If not, creating new.')
     new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
     logger.info('chromium=%s, ie=%s, opera_new=%s, opera_old=%s', chromium, ie, opera_new, opera_old)
