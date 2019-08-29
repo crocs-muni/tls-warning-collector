@@ -76,21 +76,25 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
             logger.error('Something went wrong. - %s', ex)
             pass
     logger.info('Waiting until the website is loaded.')
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, final_id)))
-    time.sleep(2)
-    if chromium:
-        logger.info('Sending ALT + SPACE + X to maximize screen.')
-        webdriver.ActionChains(driver).send_keys(Keys.ALT, Keys.SPACE, "x").perform()
-        logger.info('Keys sent.')
-        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
-        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
-    else:
-        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
-        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
-        time.sleep(3)
-        # In new versions of Opera the browser does not close after sending driver.close().
-        if opera_new:
-            # Trying to send ALT + F4 to close the browser.
-            logger.info('Sending ALT + F4 to close the browser.')
-            webdriver.ActionChains(driver).key_down(Keys.ALT).send_keys(Keys.F4).key_up(Keys.ALT).perform()
+    try:
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, final_id)))
+    except:
+        logger.info('The page had some other certificate issue. Making screenshot.')
+    finally:
+        time.sleep(2)
+        if chromium:
+            logger.info('Sending ALT + SPACE + X to maximize screen.')
+            webdriver.ActionChains(driver).send_keys(Keys.ALT, Keys.SPACE, "x").perform()
             logger.info('Keys sent.')
+            save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
+            save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
+        else:
+            save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
+            save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
+            time.sleep(3)
+            # In new versions of Opera the browser does not close after sending driver.close().
+            if opera_new:
+                # Trying to send ALT + F4 to close the browser.
+                logger.info('Sending ALT + F4 to close the browser.')
+                webdriver.ActionChains(driver).key_down(Keys.ALT).send_keys(Keys.F4).key_up(Keys.ALT).perform()
+                logger.info('Keys sent.')

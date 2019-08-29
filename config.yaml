@@ -1,4 +1,4 @@
-cases:
+cases: 
   expired:
     url: https://expired.badssl.com/
   wrong-host:
@@ -33,7 +33,7 @@ browsers:
     binary: firefox
     test-versions:
     #  - 62.0
-    #  - 53.0
+    #  - 49.0
       - 36.0
     versions:
       - 64.0 
