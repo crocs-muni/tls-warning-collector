@@ -22,13 +22,16 @@ cfg = read_config()
 def main():
     """Iterates over all of the browsers and versions and runs the script for screenshots"""
     for browserID in read_config()['browserIDs']:
-        browser = read_config()['browsers'][browserID]
-        for version in cfg['browsers'][browserID]['versions']:
-            logger.info('######## Processing %s v(%s)', browser, version)
-            if browser != 'edge':
-                install_browser(browser, version)
-            get_ssl_screenshot(browser, version)
-            uninstall_browser(browser)
+        for version in cfg['browsers'][browserID]['test-versions']:
+            logger.info('######## Processing %s v(%s)', browserID, version)
+            try:
+            		if browserID != 'edge':
+                		install_browser(browserID, version)
+            		get_ssl_screenshot(browserID, version)
+            except:
+            	logger.error("Something went TERRIBLY wrong.")
+            finally:
+            		uninstall_browser(browserID)
 
 
 def remove_item(item):
@@ -58,8 +61,8 @@ def new_directory(item):
 
 def install_browser(browser, version):
     """Installs given browser version."""
-    cmd = "choco install " + cfg['browsers'][browser]['package'] + " --force --version=" + version + \
-          "--yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
+    cmd = "choco install " + str(cfg['browsers'][browser]['package']) + " --force --version=" + str(version) + \
+          " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
     logger.info("# Installing the browser.")
     subprocess.Popen(cmd)
     logger.info("# Installation done.")
@@ -67,7 +70,7 @@ def install_browser(browser, version):
 
 def uninstall_browser(browser):
     """Uninstalls given browser."""
-    cmd = "choco uninstall " + cfg['browsers'][browser]['package'] + \
+    cmd = "choco uninstall " + str(cfg['browsers'][browser]['package']) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browser.")
     subprocess.Popen(cmd)
@@ -81,18 +84,27 @@ def uninstall_browser(browser):
 def get_ssl_screenshot(browser, version):
     """Getting the screenshot of SSL warning in given browser version."""
     # Loop through all cases
+    logger.info("# Preparing iteration.")
     for case in cfg['cases']:
-        global curr_browser
-        curr_browser = browser
-        global curr_version
-        curr_version = version
-        global curr_case
-        curr_case = case
-        global curr_package
-        curr_package = cfg['browsers'][browser]['package']
-        logger.info("#### Processing case %s %s", case, cfg['cases'][case]['url'])
-        output()
-        open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], version,
+    	logger.info("# Setting global variable for browser.")
+    	global curr_browser
+    	curr_browser = browser
+    	logger.info("# Global variable for browser set - %s.", curr_browser)
+    	logger.info("# Setting global variable for version.")
+    	global curr_version
+    	curr_version = version
+    	logger.info("# Global variable for version set - %s.", curr_version)
+    	logger.info("# Setting global variable for case.")
+    	global curr_case
+    	curr_case = case
+    	logger.info("# Global variable for case set - %s.", curr_case)
+    	logger.info("# Setting global variable for package.")
+    	global curr_package
+    	curr_package = cfg['browsers'][browser]['package']
+    	logger.info("# Global variable for package set - %s.", curr_package)
+    	logger.info("#### Processing case %s %s", case, cfg['cases'][case]['url'])
+    	output()
+    	open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], str(version),
                      cfg['browsers'][browser]['package'])
 
 

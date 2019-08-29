@@ -4,7 +4,9 @@ from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InsecureCertificateException
 from setup_logger import logger
+import os
 
+CURRENT_DIR = os.getcwd()
 
 def chrome_driver_version(v_number):
     """Returns name of folder for chromedrivers given version"""
@@ -106,10 +108,10 @@ def opera_driver_version(v_number):
 def firefox(version, url):
     """Opens Firefox and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
-    driver_path = 'C:\\Users\\IEUser\\Downloads\\drivers\\firefoxdrivers\\geckodriver-'
+    driver_path = CURRENT_DIR + '\\drivers\\firefoxdrivers\\geckodriver-'
     driver_version = ''
     exe = '\\geckodriver.exe',
-    logger.info('Driver path set.')
+    logger.info('Driver path set to - %s', driver_path)
     # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
     capabilities = {'marionette': True}
     # For Firefox 47 and lower the marionette needs to be set to False because it is not included.
@@ -118,7 +120,7 @@ def firefox(version, url):
     v_number = int(full_version[0])
     logger.info('Browser short version - %s', v_number)
     logger.info('Getting geckodriver version.')
-    if full_version[0] == '62':
+    if full_version[0] >= '62':
         driver_version = '24'
     if 52 <= v_number < 62:
         driver_version = '17'
@@ -129,7 +131,7 @@ def firefox(version, url):
         capabilities = {'marionette': False, 'acceptInsecureCerts': True}
     logger.info('Geckodriver version - %s.', driver_version)
     logger.info('Capabilities are set to - %s', capabilities)
-    driver_path = driver_path + driver_version + exe
+    driver_path = driver_path + driver_version + str(exe)
     logger.info('Preparing driver.')
     driver = webdriver.Firefox(executable_path=driver_path, capabilities=capabilities)
     driver.maximize_window()
@@ -149,7 +151,7 @@ def firefox(version, url):
 def opera(version, url):
     """Opens Opera and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
-    driver_path = 'C:\\Users\\IEUser\\Downloads\\drivers\\operadrivers\\operadriver-'
+    driver_path = CURRENT_DIR + '\\drivers\\operadrivers\\operadriver-'
     logger.info('Driver path set.')
     logger.info('Parsing browser full version to short.')
     full_version = version.split(".")
@@ -194,7 +196,7 @@ def opera(version, url):
 def chromium(version, url):
     """Opens Chromium and makes screenshot of desired website"""
     logger.info('Preparing driver path.')
-    driver_path = 'C:\\Users\\IEUser\\Downloads\\drivers\\chromedrivers\\chromedriver-'
+    driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-'
     logger.info('Driver path set.')
     logger.info('Parsing browser full version to short.')
     full_version = version.split(".")

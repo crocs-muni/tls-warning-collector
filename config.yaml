@@ -19,9 +19,9 @@ cases:
     url: https://mixed.badssl.com/
 
 browserIDs:
-  - firefox
-  - chromium
-  - chrome
+#  - firefox
+#  - chromium
+#  - chrome
   - opera
   - ie
   - edge
@@ -32,7 +32,7 @@ browsers:
     package: firefox
     binary: firefox
     test-versions:
-      - 64.0
+      - 62.0
       - 52.0
       - 45.0
     versions:
@@ -87,8 +87,8 @@ browsers:
       - C:\Program Files\Mozilla Firefox
       - C:\Program Files (x86)\Mozilla Firefox
       - C:\Program Files (x86)\Mozilla Maintenance Service
-      - C:\Users\username\AppData\Local\Mozilla
-    profileFolders: C:\Users\username\AppData\Roaming\Mozilla
+      - C:\Users\IEUser\AppData\Local\Mozilla
+    profileFolders: C:\Users\IEUser\AppData\Roaming\Mozilla
   opera:
     name: Opera
     package: opera
@@ -144,9 +144,9 @@ browsers:
       - 15.0.1147.141 
       - 12.15
     installFolders:
-      - C:\Users\username\AppData\Local\Programs\Opera
-      - C:\Users\username\AppData\Local\Opera Software
-    profileFolders: C:\Users\username\AppData\Roaming\Opera Software
+      - C:\Users\IEUser\AppData\Local\Programs\Opera
+      - C:\Users\IEUser\AppData\Local\Opera Software
+    profileFolders: C:\Users\IEUser\AppData\Roaming\Opera Software
   chromium:
     name: Chromium
     package: chromium
@@ -201,8 +201,8 @@ browsers:
     installFolders:
       - C:\Program Files (x86)\Google
       - C:\Program Files (x86)\Chromium
-      - C:\users\username\appdata\local\Chromium
-      - C:\users\username\appdata\local\Google
+      - C:\Users\IEUser\AppData\Local\Chromium
+      - C:\Users\IEUser\AppData\Local\Google
     profileFolders: (no chrome profile)
   chrome:
     name: Google Chrome
@@ -259,8 +259,8 @@ browsers:
     installFolders:
       - C:\Program Files (x86)\Google
       - C:\Program Files (x86)\Chrome
-      - C:\users\username\appdata\local\Chrome
-      - C:\users\username\appdata\local\Google
+      - C:\Users\IEUser\AppData\Local\Chrome
+      - C:\Users\IEUser\AppData\Local\Google
     profileFolders: (no chrome profile)
   ie:
     name: Internet Explorer

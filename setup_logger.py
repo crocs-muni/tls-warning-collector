@@ -2,7 +2,7 @@ import logging
 import time
 import os
 
-TIMESTAMP = time.strftime("%d-%m-%Y")
+TIMESTAMP = time.strftime("%d-%m-%Y-%H%M%S")
 CURRENT_DIR = os.getcwd()
 LOG_FILE = CURRENT_DIR + '\\logs\\logfile' + TIMESTAMP + '.log'
 
