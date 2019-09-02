@@ -88,7 +88,7 @@ def get_ssl_screenshot(browser, version):
     # Loop through all cases
     logger.info("# Preparing iteration.")
     for case in cfg['cases']:
-        output(browser, str(version), case)
+        output()
         open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], case, str(version),
                      cfg['browsers'][browser]['package'])
 
