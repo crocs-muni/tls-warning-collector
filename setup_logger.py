@@ -20,11 +20,11 @@ logging.basicConfig(filename=LOG_FILE, filemode='a', format='%(asctime)s - %(lev
 logger = logging.getLogger('tls-warning-collector')
 
 
-def output():
+def output(browser, version, case):
     """Output for the test iteration"""
     timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
     logger.info('##################################################')
     logger.info('#                                                #')
-    logger.info('#               %s              #', timestamp)
+    logger.info('#         %s %s %s         #', browser, version, case)
     logger.info('#                                                #')
     logger.info('##################################################')
