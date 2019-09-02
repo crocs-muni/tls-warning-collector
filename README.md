@@ -1,25 +1,18 @@
 # TLS warning collector
 
 ## Installation
-Firstly, set the right execution policy.
-Run below lines as Administrator via cmd.
+* Firstly, download and install python3, and on the installation screen check the option to automatically set path (to use pip).<br />
 ```sh
-$ powershell
-$ Set-ExecutionPolicy RemoteSigned
-```
-If still not working, go to file properties and Allow it to run by checking the checkbox.
-
-Download and install python3 and on the installation screen check the option to automatically set path (to use pip).<br />
-Run these commands as Administator via cmd
-```sh
-$ pip3 install pillow
-$ pip3 install selenium
+$ pip3 install -r requirements.txt
 ```
 
-Go to the folder where you downloaded the whole project and run (in cmd or Powershell ISE)
+* Secondly, go to the folder where you downloaded the project and follow the instructions in the README.md in 'drivers' folder.
+* You can change the configuration of the project in 'config.yaml' file. By commenting out the line with '#' you can choose which browsers and versions won't be in the dataset. (You can take a loot at the example test-versions).
+
+* After that, go to the folder location via command line and run the script with this command.
+
 ```sh
-$ powershell 
-$ .\Main.ps1
+$ pyhton main.py
 ```
 
 ## Authors
