@@ -2,7 +2,6 @@
 
 ## Installation
 * Firstly, download and install python3, and on the installation screen check the option to automatically set path (to use pip).<br />
-Run these commands as Administator via cmd
 ```sh
 $ pip3 install -r requirements.txt
 ```
