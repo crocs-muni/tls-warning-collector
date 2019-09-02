@@ -1,0 +1,30 @@
+import logging
+import time
+import os
+
+TIMESTAMP = time.strftime("%d-%m-%Y-%H%M%S")
+CURRENT_DIR = os.getcwd()
+LOG_FILE = CURRENT_DIR + '\\logs\\logfile' + TIMESTAMP + '.log'
+
+# Create directory logs in current dir if it does not already exist.
+if not os.path.exists('logs'):
+    try:
+        os.makedirs('logs')
+    except OSError as e:
+        raise e
+
+# Set-up basic configuration. This needs to be set-up only once.
+logging.basicConfig(filename=LOG_FILE, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S', level=0)
+# Creating logger which will be used in other files.
+logger = logging.getLogger('tls-warning-collector')
+
+
+def output(browser, version, case):
+    """Output for the test iteration"""
+    timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
+    logger.info('##################################################')
+    logger.info('#                                                #')
+    logger.info('#         %s %s %s         #', browser, version, case)
+    logger.info('#                                                #')
+    logger.info('##################################################')
