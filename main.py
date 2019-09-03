@@ -23,7 +23,7 @@ cfg = read_config()
 def main():
     """Iterates over all of the browsers and versions and runs the script for screenshots"""
     for browserID in read_config()['browserIDs']:
-        for version in cfg['browsers'][browserID]['test-versions']:
+        for version in cfg['browsers'][browserID]['versions']:
             logger.info('######## Processing %s v(%s)', browserID, version)
             try:
                 if browserID != 'edge':
