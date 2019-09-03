@@ -7,9 +7,10 @@ $ pip3 install -r requirements.txt
 ```
 
 * Secondly, go to the folder where you downloaded the project and follow the instructions in the README.md in 'drivers' folder.
+## Configuration
 * When drivers are all set, add the drivers folder the the PATH.
 * You can change the configuration of the project in 'config.yaml' file. By commenting out the line with '#' you can choose which browsers and versions won't be in the dataset. (You can take a loot at the example test-versions).
-
+## Run
 * After that, go to the project location via command line and run the script with this command.
 
 ```sh
