@@ -24,7 +24,7 @@ def output(browser, version, case):
     """Output for the test iteration"""
     timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
     logger.info('##################################################')
-    logger.info('#                                                #')
-    logger.info('#         %s %s %s         #', browser, version, case)
-    logger.info('#                                                #')
+    logger.info('                                                  ')
+    logger.info('           %s %s %s         ', browser, version, case)
+    logger.info('                                                  ')
     logger.info('##################################################')
