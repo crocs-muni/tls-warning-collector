@@ -21,7 +21,7 @@ def save_screenshot(path):
 
 
 def get_screenshot_path(path, browser, version, case):
-    """Gets path for browser directory where screenshot will be saved."""
+    """Gets the path for browser directory where the screenshot will be saved."""
     logger.info('Preparing path where screenshot will be saved.')
     directory = path + '\\browsers' + '\\' + browser + '\\' + version
     if not os.path.exists(directory):
@@ -33,7 +33,7 @@ def get_screenshot_path(path, browser, version, case):
 
 
 def get_screenshot_case_path(path, browser, version, case):
-    """Gets path for case directory where screenshot will be saved."""
+    """Gets the path for case directory where the screenshot will be saved."""
     logger.info('Preparing path where screenshot will be saved.')
     directory = path + '\\cases' + '\\' + case + '\\' + browser
     if not os.path.exists(directory):
@@ -45,7 +45,7 @@ def get_screenshot_case_path(path, browser, version, case):
 
 
 def screenshot_website(driver, browser, version, package, case, chromium=False, ie=False, opera_new=False, opera_old=False):
-    """Makes screenshot of the opened website."""
+    """Makes a screenshot of the opened website."""
     logger.info('Checking if directory exists. If not, creating new.')
     new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
