@@ -10,7 +10,7 @@ CURRENT_DIR = os.getcwd()
 
 
 def chrome_driver_version(v_number):
-    """Returns name of folder for chromedrivers given version"""
+    """Returns the folder name for chromedrivers of the given version."""
     logger.info('Getting chromedriver version.')
     driver_version = ''
     if v_number == 76:
@@ -66,7 +66,7 @@ def chrome_driver_version(v_number):
 
 
 def opera_driver_version(v_number):
-    """Returns name of folder for operadrivers given version"""
+    """Returns the folder name for operadrivers of the given version."""
     logger.info('Getting operadriver version.')
     driver_version = ''
     if 60 < v_number <= 62:
@@ -107,7 +107,7 @@ def opera_driver_version(v_number):
 
 
 def firefox(browser, version, case, package, url):
-    """Opens Firefox and makes screenshot of desired website"""
+    """Opens Firefox and makes a screenshot of the desired website."""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\firefoxdrivers\\geckodriver-'
     driver_version = ''
@@ -151,7 +151,7 @@ def firefox(browser, version, case, package, url):
 
 
 def opera(browser, version, case, package, url):
-    """Opens Opera and makes screenshot of desired website"""
+    """Opens Opera and makes a screenshot of the desired website."""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\operadrivers\\operadriver-'
     logger.info('Driver path set.')
@@ -196,7 +196,7 @@ def opera(browser, version, case, package, url):
 
 
 def chromium(browser, version, case, package, url):
-    """Opens Chromium and makes screenshot of desired website"""
+    """Opens Chromium and makes a screenshot of the desired website."""
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-'
     logger.info('Driver path set.')
@@ -223,7 +223,7 @@ def chromium(browser, version, case, package, url):
 
 
 def chrome(browser, version, case, package, url):
-    """Opens Google Chrome and makes screenshot of desired website"""
+    """Opens Google Chrome and makes a screenshot of the desired website,"""
     logger.info('Preparing driver.')
     driver = webdriver.Chrome()
     driver.maximize_window()
@@ -238,7 +238,7 @@ def chrome(browser, version, case, package, url):
 
 
 def iexplorer(browser, version, case, package, url):
-    """Opens Internet Explorer and makes screenshot of desired website"""
+    """Opens Internet Explorer and makes a screenshot of the desired website."""
     logger.info('Preparing driver.')
     driver = webdriver.Ie('C:\\Users\\IEUser\\Downloads\\IEDriverServer')
     driver.maximize_window()
@@ -253,7 +253,7 @@ def iexplorer(browser, version, case, package, url):
 
 
 def edge(browser, version, case, package, url):
-    """Opens Edge browser and makes screenshot of desired website"""
+    """Opens Edge browser and makes a screenshot of the desired website."""
     capabilities = webdriver.DesiredCapabilities.EDGE.copy()
     logger.info('Preparing driver.')
     driver = webdriver.Edge(executable_path=r'C:\\Users\\IEUser\\Downloads\\MicrosoftWebDriver')
@@ -269,7 +269,7 @@ def edge(browser, version, case, package, url):
 
 
 def open_webpage(browser, url, case, version, package):
-    """Opens the URL in desired browser"""
+    """Opens the URL in desired browser."""
     if browser == 'firefox':
         firefox(browser, version, case, package, url)
     if browser == 'opera':
