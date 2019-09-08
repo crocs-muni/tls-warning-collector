@@ -7,7 +7,7 @@ import subprocess
 
 
 def read_config():
-    """Load data from config.yaml to cfg"""
+    """Loads data from config.yaml to cfg."""
     try:
         with open('config.yaml', 'r') as yamlfile:
             conf = yaml.safe_load(yamlfile)
@@ -21,7 +21,7 @@ cfg = read_config()
 
 
 def main():
-    """Iterates over all of the browsers and versions and runs the script for screenshots"""
+    """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
     for browserID in read_config()['browserIDs']:
         for version in cfg['browsers'][browserID]['versions']:
             logger.info('######## Processing %s v(%s)', browserID, version)
@@ -36,7 +36,7 @@ def main():
 
 
 def remove_item(item):
-    """Removes the given directory"""
+    """Removes the given directory."""
     if os.path.exists(item):
         logger.info("# Removing item: %s", item)
         try:
@@ -48,7 +48,7 @@ def remove_item(item):
 
 
 def new_directory(item):
-    """Creates new directory if not exists."""
+    """Creates new directory if does not exist."""
     if os.path.exists(item):
         logger.info("# Directory exists, not creating: %s", item)
     else:
@@ -61,7 +61,7 @@ def new_directory(item):
 
 
 def install_browser(browser, version):
-    """Installs given browser version."""
+    """Installs the given browser version."""
     cmd = "choco install " + str(cfg['browsers'][browser]['package']) + " --force --version=" + str(version) + \
           " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
     logger.info("# Installing the browser.")
@@ -71,7 +71,7 @@ def install_browser(browser, version):
 
 
 def uninstall_browser(browser):
-    """Uninstalls given browser."""
+    """Uninstalls the given browser."""
     cmd = "choco uninstall " + str(cfg['browsers'][browser]['package']) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browser.")
@@ -84,7 +84,7 @@ def uninstall_browser(browser):
 
 
 def get_ssl_screenshot(browser, version):
-    """Getting the screenshot of SSL warning in given browser version."""
+    """Gets the screenshot of SSL warning in the given browser version."""
     # Loop through all cases
     logger.info("# Preparing iteration.")
     for case in cfg['cases']:
