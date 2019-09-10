@@ -1,5 +1,9 @@
 # TLS warning collector
 
+## Prerequisities
+1. Windows 10 (download link for VM: https://developer.microsoft.com/en-us/windows/downloads/virtual-machines)
+2. Chocolatey
+
 ## Installation
 
 1. Install `python3`. On the installation screen, check the option to automatically set path (to use pip).
