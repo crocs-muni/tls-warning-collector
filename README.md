@@ -12,7 +12,7 @@
 $ pip3 install -r requirements.txt
 ```
 3. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
-4. When drivers are all set, add the drivers folder the the `PATH`.
+4. When drivers are all set, [add the drivers folder the the `PATH`](https://docs.alfresco.com/4.2/tasks/fot-addpath.html).
 
 ## Configuration
 
