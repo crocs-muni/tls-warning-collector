@@ -24,6 +24,7 @@ After that, go to the project location via Administrator command line and run th
 ```sh
 $ pyhton main.py
 ```
+Note: There may be a firewall settings popup during the first run as python wants to access the Internet.
 
 ## Authors
 
