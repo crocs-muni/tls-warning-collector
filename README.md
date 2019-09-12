@@ -2,7 +2,7 @@
 
 ## Prerequisities
 1. Windows 10 (download link for VM: https://developer.microsoft.com/en-us/windows/downloads/virtual-machines)
-2. Chocolatey
+2. Chocolatey (link: https://chocolatey.org/docs/installation)
 
 ## Installation
 
