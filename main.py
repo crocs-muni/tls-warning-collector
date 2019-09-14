@@ -66,7 +66,7 @@ def install_browser(browser, version):
           " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
     logger.info("# Installing the browser.")
     subprocess.Popen(cmd)
-    time.sleep(30)
+    time.sleep(60)
     logger.info("# Installation done.")
 
 
