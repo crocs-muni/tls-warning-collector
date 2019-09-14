@@ -111,7 +111,7 @@ def firefox(browser, version, case, package, url):
     logger.info('Preparing driver path.')
     driver_path = CURRENT_DIR + '\\drivers\\firefoxdrivers\\geckodriver-'
     driver_version = ''
-    exe = '\\geckodriver.exe',
+    exe = '\\geckodriver.exe'
     logger.info('Driver path set to - %s', driver_path)
     # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
     capabilities = {'marionette': True}
