@@ -1,4 +1,3 @@
-import psutil as psutil
 from PIL import ImageGrab
 import os
 import time
@@ -95,14 +94,7 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
             time.sleep(3)
             # In new versions of Opera the browser does not close after sending driver.close().
             if opera_new:
-                # Trying to kill the process
-                kill_opera()
-
-
-def kill_opera():
-    """Process kill function for Opera browser"""
-    for proc in psutil.process_iter():
-        # check whether the process name matches
-        if any(procstr in proc.name() for procstr in ['Opera']):
-            logger.info(f'Killing {proc.name()}')
-            proc.kill()
+                # Trying to send ALT + F4 to close the browser.
+                logger.info('Sending ALT + F4 to close the browser.')
+                webdriver.ActionChains(driver).key_down(Keys.ALT).send_keys(Keys.F4).key_up(Keys.ALT).perform()
+                logger.info('Keys sent.')

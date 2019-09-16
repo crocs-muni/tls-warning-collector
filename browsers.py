@@ -127,7 +127,7 @@ def firefox(browser, version, case, package, url):
         driver_version = '17'
     if 47 <= v_number < 52:
         driver_version = '14'
-    if v_number <= 47:
+    if v_number <= 46:
         driver_version = '10'
         capabilities = {'marionette': False, 'acceptInsecureCerts': True}
     logger.info('Geckodriver version - %s.', driver_version)
@@ -142,8 +142,8 @@ def firefox(browser, version, case, package, url):
         driver.get(url)
         logger.info('Going to make screenshot.')
         screenshot_website(driver, browser, version, package, case)
-    except InsecureCertificateException:
-        logger.error('Insecure certificate exception from Selenium but should create a screenshot.')
+    except Exception as e:
+        logger.error('Exception from Selenium but goint to take a screenshot. -- %s', e)
         screenshot_website(driver, browser, version, package, case)
     finally:
         logger.info('Closing the browser.')
