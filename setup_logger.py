@@ -14,8 +14,8 @@ if not os.path.exists('logs'):
         raise e
 
 # Set-up basic configuration. This needs to be set-up only once.
-logging.basicConfig(filename=LOG_FILE, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s',
-                    datefmt='%d-%b-%y %H:%M:%S', level=0)
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S', level=0, handlers=[logging.FileHandler(LOG_FILE), logging.StreamHandler()])
 # Creating logger which will be used in other files.
 logger = logging.getLogger('tls-warning-collector')
 
