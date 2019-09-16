@@ -127,7 +127,7 @@ def firefox(browser, version, case, package, url):
         driver_version = '17'
     if 47 <= v_number < 52:
         driver_version = '14'
-    if v_number <= 46:
+    if v_number < 47:
         driver_version = '10'
         capabilities = {'marionette': False, 'acceptInsecureCerts': True}
     logger.info('Geckodriver version - %s.', driver_version)
