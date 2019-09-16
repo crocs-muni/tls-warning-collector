@@ -39,13 +39,7 @@ def chrome_driver_version(v_number):
         driver_version = '2.29'
     if 54 <= v_number < 56:
         driver_version = '2.27'
-    if 52 <= v_number < 54:
-        driver_version = '2.24'
-    if 50 <= v_number < 52:
-        driver_version = '2.22'
-    if 48 <= v_number < 50:
-        driver_version = '2.21'
-    if 46 <= v_number < 48:
+    if 46 <= v_number < 54:
         driver_version = '2.20'
     if 43 <= v_number < 46:
         driver_version = '2.18'
