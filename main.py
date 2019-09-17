@@ -22,8 +22,11 @@ cfg = read_config()
 
 def main():
     """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
+    allBrowsers = len(read_config()['browserIDs'])
+    counter = 0
     for browserID in read_config()['browserIDs']:
-        for version in cfg['browsers'][browserID]['versions']:
+        counter += 1
+        for version in cfg['browsers'][browserID]['test-versions']:
             logger.info('######## Processing %s v(%s)', browserID, version)
             if browserID != 'edge':
                 install_browser(browserID, version)

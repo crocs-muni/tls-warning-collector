@@ -1,6 +1,7 @@
 import logging
 import time
 import os
+import tqdm 
 
 TIMESTAMP = time.strftime("%d-%m-%Y-%H%M%S")
 CURRENT_DIR = os.getcwd()
