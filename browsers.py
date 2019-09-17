@@ -2,9 +2,9 @@ from screenshot import screenshot_website
 from selenium import webdriver
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import InsecureCertificateException
 from setup_logger import logger
 import os
+import time
 
 CURRENT_DIR = os.getcwd()
 
@@ -154,35 +154,28 @@ def opera(browser, version, case, package, url):
     v_number = int(full_version[0])
     logger.info('Browser short version - %s', v_number)
     old_opera = False
-    suffix = False
-    suffix_old = '_0'
     driver_version = opera_driver_version(v_number)
     logger.info('Checking if the Opera driver version is "0.2.2"')
     if driver_version == '0.2.2':
         old_opera = True
-    if 40 <= v_number < 43:
-        suffix = True
     logger.info('Preparing driver.')
     driver_path = driver_path + driver_version + '\\operadriver.exe'
     webdriver_service = service.Service(driver_path)
     webdriver_service.start()
-    if suffix:
-        capabilities = {'operaOptions': {
-            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + suffix_old + '\\opera.exe'}}
-    else:
-        logger.info('Capabilities are set.')
-        capabilities = {'operaOptions': {
+    logger.info('Capabilities are set.')
+    capabilities = {'operaOptions': {
             'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}}
     logger.info('Preparing driver.')
     driver = webdriver.Remote(webdriver_service.service_url, capabilities)
     driver.maximize_window()
     logger.info('Driver is set.')
     logger.info('Opening %s', url)
-    driver.get(url)
     try:
         if old_opera:
-            screenshot_website(driver, browser, version, package, case, opera_new=False, opera_old=True)
+            # TODO: Find a way to timeout the alert and capture a screenshot instead of waiting 600 seconds 
+            driver.get(url)   
         else:
+            driver.get(url)
             screenshot_website(driver, browser, version, package, case, opera_old=False, opera_new=True)
     finally:
         logger.info('Closing the browser.')
