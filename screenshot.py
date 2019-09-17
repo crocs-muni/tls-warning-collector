@@ -1,6 +1,4 @@
 from PIL import ImageGrab
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -48,28 +46,28 @@ def get_screenshot_case_path(path, browser, version, case):
 
 def screenshot_website(driver, browser, version, package, case, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes a screenshot of the opened website."""
-    isChromium = chromium
-    isIe = ie
-    isOperaOld = opera_old
+    is_chromium = chromium
+    is_ie = ie
+    is_opera_old = opera_old
     logger.info('Checking if directory exists. If not, creating new.')
     new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
     logger.info('chromium=%s, ie=%s, opera_new=%s, opera_old=%s', chromium, ie, opera_new, opera_old)
-    final_id = setID(isIe)
+    final_id = set_id(is_ie)
     # If alert window appears, Accept and continue to the website.
     logger.info('Waiting until the website is loaded.')
     try:
-        if isOperaOld:
-            shot(driver, final_id, browser, version, package, case, old_opera=isOperaOld)
+        if is_opera_old:
+            shot(driver, final_id, browser, version, package, case, old_opera=is_opera_old)
         else:
-            shot(driver, final_id, browser, version, package, case, isChromium)
+            shot(driver, final_id, browser, version, package, case, is_chromium)
         # In new versions of Opera the browser does not close after sending driver.close().
     finally:
         if opera_new:
             kill_opera()
 
 
-def setID(ie):
+def set_id(ie):
     """Set the ID of element present on the cert page"""
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"

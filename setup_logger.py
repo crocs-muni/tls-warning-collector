@@ -1,7 +1,6 @@
 import logging
 import time
 import os
-import tqdm 
 
 TIMESTAMP = time.strftime("%d-%m-%Y-%H%M%S")
 CURRENT_DIR = os.getcwd()
@@ -23,7 +22,6 @@ logger = logging.getLogger('tls-warning-collector')
 
 def output(browser, version, case):
     """Output for the test iteration"""
-    timestamp = time.strftime("%d-%m-%Y %H:%M:%S")
     logger.info('##################################################')
     logger.info('                                                  ')
     logger.info('           %s %s %s         ', browser, version, case)
