@@ -83,9 +83,9 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
     finally:
         time.sleep(2)
         if chromium:
-            logger.info('Sending ALT + SPACE + X to maximize screen.')
-            webdriver.ActionChains(driver).send_keys(Keys.ALT, Keys.SPACE, "x").perform()
-            logger.info('Keys sent.')
+            driver.set_window_size(1024, 600)
+            driver.maximize_window()
+            time.sleep(2)
             save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
             save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
         else:

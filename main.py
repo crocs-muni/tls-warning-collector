@@ -25,14 +25,10 @@ def main():
     for browserID in read_config()['browserIDs']:
         for version in cfg['browsers'][browserID]['versions']:
             logger.info('######## Processing %s v(%s)', browserID, version)
-            try:
-                if browserID != 'edge':
-                    install_browser(browserID, version)
-                get_ssl_screenshot(browserID, version)
-            except Exception as e:
-                logger.error("Something went TERRIBLY wrong. - %s", e)
-            finally:
-                uninstall_browser(browserID)
+            if browserID != 'edge':
+                install_browser(browserID, version)
+            get_ssl_screenshot(browserID, version)
+            uninstall_browser(browserID)
 
 
 def remove_item(item):
@@ -66,7 +62,7 @@ def install_browser(browser, version):
           " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
     logger.info("# Installing the browser.")
     subprocess.Popen(cmd)
-    time.sleep(30)
+    time.sleep(60)
     logger.info("# Installation done.")
 
 
@@ -76,6 +72,7 @@ def uninstall_browser(browser):
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browser.")
     subprocess.Popen(cmd)
+    time.sleep(60)
     logger.info("# Uninstalling done.")
     logger.info("# Removing installation folders.")
     for folder in cfg['browsers'][browser]['installFolders']:
@@ -88,9 +85,12 @@ def get_ssl_screenshot(browser, version):
     # Loop through all cases
     logger.info("# Preparing iteration.")
     for case in cfg['cases']:
-        output(browser, str(version), case)
-        open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], case, str(version),
+        try:
+            output(browser, str(version), case)
+            open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], case, str(version),
                      cfg['browsers'][browser]['package'])
+        except Exception as e:
+            logger.error("Something went TERRIBLY wrong. - %s", e)
 
 
 if __name__ == '__main__':
