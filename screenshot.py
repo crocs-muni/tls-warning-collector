@@ -50,6 +50,7 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
     """Makes a screenshot of the opened website."""
     isChromium = chromium
     isIe = ie
+    isOperaOld = opera_old
     logger.info('Checking if directory exists. If not, creating new.')
     new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
@@ -58,13 +59,13 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
     # If alert window appears, Accept and continue to the website.
     logger.info('Waiting until the website is loaded.')
     try:
-        if opera_old:
-            shot(driver, final_id, browser, version, package, case, isChromium)
+        if isOperaOld:
+            shot(driver, final_id, browser, version, package, case, old_opera=isOperaOld)
         else:
             shot(driver, final_id, browser, version, package, case, isChromium)
         # In new versions of Opera the browser does not close after sending driver.close().
     finally:
-        if opera_new or opera_old:
+        if opera_new:
             kill_opera()
 
 
@@ -95,24 +96,32 @@ def kill_opera():
     logger.info('Opera killed.')
 
 
-def shot(driver, final_id, browser, version, package, case, chromium=False):
-    """Call functions to make the screenshot"""
-    try:
-        # Wait until the page is loaded
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, final_id)))
-    except:
-        logger.info('The page had some certificate issue. Making screenshot.')
-    finally:
-        time.sleep(2)
-        if chromium:
-            maximize_chromium(driver)
-            # This is almost twice because 'Chromium' and 'Chrome' have the same binary but different package
-            save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
-            save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
-        else:
-            save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
-            save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
-            time.sleep(3)    
+def shot(driver, final_id, browser, version, package, case, chromium=False, old_opera=False):
+    """Call functions to make the screenshot and save them to the path"""
+    # If old opera then screenshot directly because there is an alert.
+    if old_opera:
+        save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
+        save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
+        time.sleep(3)
+    else:
+        # Otherwise check if the web is loaded and screenshot it afterwards.
+        try:
+            logger.info('Waiting for the page to load.')
+            # Wait until the page is loaded
+            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, final_id)))
+        except Exception as e:
+            logger.info('Exception occued: %s. Making screenshot.', e)
+        finally:
+            time.sleep(2)
+            if chromium:
+                maximize_chromium(driver)
+                # This is almost twice because 'Chromium' and 'Chrome' have the same binary but different package
+                save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
+                save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
+            else:
+                save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
+                save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
+                time.sleep(3)    
 
 
 def maximize_chromium(driver):
