@@ -1,10 +1,10 @@
-from screenshot import screenshot_website
+from screenshot import screenshot_website, kill_opera
 from selenium import webdriver
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from setup_logger import logger
 import os
-import time
+import multiprocessing
 
 CURRENT_DIR = os.getcwd()
 
@@ -172,14 +172,37 @@ def opera(browser, version, case, package, url):
     logger.info('Opening %s', url)
     try:
         if old_opera:
-            # TODO: Find a way to timeout the alert and capture a screenshot instead of waiting 600 seconds 
-            driver.get(url)   
+            timeout_and_screenshot(driver, url, browser, version, package, case)
         else:
             driver.get(url)
             screenshot_website(driver, browser, version, package, case, opera_old=False, opera_new=True)
     finally:
+        if old_opera:
+            kill_opera()
         logger.info('Closing the browser.')
         driver.quit()
+
+
+def timeout_and_screenshot(driver, url, browser, version, package, case):
+    """Opens the url in different thread so that it is not waiting until the page is loaded.
+    It will never be since there is an alert."""
+    p1 = multiprocessing.Process(target=open_browser, args=(driver, url))
+    p1.start()
+    # Wait for 10 seconds or unitl process finishes
+    logger.info('Waiting 10 seconds to load the url')
+    p1.join(10)
+    logger.info('Done waiting. Going to take the screenshot.')
+    screenshot_website(driver, browser, version, package, case, opera_old=True, opera_new=False)
+    logger.info('Checking if thread is active')
+    if p1.is_alive():
+        logger.info('Terminating the thread')
+        p1.terminate()
+        p1.join()
+
+
+def open_browser(driver, url):
+    """Opens given url in the browser."""
+    driver.get(url)
 
 
 def chromium(browser, version, case, package, url):
