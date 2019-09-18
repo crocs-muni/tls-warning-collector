@@ -1,5 +1,6 @@
 from setup_logger import output, logger
 from browsers import *
+from progress_bar import set_progress_percentage, print_progress
 import time
 import yaml
 import os.path
@@ -22,16 +23,18 @@ cfg = read_config()
 
 def main():
     """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
-    allBrowsers = len(read_config()['browserIDs'])
-    counter = 0
+    all_browsers = len(read_config()['browserIDs'])
+    iteration = 0
     for browserID in read_config()['browserIDs']:
-        counter += 1
+        iteration += 1
+        progress = set_progress_percentage(iteration, all_browsers)
         for version in cfg['browsers'][browserID]['test-versions']:
             logger.info('######## Processing %s v(%s)', browserID, version)
             if browserID != 'edge':
                 install_browser(browserID, version)
             get_ssl_screenshot(browserID, version)
             uninstall_browser(browserID)
+        print_progress(progress)
 
 
 def remove_item(item):
