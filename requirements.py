@@ -10,10 +10,17 @@ def check_requirements():
 	drivers_path = CURRENT_DIR + "\\drivers"
 	cmd = 'echo %Path% | find "tls-warning-collector-dev\\drivers"'
 	proc = subprocess.call(cmd, shell=True)
+	if proc == 0:
+		# Everything went well and the drivers are in Path
+		print("Drivers are in path. Continue installation...")
+	else:
+		print("Drivers are NOT in Path. Follow instructions in the drivers folder and then re-run this program.")
+		return 0
 	time.sleep(3)
 	print("Installing requirements.")
 	pip_cmd = 'pip3 install -r requirements.txt'
 	subprocess.Popen(pip_cmd)
 
 
-check_requirements()
+if __name__ == '__main__':
+	check_requirements()
