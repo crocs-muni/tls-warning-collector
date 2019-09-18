@@ -16,10 +16,12 @@ def check_requirements():
 	else:
 		print("Drivers are NOT in Path. Follow instructions in the drivers folder and then re-run this program.")
 		return 0
-	time.sleep(3)
+	time.sleep(1)
 	print("Installing requirements.")
 	pip_cmd = 'pip3 install -r requirements.txt'
 	subprocess.Popen(pip_cmd)
+	time.sleep(1)
+	return 0
 
 
 if __name__ == '__main__':
