@@ -33,9 +33,9 @@ browsers:
     binary: firefox
     test-versions:
       - 69.0
-     # - 68.0
-     # - 66.0
-     # - 65.0
+      - 68.0
+      - 66.0
+      - 65.0
     versions:
       - 69.0
       - 68.0

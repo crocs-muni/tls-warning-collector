@@ -27,14 +27,20 @@ def main():
     iteration = 0
     for browserID in read_config()['browserIDs']:
         iteration += 1
+        all_versions = cfg['browsers'][browserID]['test-versions']
+        v_iteration = 0
         progress = set_progress_percentage(iteration, all_browsers)
-        for version in cfg['browsers'][browserID]['test-versions']:
+        for version in all_versions:
+            v_iteration += 1
+            v_progress = set_progress_percentage(v_iteration, len(all_versions))
             logger.info('######## Processing %s v(%s)', browserID, version)
             if browserID != 'edge':
                 install_browser(browserID, version)
             get_ssl_screenshot(browserID, version)
+            print_progress(v_progress, versions=True)
             uninstall_browser(browserID)
         print_progress(progress)
+    return
 
 
 def remove_item(item):
@@ -47,6 +53,7 @@ def remove_item(item):
             logger.error("Error occured while deleting item: %s", item)
     else:
         logger.info("# Item does not exist, not removing: %s", item)
+    return
 
 
 def new_directory(item):
@@ -90,13 +97,18 @@ def get_ssl_screenshot(browser, version):
     """Gets the screenshot of SSL warning in the given browser version."""
     # Loop through all cases
     logger.info("# Preparing iteration.")
+    all_cases = len(cfg['cases'])
+    iteration = 0
     for case in cfg['cases']:
+        iteration += 1
+        progress = set_progress_percentage(iteration, all_cases)
         try:
             output(browser, str(version), case)
             open_webpage(cfg['browsers'][browser]['binary'], cfg['cases'][case]['url'], case, str(version),
                      cfg['browsers'][browser]['package'])
         except Exception as e:
             logger.error("Something went TERRIBLY wrong. - %s", e)
+        print_progress(progress, cases=True)
 
 
 if __name__ == '__main__':
