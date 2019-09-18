@@ -63,12 +63,12 @@ def opera_driver_version(v_number):
     """Returns the folder name for operadrivers of the given version."""
     logger.info('Getting operadriver version.')
     driver_version = ''
-    if 60 < v_number <= 62:
-        driver_version = '75'
-    if 58 < v_number <= 60:
+    if v_number >= 63:
+        driver_version = '76'
+    if v_number == 62:
+        driver_version = '2.41'
+    if 57 < v_number < 62:
         driver_version = '2.45'
-    if v_number == 58:
-        driver_version = '2.42'
     if v_number == 57:
         driver_version = '2.41'
     if v_number == 56:
@@ -84,7 +84,7 @@ def opera_driver_version(v_number):
     if v_number == 50:
         driver_version = '2.33'
     if v_number == 49:
-        driver_version = '2.32'
+        driver_version = '2.33'
     if v_number == 48:
         driver_version = '2.30'
     if v_number == 47:
@@ -94,8 +94,12 @@ def opera_driver_version(v_number):
     # version 44 is not on the server so cannot be downloaded
     if 40 < v_number <= 42:
         driver_version = '2.27'
-    if v_number <= 40:
+    if 26 < v_number <= 40:
         driver_version = '0.2.2'
+    if v_number == 26:
+        driver_version = '0.2.0'
+    if v_number <= 25:
+        driver_version = '0.1.0'
     logger.info('Operadriver version - %s.', driver_version)
     return driver_version
 
@@ -155,9 +159,10 @@ def opera(browser, version, case, package, url):
     logger.info('Browser short version - %s', v_number)
     old_opera = False
     driver_version = opera_driver_version(v_number)
-    logger.info('Checking if the Opera driver version is "0.2.2"')
-    if driver_version == '0.2.2':
+    logger.info('Checking if the Opera driver version is lower or equal to "0.2.2"')
+    if driver_version == '0.2.2' or driver_version == '0.2.0' or driver_version == '0.1.0':
         old_opera = True
+        logger.info('Opera driver version is very old. - True')
     logger.info('Preparing driver.')
     driver_path = driver_path + driver_version + '\\operadriver.exe'
     webdriver_service = service.Service(driver_path)
