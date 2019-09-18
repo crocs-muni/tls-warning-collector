@@ -2,7 +2,7 @@ cases:
   expired:
     url: https://expired.badssl.com/
   wrong-host:
-    url: https://wrong-host.badssl.com/
+    url: https://wrong.host.badssl.com/
   self-signed:
     url: https:/self-signed.badssl.com/
   untrusted-root:
