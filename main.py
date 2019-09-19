@@ -1,6 +1,7 @@
 from setup_logger import output, logger
 from browsers import *
 from progress_bar import set_progress_percentage, print_progress
+from requirements import check_requirements
 import time
 import yaml
 import os.path
@@ -23,6 +24,7 @@ cfg = read_config()
 
 def main():
     """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
+    check_requirements()
     all_browsers = len(read_config()['browserIDs'])
     iteration = 0
     for browserID in read_config()['browserIDs']:
