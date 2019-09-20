@@ -1,5 +1,6 @@
 from screenshot import screenshot_website, kill_opera
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from setup_logger import logger
@@ -112,7 +113,11 @@ def firefox(browser, version, case, package, url):
     exe = '\\geckodriver.exe'
     logger.info('Driver path set to - %s', driver_path)
     # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
-    capabilities = {'marionette': True}
+    #capabilities = {'marionette': True}
+    capabilities = DesiredCapabilities.FIREFOX
+    capabilities['marionette'] = True
+    capabilities['acceptInsecureCerts'] = False
+    capabilities['acceptSslCerts'] = False
     # For Firefox 47 and lower the marionette needs to be set to False because it is not included.
     logger.info('Parsing browser full version to short.')
     full_version = version.split(".")
@@ -168,8 +173,12 @@ def opera(browser, version, case, package, url):
     webdriver_service = service.Service(driver_path)
     webdriver_service.start()
     logger.info('Capabilities are set.')
-    capabilities = {'operaOptions': {
-            'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}}
+    capabilities = DesiredCapabilities.OPERA.copy()
+    capabilities['operaOptions'] = {'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}
+    capabilities['acceptInsecureCerts'] = False
+    capabilities['acceptSslCerts'] = False
+    #capabilities = {'operaOptions': {
+    #        'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}}
     logger.info('Preparing driver.')
     driver = webdriver.Remote(webdriver_service.service_url, capabilities)
     driver.maximize_window()
@@ -224,12 +233,18 @@ def chromium(browser, version, case, package, url):
     driver_path = driver_path + driver_version + '\\chromedriver.exe'
     logger.info('Setting chromium options.')
     opts = Options()
-    opts.add_argument('--start-maximized')
+    #opts.add_argument('--start-maximized')
     opts.binary_location = 'C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe'
-    driver = webdriver.Chrome(options=opts, executable_path=driver_path)
+    capabilities = DesiredCapabilities.CHROME.copy()
+    capabilities.update(opts.to_capabilities())
+    capabilities['acceptInsecureCerts'] = False
+    capabilities['acceptSslCerts'] = False
+    driver = webdriver.Chrome(desired_capabilities = capabilities, executable_path=driver_path)
     logger.info('Driver is set.')
     logger.info('Opening %s', url)
+    logger.info('Capabilities before: {}'.format(capabilities))
     driver.get(url)
+    logger.info('Capabilities after: {}'.format(driver.desired_capabilities))
     try:
         screenshot_website(driver, browser, version, package, case, chromium=True)
     finally:
