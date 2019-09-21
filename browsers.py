@@ -132,7 +132,7 @@ def firefox(browser, version, case, package, url):
         driver_version = '14'
     if v_number < 47:
         driver_version = '10'
-        capabilities = {'marionette': False}
+        capabilities['marionette'] = False
     logger.info('Geckodriver version - %s.', driver_version)
     logger.info('Capabilities are set to - %s', capabilities)
     driver_path = driver_path + driver_version + str(exe)
