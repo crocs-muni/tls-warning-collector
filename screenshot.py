@@ -53,7 +53,7 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
     new_directory(SCREENSHOT_PATH_BASE)
     logger.info('Preparing to screenshot website.')
     logger.info('chromium=%s, ie=%s, opera_new=%s, opera_old=%s', chromium, ie, opera_new, opera_old)
-    final_id = set_id(is_ie)
+    final_id = set_id(is_ie, is_chromium)
     # If alert window appears, Accept and continue to the website.
     logger.info('Waiting until the website is loaded.')
     try:
@@ -63,35 +63,38 @@ def screenshot_website(driver, browser, version, package, case, chromium=False, 
             shot(driver, final_id, browser, version, package, case, is_chromium)
         # In new versions of Opera the browser does not close after sending driver.close().
     finally:
-        if opera_new:
-            kill_opera()
+        kill_browser()
 
 
-def set_id(ie):
+def set_id(ie, chromium):
     """Set the ID of element present on the cert page"""
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"
     # ID for other browsers page
     id_other = "content"
+    id_debugging = 'debugging'
     logger.info('Checking if IE is TRUE.')
     if ie:
         logger.info('Setting the ID to - %s.', id_ie)
         final_id = id_ie
+    elif chromium:
+        logger.info('Setting the ID to - %s.', id_debugging)
+        final_id = id_debugging
     else:
         logger.info('Setting the ID to - %s.', id_other)
         final_id = id_other
     return final_id
 
 
-def kill_opera():
-    """Process kill function for Opera browser"""
-    logger.info('Going to kill Opera browser process.')
+def kill_browser():
+    """Process kill function for browser so that removing files after uninstall works."""
+    logger.info('Going to kill browser process.')
     for proc in psutil.process_iter():
         # check whether the process name matches
-        if any(procstr in proc.name() for procstr in ['Opera', 'opera.exe']):
+        if any(procstr in proc.name() for procstr in ['Opera', 'opera.exe', 'Chromium', 'chromium.exe', 'Firefox', 'firefox.exe']):
             logger.info(f'Killing {proc.name()}')
             proc.kill()
-    logger.info('Opera killed.')
+    logger.info('Browser killed.')
 
 
 def shot(driver, final_id, browser, version, package, case, chromium=False, old_opera=False):

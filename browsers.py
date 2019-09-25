@@ -1,4 +1,4 @@
-from screenshot import screenshot_website, kill_opera
+from screenshot import screenshot_website, kill_browser
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome import service
@@ -14,6 +14,10 @@ def chrome_driver_version(v_number):
     """Returns the folder name for chromedrivers of the given version."""
     logger.info('Getting chromedriver version.')
     driver_version = ''
+    if v_number >= 78:
+        driver_version = '78'
+    if v_number == 77:
+        driver_version = '77'
     if v_number == 76:
         driver_version = '76'
     if v_number == 75:
@@ -92,7 +96,6 @@ def opera_driver_version(v_number):
         driver_version = '2.30'
     if 42 < v_number <= 46:
         driver_version = '2.29'
-    # version 44 is not on the server so cannot be downloaded
     if 40 < v_number <= 42:
         driver_version = '2.27'
     if 26 < v_number <= 40:
@@ -113,7 +116,6 @@ def firefox(browser, version, case, package, url):
     exe = '\\geckodriver.exe'
     logger.info('Driver path set to - %s', driver_path)
     # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
-    #capabilities = {'marionette': True}
     capabilities = DesiredCapabilities.FIREFOX
     capabilities['marionette'] = True
     capabilities['acceptInsecureCerts'] = False
@@ -149,6 +151,7 @@ def firefox(browser, version, case, package, url):
         logger.error('Exception from Selenium but goint to take a screenshot. -- %s', e)
         screenshot_website(driver, browser, version, package, case)
     finally:
+        kill_browser()
         logger.info('Closing the browser.')
         driver.quit()
 
@@ -173,8 +176,10 @@ def opera(browser, version, case, package, url):
     webdriver_service = service.Service(driver_path)
     webdriver_service.start()
     logger.info('Capabilities are set.')
-    capabilities = DesiredCapabilities.OPERA.copy()
+    capabilities = DesiredCapabilities.OPERA
     capabilities['operaOptions'] = {'binary': 'C:\\Users\\IEUser\\AppData\\Local\\Programs\\Opera\\' + version + '\\opera.exe'}
+    if old_opera:
+        capabilities['operaOptions'] = {'binary': 'C:\\Program Files\\Opera\\' + version + '\\opera.exe'}
     capabilities['acceptInsecureCerts'] = False
     capabilities['acceptSslCerts'] = False
     #capabilities = {'operaOptions': {
@@ -186,18 +191,57 @@ def opera(browser, version, case, package, url):
     logger.info('Opening %s', url)
     try:
         if old_opera:
-            timeout_and_screenshot(driver, url, browser, version, package, case)
+            timeout_and_screenshot(driver, url, browser, version, package, case, opera=True)
         else:
             driver.get(url)
             screenshot_website(driver, browser, version, package, case, opera_old=False, opera_new=True)
+    except Exception as e:
+        logger.error('Exception in opera() - %s', e)
     finally:
-        if old_opera:
-            kill_opera()
+        kill_browser()
         logger.info('Closing the browser.')
         driver.quit()
 
 
-def timeout_and_screenshot(driver, url, browser, version, package, case):
+def chromium(browser, version, case, package, url):
+    """Opens Chromium and makes a screenshot of the desired website."""
+    logger.info('Preparing driver path.')
+    driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-'
+    logger.info('Driver path set.')
+    logger.info('Parsing browser full version to short.')
+    old_chromium = False
+    full_version = version.split(".")
+    v_number = int(full_version[0])
+    logger.info('Browser short version - %s', v_number)
+    driver_version = chrome_driver_version(v_number)
+    logger.info('Preparing driver.')
+    driver_path = driver_path + driver_version + '\\chromedriver.exe'
+    logger.info('Setting chromium options.')
+    if v_number < 73:
+        old_chromium = True
+    opts = Options()
+    #opts.add_argument('--start-maximized')
+    opts.binary_location = 'C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe'
+    opts.add_experimental_option('excludeSwitches', ['ignore-certificate-errors'])
+    capabilities = DesiredCapabilities.CHROME
+    capabilities.update(opts.to_capabilities())
+    capabilities['acceptInsecureCerts'] = False
+    capabilities['acceptSslCerts'] = False
+    driver = webdriver.Chrome(desired_capabilities=capabilities, executable_path=driver_path)
+    logger.info('Driver is set.')
+    logger.info('Opening %s', url)
+    try:
+        driver.get(url)
+        screenshot_website(driver, browser, version, package, case, chromium=True)
+    except Exception as e:
+        logger.error('Exception in Chromium - %s', e)
+    finally:
+        kill_browser()
+        logger.info('Closing the browser.')
+        driver.quit()
+
+
+def timeout_and_screenshot(driver, url, browser, version, package, case, opera=False):
     """Opens the url in different thread so that it is not waiting until the page is loaded.
     It will never be since there is an alert."""
     p1 = multiprocessing.Process(target=open_browser, args=(driver, url))
@@ -206,7 +250,8 @@ def timeout_and_screenshot(driver, url, browser, version, package, case):
     logger.info('Waiting 10 seconds to load the url')
     p1.join(10)
     logger.info('Done waiting. Going to take the screenshot.')
-    screenshot_website(driver, browser, version, package, case, opera_old=True, opera_new=False)
+    if opera:
+        screenshot_website(driver, browser, version, package, case, opera_old=True, opera_new=False)
     logger.info('Checking if thread is active')
     if p1.is_alive():
         logger.info('Terminating the thread')
@@ -217,39 +262,6 @@ def timeout_and_screenshot(driver, url, browser, version, package, case):
 def open_browser(driver, url):
     """Opens given url in the browser."""
     driver.get(url)
-
-
-def chromium(browser, version, case, package, url):
-    """Opens Chromium and makes a screenshot of the desired website."""
-    logger.info('Preparing driver path.')
-    driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-'
-    logger.info('Driver path set.')
-    logger.info('Parsing browser full version to short.')
-    full_version = version.split(".")
-    v_number = int(full_version[0])
-    logger.info('Browser short version - %s', v_number)
-    driver_version = chrome_driver_version(v_number)
-    logger.info('Preparing driver.')
-    driver_path = driver_path + driver_version + '\\chromedriver.exe'
-    logger.info('Setting chromium options.')
-    opts = Options()
-    #opts.add_argument('--start-maximized')
-    opts.binary_location = 'C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe'
-    capabilities = DesiredCapabilities.CHROME.copy()
-    capabilities.update(opts.to_capabilities())
-    capabilities['acceptInsecureCerts'] = False
-    capabilities['acceptSslCerts'] = False
-    driver = webdriver.Chrome(desired_capabilities = capabilities, executable_path=driver_path)
-    logger.info('Driver is set.')
-    logger.info('Opening %s', url)
-    logger.info('Capabilities before: {}'.format(capabilities))
-    driver.get(url)
-    logger.info('Capabilities after: {}'.format(driver.desired_capabilities))
-    try:
-        screenshot_website(driver, browser, version, package, case, chromium=True)
-    finally:
-        logger.info('Closing the browser.')
-        driver.quit()
 
 
 def chrome(browser, version, case, package, url):
