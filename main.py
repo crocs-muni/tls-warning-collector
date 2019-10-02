@@ -60,6 +60,7 @@ def remove_item(item):
 
 def new_directory(item):
     """Creates new directory if does not exist."""
+    logger.info('Checking if directory exists. If not, creating new.')
     if os.path.exists(item):
         logger.info("# Directory exists, not creating: %s", item)
     else:

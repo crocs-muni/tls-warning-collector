@@ -199,7 +199,7 @@ def open_opera(driver, url, browser, version, package, case, old_opera):
         timeout_and_screenshot(driver, url, browser, version, package, case, opera=True)
     else:
         open_browser(driver, url)
-        screenshot_website(driver, browser, version, package, case, opera_old=False, opera_new=True)
+        screenshot_website(driver, browser, version, package, case, opera_old=False)
 
 
 def timeout_and_screenshot(driver, url, browser, version, package, case, opera=False):
@@ -212,7 +212,7 @@ def timeout_and_screenshot(driver, url, browser, version, package, case, opera=F
     p1.join(10)
     logger.info('Done waiting. Going to take the screenshot.')
     if opera:
-        screenshot_website(driver, browser, version, package, case, opera_old=True, opera_new=False)
+        screenshot_website(driver, browser, version, package, case, opera_old=True)
     logger.info('Checking if thread is active')
     terminate_thread(p1)
 
