@@ -46,6 +46,7 @@ def get_screenshot_case_path(path, browser, version, case):
 
 def screenshot_website(driver, browser, version, package, case, chromium=False, ie=False, opera_new=False, opera_old=False):
     """Makes a screenshot of the opened website."""
+    logger.info('Going to make screenshot.')
     is_chromium = chromium
     is_ie = ie
     is_opera_old = opera_old
@@ -115,7 +116,6 @@ def shot(driver, final_id, browser, version, package, case, chromium=False, old_
         finally:
             time.sleep(2)
             if chromium:
-                maximize_chromium(driver)
                 # This is almost twice because 'Chromium' and 'Chrome' have the same binary but different package
                 save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
                 save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
@@ -125,8 +125,3 @@ def shot(driver, final_id, browser, version, package, case, chromium=False, old_
                 time.sleep(3)    
 
 
-def maximize_chromium(driver):
-    """This is the only working way to set Chromium to fullscreen"""
-    driver.set_window_size(1024, 600)
-    driver.maximize_window()
-    time.sleep(2)
