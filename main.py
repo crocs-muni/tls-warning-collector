@@ -110,6 +110,7 @@ def get_ssl_screenshot(browser, version):
                      cfg['browsers'][browser]['package'])
         except Exception as e:
             logger.error("Something went TERRIBLY wrong. - %s", e)
+            kill_browser()
         print_progress(progress, cases=True)
 
 
