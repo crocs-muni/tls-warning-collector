@@ -13,25 +13,25 @@ CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
 
-def screenshot_website(driver, browser, version, package, case, chromium=False, opera_old=False, ie=False):
+def screenshot_website(driver, browser, version, package, case, opera=False, ie=False):
     """Makes a screenshot of the opened website."""
     logger.info('Going to make screenshot.')
     new_directory(SCREENSHOT_PATH_BASE)
     # If alert window appears, Accept and continue to the website.
     logger.info('Waiting until the website is loaded.')
     try:
-        load_website(driver, browser, version, package, case, chromium=chromium, old_opera=opera_old, ie=ie)
+        load_website(driver, browser, version, package, case, opera=opera, ie=ie)
     except Exception as e:
         logger.error("Error occured in function 'shot()' - %s", e)
     finally:
         kill_browser()
 
 
-def load_website(driver, browser, version, package, case, chromium=False, old_opera=False, ie=False):
+def load_website(driver, browser, version, package, case, opera=False, ie=False):
     """Loads the website and saves the screenshots to the path."""
     # If old opera then screenshot directly because there is an alert.
-    if old_opera:
-        save_all_screenshots(browser, version, case, package, chromium=False)
+    if opera:
+        save_all_screenshots(browser, version, case, package)
     else:
         # Otherwise check if the web is loaded and screenshot it afterwards.
         try:
@@ -42,20 +42,15 @@ def load_website(driver, browser, version, package, case, chromium=False, old_op
         except Exception as e:
             logger.info('Exception occued: %s. Making screenshot.', e)
         finally:
-            save_all_screenshots(browser, version, case, package, chromium=chromium)
+            save_all_screenshots(browser, version, case, package)
 
 
-def save_all_screenshots(browser, version, case, package, chromium=False):
+def save_all_screenshots(browser, version, case, package):
     """Save screenshots to case path and default path as well."""
+    time.sleep(5)
+    make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
+    make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
     time.sleep(2)
-    if chromium:
-        # This is almost twice because 'Chromium' and 'Chrome' have the same binary but different package
-        make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
-        make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
-    else:
-        make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser, version, case))
-        make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser, version, case))
-    time.sleep(3)
 
 
 def make_and_save_screenshot(path):
