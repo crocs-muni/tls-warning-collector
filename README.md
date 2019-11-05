@@ -25,6 +25,10 @@ $ pyhton main.py
 ```
 Note: There may be a firewall settings popup during the first run as python wants to access the Internet.
 
+## Wiki
+
+For more information, please visit the wiki page: https://github.com/crocs-muni/tls-warning-collector/wiki
+
 ## Authors
 
 The framework is developed at the [Centre for Research on Cryptography and Security (CRoCS)](https://crocs.fi.muni.cz), at the [Masaryk University](http://www.muni.cz/) in Brno, Czech Republic.
