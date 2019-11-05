@@ -8,8 +8,7 @@
 
 1. Install `python3`. On the installation screen, check the option to automatically set path (to use pip).
 2. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
-3. When drivers are all set, [add the drivers folder the the `PATH`](https://docs.alfresco.com/4.2/tasks/fot-addpath.html).
-4. Install the python library dependencies and check if "drivers" are in PATH via command:
+3. Install the python library dependencies and check if "drivers" are in PATH via command:
 ```sh
 $ python requirements.py
 ```
