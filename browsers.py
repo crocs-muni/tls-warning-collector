@@ -210,7 +210,7 @@ def open_opera(driver, url, browser, version, package, case, old_driver=False):
             open_browser(driver, url)
             screenshot_website(driver, browser, version, package, case)
     except Exception as e:
-        logger.error("Error in open_opera: %s". e)
+        logger.error("Error in open_opera: %s", e)
 
 
 def timeout_and_screenshot(driver, url, browser, version, package, case):
@@ -353,7 +353,7 @@ def open_chromium(driver, url, browser, version, package, case, old_driver=False
             open_browser(driver, url)
             screenshot_website(driver, browser, version, package, case)
     except Exception as e:
-        logger.error("Error in open_chromium: %s". e)
+        logger.error("Error in open_chromium: %s", e)
         
 
 
