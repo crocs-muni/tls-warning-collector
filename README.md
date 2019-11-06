@@ -23,7 +23,7 @@ After that, go to the project location via Administrator command line and run th
 ```sh
 $ pyhton main.py
 ```
-Note: There may be a firewall settings popup during the first run as python wants to access the Internet. In older Firefox versions there can be a restart computer popup which you need to postpone.
+Note: There may be a firewall settings popup during the first run as python wants to access the Internet. In older Firefox versions there can be a restart computer popup which you can postpone (Windows 7) or you have to restart the computer (Windows 10).
 
 ## Wiki
 
