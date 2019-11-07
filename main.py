@@ -29,7 +29,7 @@ def main():
     iteration = 0
     for browserID in read_config()['browserIDs']:
         iteration += 1
-        all_versions = cfg['browsers'][browserID]['one-version']
+        all_versions = cfg['browsers'][browserID]['test-versions']
         v_iteration = 0
         progress = set_progress_percentage(iteration, all_browsers)
         for version in all_versions:

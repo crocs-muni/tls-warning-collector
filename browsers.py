@@ -4,6 +4,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from setup_logger import logger
+import time
 import os
 import multiprocessing
 
@@ -56,7 +57,7 @@ def set_firefox_driver_version(v_number):
     if 47 <= v_number < 52:
         driver_version = '14'
     if v_number < 47:
-        driver_version = '10'
+        driver_version = '11'
     logger.info('Geckodriver version - %s.', driver_version)
     return driver_version
 
@@ -87,11 +88,7 @@ def set_firefox_driver(driver_path, capabilities):
 def open_browser(driver, url):
     """Opens given url in the browser."""
     logger.info('Opening %s', url)
-    try:
-        driver.get(url)
-        driver.save_screenshot('C:\\Users\\IEUser\\Desktop\\screenshot.png')
-    except Exception as e:
-        logger.error("Error in open_browser(): %s", e)
+    driver.get(url)
 
 
 def opera(browser, version, case, package, url):
@@ -102,10 +99,11 @@ def opera(browser, version, case, package, url):
     driver_path = set_opera_driver_path(v_number)
     capabilities = set_opera_capabilities(old_opera, version)
     driver = set_opera_driver(driver_path, capabilities)
+    time.sleep(2)
     try:
-        open_opera(driver, url, browser, version, package, case, old_driver=old_driver)
+        open_opera(driver, url, browser, version, package, case, old_driver=old_opera)
     except Exception as e:
-        logger.error('Exception in opera() - %s', e)
+        logger.error('Exception in opera(): - %s', e)
     finally:
         driver.quit()
         kill_browser()
@@ -114,7 +112,7 @@ def opera(browser, version, case, package, url):
 def check_opera_if_old(v_number):
     """Checking if Opera version is lower or equal to '40'."""
     logger.info('Checking if the Opera version is lower or equal to 40')
-    if v_number <= 40:
+    if v_number <= 57:
         logger.info('Opera version is using old driver. - True')
         return True
     return False
@@ -205,6 +203,7 @@ def open_opera(driver, url, browser, version, package, case, old_driver=False):
     """Run screenshot in different thread."""
     try:
         if old_driver:
+            logger.info('Starting timeout_and_screenshot.')
             timeout_and_screenshot(driver, url, browser, version, package, case)
         else:
             open_browser(driver, url)
@@ -217,21 +216,17 @@ def timeout_and_screenshot(driver, url, browser, version, package, case):
     """Opens the url in different thread so that it is not waiting until the page is loaded."""
     try:
         p1 = multiprocessing.Process(name='p1', target=open_browser, args=(driver, url))
-        p2 = multiprocessing.Process(name='p2', target=screenshot_website, args=(driver, browser, version, package, case, True, False))
-        logger.info('Starting process for screenshot_website.')
-        p2.start()
         logger.info('Starting process for open_browser.')
         p1.start()
-        #p2.join()
-        #p1.join(1)
-        # Wait for 1 seconds or unitl process finishes
+        p1.join(3)
         logger.info('Going to take screenshot from timeout_and_screenshot.')
+        if opera:
+            screenshot_website(driver, browser, version, package, case, True, False)
     except Exception as e:
         logger.error("Exception in multiprocessing: %s", e)
     finally:
         logger.info('Checking if thread is active')
         terminate_thread(p1)
-        terminate_thread(p2)
 
 
 def terminate_thread(thread):
@@ -325,7 +320,7 @@ def set_chromium_capabilities():
     """Setting capabilities for Chromium."""
     logger.info('Setting chromium capabilities.')
     opts = Options()
-    opts.binary_location = 'C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe'
+    opts.binary_location = 'C:\\Program Files\\Chromium\\Application\\chrome.exe'
     opts.add_experimental_option('excludeSwitches', ['ignore-certificate-errors', 'ignore-ssl-errors'])
     capabilities = DesiredCapabilities.CHROME
     capabilities.update(opts.to_capabilities())
@@ -347,8 +342,15 @@ def open_chromium(driver, url, browser, version, package, case, old_driver=False
     """Runs the screenshot funciton in a different thread."""
     try:
         if old_driver:
-            #open_browser(driver, url)
-            timeout_and_screenshot(driver, url, browser, version, package, case)
+            try:
+                if (case == 'expired' or case == 'wrong-host' or case == 'self-signed' or case == 'untrusted-root' or case == 'revoked'):
+                    driver.set_page_load_timeout(5)
+                    driver.set_script_timeout(5)
+                open_browser(driver, url)
+                screenshot_website(driver, browser, version, package, case)
+            except Exception as e:
+                logger.error("Timeout exception because page is stuck, making screenshot.")
+                screenshot_website(driver, browser, version, package, case)
         else:
             open_browser(driver, url)
             screenshot_website(driver, browser, version, package, case)
