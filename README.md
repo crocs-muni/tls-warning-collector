@@ -15,7 +15,7 @@ $ python requirements.py
 
 ## Configuration
 
-You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and versions won't be in the dataset. (You can take a loot at the example test-versions).
+You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and versions won't be in the dataset. (You can take a look at the example `test-versions`).
 
 ## Run
 
