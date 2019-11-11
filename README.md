@@ -16,6 +16,8 @@ $ python requirements.py
 ## Configuration
 
 You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and versions won't be in the dataset. (You can take a look at the example `test-versions`).
+* ### Architecture x86
+  For Chromium running on x86 OS you have to change the file location of the Application from `...\Program Files (x86)\` to `...\Program Files\` only (function - `set_chromium_capabilities` in `browsers.py`). !!!
 
 ## Run
 
