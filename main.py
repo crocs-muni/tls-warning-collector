@@ -1,5 +1,5 @@
-from setup_logger import output, logger
-from browsers import *
+from setup_logger import output
+from browser import *
 from progress_bar import set_progress_percentage, print_progress
 from requirements import check_requirements
 import time
@@ -72,20 +72,20 @@ def new_directory(item):
 
 
 def install_browser(browser, version):
-    """Installs the given browser version."""
+    """Installs the given browsers version."""
     cmd = "choco install " + str(cfg['browsers'][browser]['package']) + " --force --version=" + str(version) + \
           " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
-    logger.info("# Installing the browser.")
+    logger.info("# Installing the browsers.")
     subprocess.Popen(cmd)
     time.sleep(60)
     logger.info("# Installation done.")
 
 
 def uninstall_browser(browser):
-    """Uninstalls the given browser."""
+    """Uninstalls the given browsers."""
     cmd = "choco uninstall " + str(cfg['browsers'][browser]['package']) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
-    logger.info("# Uninstalling the browser.")
+    logger.info("# Uninstalling the browsers.")
     subprocess.Popen(cmd)
     time.sleep(60)
     logger.info("# Uninstalling done.")
@@ -96,7 +96,7 @@ def uninstall_browser(browser):
 
 
 def get_ssl_screenshot(browser, version):
-    """Gets the screenshot of SSL warning in the given browser version."""
+    """Gets the screenshot of SSL warning in the given browsers version."""
     # Loop through all cases
     logger.info("# Preparing iteration.")
     all_cases = len(cfg['cases'])
