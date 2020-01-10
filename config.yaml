@@ -19,8 +19,8 @@ cases:
     url: https://mixed.badssl.com/
 
 browserIDs:
-  #- firefox
-   - chromium
+   - firefox
+#  - chromium
 #  - chrome
 #  - opera
 #  - ie
