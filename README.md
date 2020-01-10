@@ -8,7 +8,7 @@
 
 1. Install `python3`. On the installation screen, check the option to automatically set path (to use pip).
 2. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
-3. Install the python library dependencies and check if "drivers" are in PATH via command:
+3. Install the python library dependencies via command:
 ```sh
 $ python requirements.py
 ```
