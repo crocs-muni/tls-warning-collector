@@ -121,7 +121,7 @@ def open_chromium(driver, url, browser, version, package, case, old_driver=False
                 open_browser(driver, url)
                 screenshot_website(driver, browser, version, package, case)
             except Exception as e:
-                logger.error("Timeout exception because page is stuck, making screenshot.")
+                logger.error("Exception occured %s - making screenshot.", e)
                 screenshot_website(driver, browser, version, package, case)
         else:
             open_browser(driver, url)
