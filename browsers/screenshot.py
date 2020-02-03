@@ -2,8 +2,6 @@ from PIL import ImageGrab
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-
-from main import *
 from setup_logger import logger
 
 import os
@@ -27,6 +25,19 @@ def screenshot_website(driver, browser, version, package, case, opera=False, ie=
         logger.error("Error occured in function 'shot()' - %s", e)
     finally:
         kill_browser()
+
+
+def new_directory(item):
+    """Creates new directory if does not exist."""
+    if os.path.exists(item):
+        logger.info("# Directory exists, not creating: %s", item)
+    else:
+        logger.info("# Creating directory: %s", item)
+        try:
+            os.makedirs(item)
+        except:
+            logger.error("Error occured while creating: %s", item)
+    return
 
 
 def load_website(driver, browser, version, package, case, opera=False, ie=False):
@@ -114,3 +125,16 @@ def kill_browser():
             logger.info(f'Killing {proc.name()}')
             proc.kill()
     logger.info('Browser killed.')
+
+
+def remove_item(item):
+    """Removes the given directory."""
+    if os.path.exists(item):
+        logger.info("# Removing item: %s", item)
+        try:
+            os.rmdir(item)
+        except:
+            logger.error("Error occured while deleting item: %s", item)
+    else:
+        logger.info("# Item does not exist, not removing: %s", item)
+    return

@@ -1,7 +1,14 @@
-from setup_logger import output
-from browser import *
+from setup_logger import output, logger
 from progress_bar import set_progress_percentage, print_progress
 from requirements import check_requirements
+
+from browsers.firefox import firefox
+from browsers.opera import opera
+from browsers.chromium import chromium
+from browsers.chrome import chrome
+from browsers.iexplorer import iexplorer
+from browsers.edge import edge
+
 import time
 import yaml
 import os.path
@@ -45,31 +52,6 @@ def main():
     return
 
 
-def remove_item(item):
-    """Removes the given directory."""
-    if os.path.exists(item):
-        logger.info("# Removing item: %s", item)
-        try:
-            os.rmdir(item)
-        except:
-            logger.error("Error occured while deleting item: %s", item)
-    else:
-        logger.info("# Item does not exist, not removing: %s", item)
-    return
-
-
-def new_directory(item):
-    """Creates new directory if does not exist."""
-    if os.path.exists(item):
-        logger.info("# Directory exists, not creating: %s", item)
-    else:
-        logger.info("# Creating directory: %s", item)
-        try:
-            os.makedirs(item)
-        except:
-            logger.error("Error occured while creating: %s", item)
-    return
-
 
 def install_browser(browser, version):
     """Installs the given browsers version."""
@@ -112,6 +94,21 @@ def get_ssl_screenshot(browser, version):
             logger.error("Something went TERRIBLY wrong. - %s", e)
         print_progress(progress, cases=True)
 
+
+def open_webpage(browser, url, case, version, package):
+    """Opens the URL in desired browsers."""
+    if browser == 'firefox':
+        firefox(browser, version, case, package, url)
+    if browser == 'opera':
+        opera(browser, version, case, package, url)
+    if package == 'chromium':
+        chromium(browser, version, case, package, url)
+    if browser == 'chrome' and package != 'chromium':
+        chrome(browser, version, case, package, url)
+    if browser == 'ie':
+        iexplorer(browser, version, case, package, url)
+    if browser == 'edge':
+        edge(browser, version, case, package, url)
 
 if __name__ == '__main__':
     main()
