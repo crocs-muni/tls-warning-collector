@@ -1,8 +1,8 @@
 from selenium.webdriver import DesiredCapabilities
 from selenium import webdriver
-from browser import parse_browser_version, open_browser
+from misc.browser import parse_browser_version, open_browser
 from browsers.screenshot import screenshot_website, kill_browser
-from setup_logger import logger
+from misc.setup_logger import logger
 import os
 
 CURRENT_DIR = os.getcwd()

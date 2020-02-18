@@ -1,4 +1,4 @@
-from setup_logger import logger
+from misc.setup_logger import logger
 from browsers.screenshot import screenshot_website
 from selenium import webdriver
 

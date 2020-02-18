@@ -1,6 +1,6 @@
-from setup_logger import output, logger
-from progress_bar import set_progress_percentage, print_progress
-from requirements import check_requirements
+from misc.setup_logger import output, logger
+from misc.progress_bar import set_progress_percentage, print_progress
+from misc.requirements import check_requirements
 
 from browsers.firefox import firefox
 from browsers.opera import opera

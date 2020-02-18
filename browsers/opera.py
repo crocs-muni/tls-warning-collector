@@ -1,12 +1,12 @@
 from selenium.webdriver import DesiredCapabilities
-from browser import parse_browser_version, open_browser
+from misc.browser import parse_browser_version, open_browser
 from selenium import webdriver
 from selenium.webdriver.chrome import service
 from selenium.webdriver.chrome.options import Options
 from browsers.screenshot import screenshot_website, kill_browser
 import multiprocessing
 import time
-from setup_logger import logger
+from misc.setup_logger import logger
 import os
 
 CURRENT_DIR = os.getcwd()

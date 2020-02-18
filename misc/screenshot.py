@@ -50,7 +50,7 @@ def load_website(driver, browser, version, package, case, opera=False, ie=False)
         try:
             logger.info('Waiting for the page to load.')
             # Wait until the page is loaded
-            id = set_id(ie, chromium)
+            id = set_id(ie)
             WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, id)))
         except Exception as e:
             logger.info('Exception occued: %s. Making screenshot.', e)
@@ -97,22 +97,19 @@ def get_screenshot_case_path(path, browser, version, case):
     return screenshot_path
 
 
-def set_id(ie, chromium):
+def set_id(ie):
     """Set the ID of element present on the cert page"""
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"
     # ID for other browsers page
     id_other = "content"
-    id_debugging = 'debugging'
     if ie:
         logger.info('Setting the ID to - %s.', id_ie)
         final_id = id_ie
-    elif chromium:
-        logger.info('Setting the ID to - %s.', id_debugging)
-        final_id = id_debugging
     else:
         logger.info('Setting the ID to - %s.', id_other)
         final_id = id_other
+
     return final_id
 
 
@@ -125,16 +122,3 @@ def kill_browser():
             logger.info(f'Killing {proc.name()}')
             proc.kill()
     logger.info('Browser killed.')
-
-
-def remove_item(item):
-    """Removes the given directory."""
-    if os.path.exists(item):
-        logger.info("# Removing item: %s", item)
-        try:
-            os.rmdir(item)
-        except:
-            logger.error("Error occured while deleting item: %s", item)
-    else:
-        logger.info("# Item does not exist, not removing: %s", item)
-    return

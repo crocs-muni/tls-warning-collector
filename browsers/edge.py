@@ -1,7 +1,7 @@
 from browsers.screenshot import screenshot_website
 from selenium import webdriver
 
-from setup_logger import logger
+from misc.setup_logger import logger
 
 
 def edge(browser, version, case, package, url):
