@@ -77,6 +77,19 @@ def uninstall_browser(browser):
     logger.info("All folders are removed.")
 
 
+def remove_item(item):
+    """Removes the given directory."""
+    if os.path.exists(item):
+        logger.info("# Removing item: %s", item)
+        try:
+            os.rmdir(item)
+        except:
+            logger.error("Error occured while deleting item: %s", item)
+    else:
+        logger.info("# Item does not exist, not removing: %s", item)
+    return
+
+
 def get_ssl_screenshot(browser, version):
     """Gets the screenshot of SSL warning in the given browsers version."""
     # Loop through all cases
