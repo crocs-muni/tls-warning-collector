@@ -3,7 +3,7 @@ from misc.setup_logger import logger
 
 def set_progress_percentage(iteration, all_browsers):
     """Counts the progress percentage."""
-    return float((iteration) / all_browsers * 100)
+    return float(iteration / all_browsers * 100)
 
 
 def print_progress(progress_percentage, cases=False, versions=False):
