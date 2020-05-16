@@ -5,7 +5,7 @@ TLS warning collector is a tool to support the creation of an open dataset of TL
 1. Windows 10 (download link for VM: https://developer.microsoft.com/en-us/windows/downloads/virtual-machines)
 2. Chocolatey (link: https://chocolatey.org/docs/installation)
 3. Python 3 (link: https://www.python.org/downloads/windows/)
-4. Git
+4. Git (link: https://git-scm.com/download/win)
 
 ## Installation
 
