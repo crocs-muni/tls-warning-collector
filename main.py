@@ -16,11 +16,11 @@ import subprocess
 
 def read_config():
     """Loads data from config.yaml to cfg."""
-    with open('config.yaml', 'r') as yamlfile:
+    with open("config.yaml", "r") as yamlfile:
         try:
             conf = yaml.safe_load(yamlfile)
         except yaml.YAMLError as exc:
-            logger.info("Some error occured while reading config.yaml - %s", exc)
+            logger.info("Some error occurred while reading config.yaml - {}".format(exc))
     return conf
 
 
@@ -31,14 +31,14 @@ cfg = read_config()
 def main():
     """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
     check_requirements()
-    all_browsers = len(read_config().get('browserIDs'))
-    for index, browserID in enumerate(read_config().get('browserIDs')):
-        all_versions = cfg.get('browsers')[browserID].get('versions')
+    all_browsers = len(read_config().get("browserIDs"))
+    for index, browserID in enumerate(read_config().get("browserIDs")):
+        all_versions = cfg.get("browsers")[browserID].get("versions")
         progress = set_progress_percentage(index + 1, all_browsers)
         for v_index, version in enumerate(all_versions):
             v_progress = set_progress_percentage(v_index + 1, len(all_versions))
-            logger.info('######## Processing %s v(%s)', browserID, version)
-            if browserID != 'edge':
+            logger.info("######## Processing {} v({})", browserID, version)
+            if browserID != "edge":
                 return_code = install_browser(browserID, version)
                 if return_code != 0:
                     logger.error("# Installation failed...")
@@ -53,7 +53,7 @@ def main():
 
 def install_browser(browser, version):
     """Installs the given browsers version."""
-    cmd = "choco install " + str(cfg.get('browsers')[browser].get('package')) + " --force --version=" + str(version) + \
+    cmd = "choco install " + str(cfg.get("browsers")[browser].get("package")) + " --force --version=" + str(version) + \
           " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
     logger.info("# Installing the browser.")
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -66,7 +66,7 @@ def install_browser(browser, version):
 
 def uninstall_browser(browser):
     """Uninstalls the given browsers."""
-    cmd = "choco uninstall " + str(cfg.get('browsers')[browser].get('package')) + \
+    cmd = "choco uninstall " + str(cfg.get("browsers")[browser].get("package")) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browsers.")
     subprocess.Popen(cmd)
@@ -76,20 +76,20 @@ def uninstall_browser(browser):
         process.wait()
     logger.info("# Uninstalling done.")
     logger.info("# Removing installation folders.")
-    for folder in cfg.get('browsers')[browser].get('installFolders'):
+    for folder in cfg.get("browsers")[browser].get("installFolders"):
         remove_item(folder)
 
 
 def remove_item(item):
     """Removes the given directory."""
     if os.path.exists(item):
-        logger.info("# Removing item: %s", item)
+        logger.info("# Removing item: {}".format(item))
         try:
             os.rmdir(item)
         except:
-            logger.error("Error occured while deleting item: %s", item)
+            logger.error("Error occured while deleting item: {}".format(item))
     else:
-        logger.info("# Item does not exist, not removing: %s", item)
+        logger.info("# Item does not exist, not removing: {}".format(item))
     return
 
 
@@ -97,36 +97,33 @@ def get_ssl_screenshot(browser, version):
     """Gets the screenshot of SSL warning in the given browsers version."""
     # Loop through all cases
     logger.info("# Preparing iteration.")
-    all_cases = len(cfg.get('cases'))
-    iteration = 0
-    for case in cfg['cases']:
-        iteration += 1
-        progress = set_progress_percentage(iteration, all_cases)
+    all_cases = len(cfg.get("cases"))
+    for index, case in enumerate(cfg.get("cases")):
+        progress = set_progress_percentage(index + 1, all_cases)
         try:
             output(browser, str(version), case)
-            open_webpage(cfg.get('browsers')[browser].get('binary'), cfg.get('cases')[case].get('url'), case,
-                         str(version),
-                         cfg.get('browsers')[browser].get('package'))
+            open_webpage(cfg.get("browsers")[browser].get("binary"), cfg.get("cases")[case].get("url"), case,
+                         str(version), cfg.get("browsers")[browser].get("package"))
         except Exception as e:
-            logger.error("Something went TERRIBLY wrong. - %s", e)
+            logger.error("Something went TERRIBLY wrong. - {}".format(e))
         print_progress(progress, cases=True)
 
 
 def open_webpage(browser, url, case, version, package):
     """Opens the URL in desired browsers."""
-    if browser == 'firefox':
+    if browser == "firefox":
         firefox(browser, version, case, package, url)
-    if browser == 'opera':
+    if browser == "opera":
         opera(browser, version, case, package, url)
-    if package == 'chromium':
+    if package == "chromium":
         chromium(browser, version, case, package, url)
-    if browser == 'chrome' and package != 'chromium':
+    if browser == "chrome" and package != "chromium":
         chrome(browser, version, case, package, url)
-    if browser == 'ie':
+    if browser == "ie":
         iexplorer(browser, version, case, package, url)
-    if browser == 'edge':
+    if browser == "edge":
         edge(browser, version, case, package, url)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

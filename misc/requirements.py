@@ -13,7 +13,7 @@ def check_requirements():
     """Checks if all requirements are met."""
     check_if_admin()
     check_drivers()
-    pip_cmd = 'pip3 install --quiet -r requirements.txt'
+    pip_cmd = "pip3 install --quiet -r requirements.txt"
     subprocess.call(pip_cmd, shell=True)
     time.sleep(1)
     return
@@ -21,7 +21,7 @@ def check_requirements():
 
 def check_if_admin():
     """Checks if user has Administrator Command Prompt running"""
-    cmd = 'net session >nul 2>&1'
+    cmd = "net session >nul 2>&1"
     is_admin = subprocess.call(cmd, shell=True)
     if is_admin == 0:
         pass
@@ -43,7 +43,7 @@ def check_drivers():
 def dir_exists(directory):
     """Checks if given directory exist"""
     if not os.path.exists(directory):
-        print("%s folder is missing!" % directory)
+        print("{} folder is missing!".format(directory))
         return
     return
 
@@ -51,7 +51,7 @@ def dir_exists(directory):
 def dir_not_empty(directory):
     """Checks if given directory is not empty"""
     if not os.listdir(directory):
-        print("%s folder is empty!" % directory)
+        print("{} folder is empty!".format(directory))
         return
     return
 

@@ -15,14 +15,14 @@ SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
 def screenshot_website(driver, browser, version, package, case, opera=False, ie=False):
     """Makes a screenshot of the opened website."""
-    logger.info('Going to make screenshot.')
+    logger.info("Going to make screenshot.")
     new_directory(SCREENSHOT_PATH_BASE)
     # If alert window appears, Accept and continue to the website.
-    logger.info('Waiting until the website is loaded.')
+    logger.info("Waiting until the website is loaded.")
     try:
         load_website(driver, browser, version, package, case, opera=opera, ie=ie)
     except Exception as e:
-        logger.error("Error occured in function 'shot()' - %s", e)
+        logger.error("Error occured in function 'shot()' - {}".format(e))
     finally:
         kill_browser()
 
@@ -30,13 +30,13 @@ def screenshot_website(driver, browser, version, package, case, opera=False, ie=
 def new_directory(item):
     """Creates new directory if does not exist."""
     if os.path.exists(item):
-        logger.info("# Directory exists, not creating: %s", item)
+        logger.info("# Directory exists, not creating: {}".format(item))
     else:
-        logger.info("# Creating directory: %s", item)
+        logger.info("# Creating directory: {}".format(item))
         try:
             os.makedirs(item)
         except:
-            logger.error("Error occured while creating: %s", item)
+            logger.error("Error occured while creating: {}".format(item))
     return
 
 
@@ -48,12 +48,12 @@ def load_website(driver, browser, version, package, case, opera=False, ie=False)
     else:
         # Otherwise check if the web is loaded and screenshot it afterwards.
         try:
-            logger.info('Waiting for the page to load.')
+            logger.info("Waiting for the page to load.")
             # Wait until the page is loaded
-            id = set_id(ie, chromium)
+            id = set_id(ie)
             WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, id)))
         except Exception as e:
-            logger.info('Exception occued: %s. Making screenshot.', e)
+            logger.info("Exception occured: {}. Making screenshot.".format(e))
         finally:
             save_all_screenshots(browser, version, case, package)
 
@@ -68,73 +68,69 @@ def save_all_screenshots(browser, version, case, package):
 
 def make_and_save_screenshot(path):
     """Makes and saves the screenshot into correct path."""
-    logger.info('Saving screenshot to - %s.', path)
+    logger.info("Saving screenshot to - {}".format(path))
     snapshot = ImageGrab.grab()
     snapshot.save(path)
 
 
 def get_screenshot_path(path, browser, version, case):
     """Gets the path for browsers directory where the screenshot will be saved."""
-    logger.info('Preparing path where screenshot will be saved.')
-    directory = path + '\\browsers' + '\\' + browser + '\\' + version
+    logger.info("Preparing path where screenshot will be saved.")
+    directory = path + "\\browsers" + "\\" + browser + "\\" + version
     if not os.path.exists(directory):
         os.makedirs(directory)
-    screenshot_name = case + '.png'
-    screenshot_path = directory + '\\' + screenshot_name
-    logger.info('Screenshot BROWSER path set - %s.', screenshot_path)
+    screenshot_name = case + ".png"
+    screenshot_path = directory + "\\" + screenshot_name
+    logger.info("Screenshot BROWSER path set - {}".format(screenshot_path))
     return screenshot_path
 
 
 def get_screenshot_case_path(path, browser, version, case):
     """Gets the path for case directory where the screenshot will be saved."""
-    logger.info('Preparing path where screenshot will be saved.')
-    directory = path + '\\cases' + '\\' + case + '\\' + browser
+    logger.info("Preparing path where screenshot will be saved.")
+    directory = path + "\\cases" + "\\" + case + "\\" + browser
     if not os.path.exists(directory):
         os.makedirs(directory)
-    screenshot_name = version + '.png'
-    screenshot_path = directory + '\\' + screenshot_name
-    logger.info('Screenshot CASE path set - %s.', screenshot_path)
+    screenshot_name = version + ".png"
+    screenshot_path = directory + "\\" + screenshot_name
+    logger.info("Screenshot CASE path set - {}".format(screenshot_path))
     return screenshot_path
 
 
-def set_id(ie, chromium):
+def set_id(ie):
     """Set the ID of element present on the cert page"""
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"
     # ID for other browsers page
     id_other = "content"
-    id_debugging = 'debugging'
     if ie:
-        logger.info('Setting the ID to - %s.', id_ie)
+        logger.info("Setting the ID to -  {}".format(id_ie))
         final_id = id_ie
-    elif chromium:
-        logger.info('Setting the ID to - %s.', id_debugging)
-        final_id = id_debugging
     else:
-        logger.info('Setting the ID to - %s.', id_other)
+        logger.info("Setting the ID to -  {}".format(id_other))
         final_id = id_other
     return final_id
 
 
 def kill_browser():
     """Process kill function for browsers so that removing files after uninstall works."""
-    logger.info('Going to kill browsers process.')
+    logger.info("Going to kill browsers process.")
     for proc in psutil.process_iter():
         # check whether the process name matches
-        if any(procstr in proc.name() for procstr in ['Opera', 'opera.exe', 'Chromium', 'chromium.exe', 'Firefox', 'firefox.exe']):
-            logger.info(f'Killing {proc.name()}')
+        if any(procstr in proc.name() for procstr in ["Opera", "opera.exe", "Chromium", "chromium.exe", "Firefox", "firefox.exe"]):
+            logger.info("Killing {}".format(proc.name()))
             proc.kill()
-    logger.info('Browser killed.')
+    logger.info("Browser killed.")
 
 
 def remove_item(item):
     """Removes the given directory."""
     if os.path.exists(item):
-        logger.info("# Removing item: %s", item)
+        logger.info("# Removing item: {}".format(item))
         try:
             os.rmdir(item)
         except:
-            logger.error("Error occured while deleting item: %s", item)
+            logger.error("Error occured while deleting item: {}".format(item))
     else:
-        logger.info("# Item does not exist, not removing: %s", item)
+        logger.info("# Item does not exist, not removing: {}".format(item))
     return

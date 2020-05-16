@@ -19,7 +19,7 @@ def chromium(browser, version, case, package, url):
     try:
         open_chromium(driver, url, browser, version, package, case, old_driver=old_driver)
     except Exception as e:
-        logger.error('Exception in chromium() - %s', e)
+        logger.error("Exception in chromium() - {}".format(e))
     finally:
         driver.quit()
         kill_browser()
@@ -27,86 +27,86 @@ def chromium(browser, version, case, package, url):
 
 def set_chromium_driver_path(v_number):
     """Setting driver path for Chromium."""
-    logger.info('Preparing driver path.')
+    logger.info("Preparing driver path.")
     driver_version = set_chrome_driver_version(v_number)
-    driver_path = CURRENT_DIR + '\\drivers\\chromedrivers\\chromedriver-' + driver_version + '\\chromedriver.exe'
-    logger.info('Driver path set.')
+    driver_path = CURRENT_DIR + "\\drivers\\chromedrivers\\chromedriver-" + driver_version + "\\chromedriver.exe"
+    logger.info("Driver path set.")
     return driver_path
 
 
 def set_chrome_driver_version(v_number):
     """Returns the folder name for chromedrivers of the given version."""
-    logger.info('Getting chromedriver version.')
-    driver_version = ''
+    logger.info("Getting chromedriver version.")
+    driver_version = ""
     if v_number >= 78:
-        driver_version = '78'
+        driver_version = "78"
     if v_number == 77:
-        driver_version = '77'
+        driver_version = "77"
     if v_number == 76:
-        driver_version = '76'
+        driver_version = "76"
     if v_number == 75:
-        driver_version = '75'
+        driver_version = "75"
     if v_number == 74:
-        driver_version = '74'
+        driver_version = "74"
     if 72 <= v_number < 74:
-        driver_version = '2.46'
+        driver_version = "2.46"
     if 70 <= v_number < 72:
-        driver_version = '2.45'
+        driver_version = "2.45"
     if 68 <= v_number < 70:
-        driver_version = '2.42'
+        driver_version = "2.42"
     if 66 <= v_number < 68:
-        driver_version = '2.40'
+        driver_version = "2.40"
     if 64 <= v_number < 66:
-        driver_version = '2.37'
+        driver_version = "2.37"
     if 62 <= v_number < 64:
-        driver_version = '2.35'
+        driver_version = "2.35"
     if 60 <= v_number < 62:
-        driver_version = '2.33'
+        driver_version = "2.33"
     if 58 <= v_number < 60:
-        driver_version = '2.30'
+        driver_version = "2.30"
     if 56 <= v_number < 58:
-        driver_version = '2.29'
+        driver_version = "2.29"
     if 54 <= v_number < 56:
-        driver_version = '2.27'
+        driver_version = "2.27"
     if 46 <= v_number < 54:
-        driver_version = '2.20'
+        driver_version = "2.20"
     if 43 <= v_number < 46:
-        driver_version = '2.18'
+        driver_version = "2.18"
     if 40 <= v_number < 43:
-        driver_version = '2.15'
+        driver_version = "2.15"
     if 36 <= v_number < 40:
-        driver_version = '2.12'
+        driver_version = "2.12"
     if 34 <= v_number < 36:
-        driver_version = '2.10'
+        driver_version = "2.10"
     if 32 <= v_number < 34:
-        driver_version = '2.9'
+        driver_version = "2.9"
     if 30 <= v_number < 32:
-        driver_version = '2.8'
+        driver_version = "2.8"
     if v_number < 30:
-        driver_version = '2.6'
-    logger.info('Chromedriver version - %s.', driver_version)
+        driver_version = "2.6"
+    logger.info("Chromedriver version - {}".format(driver_version))
     return driver_version
 
 
 def set_chromium_capabilities():
     """Setting capabilities for Chromium."""
-    logger.info('Setting chromium capabilities.')
+    logger.info("Setting chromium capabilities.")
     opts = Options()
-    opts.binary_location = 'C:\\Program Files\\Chromium\\Application\\chrome.exe'
-    opts.add_experimental_option('excludeSwitches', ['ignore-certificate-errors', 'ignore-ssl-errors'])
+    opts.binary_location = "C:\\Program Files\\Chromium\\Application\\chrome.exe"
+    opts.add_experimental_option("excludeSwitches", ["ignore-certificate-errors", "ignore-ssl-errors"])
     capabilities = DesiredCapabilities.CHROME
     capabilities.update(opts.to_capabilities())
-    capabilities['acceptInsecureCerts'] = False
-    capabilities['acceptSslCerts'] = False
+    capabilities["acceptInsecureCerts"] = False
+    capabilities["acceptSslCerts"] = False
     return capabilities
 
 
 def set_chromium_driver(driver_path, capabilities):
-    """Setting Chromium driver with special windows size. Otherwise it won't open maximized in older versions."""
+    """Setting Chromium driver with special windows size. Otherwise it won"t open maximized in older versions."""
     driver = webdriver.Chrome(desired_capabilities=capabilities, executable_path=driver_path)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
-    logger.info('Driver is set.')
+    logger.info("Driver is set.")
     return driver
 
 
@@ -115,16 +115,16 @@ def open_chromium(driver, url, browser, version, package, case, old_driver=False
     try:
         if old_driver:
             try:
-                if case == 'expired' or case == 'wrong-host' or case == 'self-signed' or case == 'untrusted-root' or case == 'revoked':
+                if case == "expired" or case == "wrong-host" or case == "self-signed" or case == "untrusted-root" or case == "revoked":
                     driver.set_page_load_timeout(5)
                     driver.set_script_timeout(5)
                 open_browser(driver, url)
                 screenshot_website(driver, browser, version, package, case)
             except Exception as e:
-                logger.error("Exception occured %s - making screenshot.", e)
+                logger.error("Exception occured {} - making screenshot.".format(e))
                 screenshot_website(driver, browser, version, package, case)
         else:
             open_browser(driver, url)
             screenshot_website(driver, browser, version, package, case)
     except Exception as e:
-        logger.error("Error in open_chromium: %s", e)
+        logger.error("Error in open_chromium: {}".format(e))
