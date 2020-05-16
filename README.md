@@ -1,21 +1,23 @@
 # TLS warning collector
+TLS warning collector is a tool to support the creation of an open dataset of TLS warnings and indicators in web browsers. It automatically downloads, installs and uninstalls browsers, and collects browser screenshots for comparison and analysis of TLS warnings.
 
 ## Prerequisities
 1. Windows 10 (download link for VM: https://developer.microsoft.com/en-us/windows/downloads/virtual-machines)
 2. Chocolatey (link: https://chocolatey.org/docs/installation)
+3. Python 3 (link: https://www.python.org/downloads/windows/)
+4. Git
 
 ## Installation
 
 1. Install `python3`. On the installation screen, check the option to automatically set path (to use pip).
-2. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
-3. Install the python library dependencies via command:
-```sh
-$ python requirements.py
-```
+2. Clone the repository to your computer via `git clone https://github.com/crocs-muni/tls-warning-collector.git`
+3. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
 
 ## Configuration
 
-You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and versions won't be in the dataset. (You can take a look at the example `test-versions`).
+You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and cases won't be in the dataset. 
+If you don't want to run all of the browser versions then you can use "one-version", but you have to change the `if statement` in the `main.py` file (`for version in cfg['browsers'][browserID]['versions']` --> `for version in cfg['browsers'][browserID]['one-version']`).
+* Which "one-version" you want to run is easy to change -- just pick some of the supported versions and place it in the "[]" brackets. E.g. `one-version: [72.0.3626.121]`
 * ### Architecture x86
   For Chromium running on x86 OS you have to change the file location of the Application from `...\Program Files (x86)\` to `...\Program Files\` only (function - `set_chromium_capabilities` in `browsers.py`). !!!
 
