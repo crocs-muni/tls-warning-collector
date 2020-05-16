@@ -33,7 +33,7 @@ def main():
     check_requirements()
     all_browsers = len(read_config().get('browserIDs'))
     for index, browserID in enumerate(read_config().get('browserIDs')):
-        all_versions = cfg.get('browsers')[browserID].get('one-version')
+        all_versions = cfg.get('browsers')[browserID].get('versions')
         progress = set_progress_percentage(index + 1, all_browsers)
         for v_index, version in enumerate(all_versions):
             v_progress = set_progress_percentage(v_index + 1, len(all_versions))
