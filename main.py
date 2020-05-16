@@ -9,7 +9,6 @@ from browsers.chrome import chrome
 from browsers.iexplorer import iexplorer
 from browsers.edge import edge
 
-import time
 import yaml
 import os.path
 import subprocess
@@ -17,11 +16,11 @@ import subprocess
 
 def read_config():
     """Loads data from config.yaml to cfg."""
-    try:
-        with open('config.yaml', 'r') as yamlfile:
+    with open('config.yaml', 'r') as yamlfile:
+        try:
             conf = yaml.safe_load(yamlfile)
-    except:
-        logger.info("Some error occured while reading config.yaml")
+        except yaml.YAMLError as exc:
+            logger.info("Some error occured while reading config.yaml - %s", exc)
     return conf
 
 
@@ -105,8 +104,9 @@ def get_ssl_screenshot(browser, version):
         progress = set_progress_percentage(iteration, all_cases)
         try:
             output(browser, str(version), case)
-            open_webpage(cfg.get('browsers')[browser].get('binary'), cfg.get('cases')[case].get('url'), case, str(version),
-                     cfg.get('browsers')[browser].get('package'))
+            open_webpage(cfg.get('browsers')[browser].get('binary'), cfg.get('cases')[case].get('url'), case,
+                         str(version),
+                         cfg.get('browsers')[browser].get('package'))
         except Exception as e:
             logger.error("Something went TERRIBLY wrong. - %s", e)
         print_progress(progress, cases=True)
