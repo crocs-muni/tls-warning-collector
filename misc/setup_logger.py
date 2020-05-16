@@ -24,6 +24,6 @@ def output(browser, version, case):
     """Output for the test iteration"""
     logger.info("##################################################")
     logger.info("                                                  ")
-    logger.info("           %s %s %s         ", browser, version, case)
+    logger.info("           {} {} {}         ".format(browser, version, case))
     logger.info("                                                  ")
     logger.info("##################################################")
