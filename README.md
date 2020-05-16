@@ -15,6 +15,7 @@ TLS warning collector is a tool to support the creation of an open dataset of TL
 
 ## Configuration
 
+
 You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and cases won"t be in the dataset. 
 If you don"t want to run all of the browser versions then you can use "one-version", but you have to change the `if statement` in the `main.py` file (`for version in cfg["browsers"][browserID]["versions"]` --> `for version in cfg["browsers"][browserID]["one-version"]`).
 * Which "one-version" you want to run is easy to change -- just pick some of the supported versions and place it in the "[]" brackets. E.g. `one-version: [72.0.3626.121]`
