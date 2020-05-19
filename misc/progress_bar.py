@@ -1,13 +1,24 @@
 from misc.setup_logger import logger
 
 
-def set_progress_percentage(iteration, all_browsers):
-    """Counts the progress percentage."""
-    return float(iteration / all_browsers * 100)
+def set_progress_percentage(iteration, total):
+    """
+    Counts the progress percentage.
+    :param iteration: Order number of browser or version
+    :param total: Total number of browsers or versions
+    :return: Percentage number
+    """
+    return float((iteration + 1) / total * 100)
 
 
 def print_progress(progress_percentage, cases=False, versions=False):
-    """Prints the progress info."""
+    """
+    Prints the progress info for cases, versions or the whole run.
+    :param progress_percentage: Actual progress percentage number
+    :param cases: True if printing progress for cases of particular version
+    :param versions: True if printing progress for versions of particular browser
+    :return: None
+    """
     if cases:
         logger.info("")
         logger.info("Cases progress: ")
@@ -21,7 +32,11 @@ def print_progress(progress_percentage, cases=False, versions=False):
 
 
 def print_progress_bar(progress_percentage):
-    """Prints the progress bar."""
+    """
+    Prints the progress bar.
+    :param progress_percentage: Actual progress percentage number
+    :return: None
+    """
     length = 40
     perc_graph = (length * progress_percentage) / 100
     output = "["

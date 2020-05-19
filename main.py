@@ -1,6 +1,10 @@
+import yaml
+import os.path
+import subprocess
+
 from misc.setup_logger import output, logger
 from misc.progress_bar import set_progress_percentage, print_progress
-from misc.requirements import check_requirements
+from misc.requirements import check_requirements, install_dependencies
 
 from browsers.firefox import firefox
 from browsers.opera import opera
@@ -9,13 +13,12 @@ from browsers.chrome import chrome
 from browsers.iexplorer import iexplorer
 from browsers.edge import edge
 
-import yaml
-import os.path
-import subprocess
-
 
 def read_config():
-    """Loads data from config.yaml to cfg."""
+    """
+    Loads data from config.yaml to cfg.
+    :return: Configuration in Python readable format
+    """
     with open("config.yaml", "r") as yamlfile:
         try:
             conf = yaml.safe_load(yamlfile)
@@ -29,43 +32,66 @@ cfg = read_config()
 
 
 def main():
-    """Iterates over all of the browsers and versions and runs the script for getting screenshots."""
-    check_requirements()
-    all_browsers = len(read_config().get("browserIDs"))
-    for index, browserID in enumerate(read_config().get("browserIDs")):
+    """
+    Iterates over all of the browsers and versions and runs the script for getting screenshots.
+    :return None
+    """
+    install_dependencies()
+    if not check_requirements():
+        return
+    all_browsers_count = len(cfg.get("browserIDs"))
+    for index, browserID in enumerate(cfg.get("browserIDs")):
         all_versions = cfg.get("browsers")[browserID].get("versions")
-        progress = set_progress_percentage(index + 1, all_browsers)
-        for v_index, version in enumerate(all_versions):
-            v_progress = set_progress_percentage(v_index + 1, len(all_versions))
-            logger.info("######## Processing {} v({})", browserID, version)
-            if browserID != "edge":
-                return_code = install_browser(browserID, version)
-                if return_code != 0:
-                    logger.error("# Installation failed...")
-                    uninstall_browser(browserID)
-                    logger.info("# Skipping to the next browser version.")
-                    continue
-            get_ssl_screenshot(browserID, version)
-            print_progress(v_progress, versions=True)
-            uninstall_browser(browserID)
+        collect_warnings(all_versions, browserID)
+        progress = set_progress_percentage(index, all_browsers_count)
         print_progress(progress)
 
 
+def collect_warnings(all_versions, browser):
+    """
+    Iterates over all of the browser versions and runs the script for getting screenshots.
+    :param all_versions: All browser versions for the collection
+    :param browser: Browser
+    :return: None
+    """
+    all_versions_count = len(all_versions)
+    for v_index, version in enumerate(all_versions):
+        v_progress = set_progress_percentage(v_index, all_versions_count)
+        logger.info("######## Processing {} v({})", browser, version)
+        if browser != "edge":
+            return_code = install_browser(browser, version)
+            if return_code != 0:
+                logger.error("# Installation failed...Skipping to the next browser version.")
+                continue
+        get_ssl_screenshot(browser, version)
+        print_progress(v_progress, versions=True)
+        uninstall_browser(browser)
+
+
 def install_browser(browser, version):
-    """Installs the given browsers version."""
-    cmd = "choco install " + str(cfg.get("browsers")[browser].get("package")) + " --force --version=" + str(version) + \
-          " --yes --nocolor --limit-output --no-progress --ignore-checksums --log-file=choco-log.log"
+    """
+    Installs the given browsers version.
+    :param browser: Browser
+    :param version: Browser version
+    :return: True if installation was successful, False otherwise
+    """
+    cmd = "choco install " + str(cfg.get("browsers")[browser].get("package")) + " --force --version="\
+        + str(version) + " --yes --nocolor --limit-output --no-progress --ignore-checksums " \
+        "--log-file=choco-log.log"
     logger.info("# Installing the browser.")
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     logger.info("# Please wait...")
     for _ in process.stdout.readlines():
         process.wait()
-    rc = process.returncode
-    return rc
+    return process.returncode
 
 
 def uninstall_browser(browser):
-    """Uninstalls the given browsers."""
+    """
+    Uninstalls the given browsers.
+    :param browser: Browser
+    :return: None
+    """
     cmd = "choco uninstall " + str(cfg.get("browsers")[browser].get("package")) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browsers.")
@@ -81,25 +107,32 @@ def uninstall_browser(browser):
 
 
 def remove_item(item):
-    """Removes the given directory."""
+    """
+    Removes the given directory.
+    :param item: Folder to be removed
+    :return: None
+    """
     if os.path.exists(item):
         logger.info("# Removing item: {}".format(item))
         try:
             os.rmdir(item)
-        except:
+        except Exception:
             logger.error("Error occured while deleting item: {}".format(item))
     else:
         logger.info("# Item does not exist, not removing: {}".format(item))
-    return
 
 
 def get_ssl_screenshot(browser, version):
-    """Gets the screenshot of SSL warning in the given browsers version."""
-    # Loop through all cases
+    """
+    Gets the screenshot of SSL warning in the given browsers version.
+    :param browser: Browser
+    :param version: Browser version
+    :return: None
+    """
     logger.info("# Preparing iteration.")
     all_cases = len(cfg.get("cases"))
     for index, case in enumerate(cfg.get("cases")):
-        progress = set_progress_percentage(index + 1, all_cases)
+        progress = set_progress_percentage(index, all_cases)
         try:
             output(browser, str(version), case)
             open_webpage(cfg.get("browsers")[browser].get("binary"), cfg.get("cases")[case].get("url"), case,
@@ -110,18 +143,26 @@ def get_ssl_screenshot(browser, version):
 
 
 def open_webpage(browser, url, case, version, package):
-    """Opens the URL in desired browsers."""
+    """
+    Opens the URL in desired browsers.
+    :param browser: Browser
+    :param url: Case URL
+    :param case: Case to be collected
+    :param version: Browser version
+    :param package: Browser package name
+    :return: None
+    """
     if browser == "firefox":
         firefox(browser, version, case, package, url)
-    if browser == "opera":
+    elif browser == "opera":
         opera(browser, version, case, package, url)
-    if package == "chromium":
+    elif package == "chromium":
         chromium(browser, version, case, package, url)
-    if browser == "chrome" and package != "chromium":
+    elif browser == "chrome" and package != "chromium":
         chrome(browser, version, case, package, url)
-    if browser == "ie":
+    elif browser == "ie":
         iexplorer(browser, version, case, package, url)
-    if browser == "edge":
+    elif browser == "edge":
         edge(browser, version, case, package, url)
 
 
