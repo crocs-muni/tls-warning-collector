@@ -13,14 +13,7 @@ def check_requirements():
     Checks if all requirements are met.
     :return: True if all requirements are met, False otherwise
     """
-    if check_if_admin() and check_drivers():
-        # Create separete funciton for installation requirements and call it from main
-        pip_cmd = "pip3 install --quiet -r requirements.txt"
-        process = subprocess.Popen(pip_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for _ in process.stdout.readlines():
-            process.wait()
-        return True
-    return False
+    return check_if_admin() and check_drivers()
 
 
 def check_if_admin():
@@ -77,4 +70,15 @@ def dir_not_empty(directory):
         return True
     print("{} folder is empty!".format(directory))
     return False
+
+
+def install_dependencies():
+    """
+    Installs missing dependencies included in the requirements.txt file
+    :return: None
+    """
+    pip_cmd = "pip3 install --quiet -r requirements.txt"
+    process = subprocess.Popen(pip_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for _ in process.stdout.readlines():
+        process.wait()
 
