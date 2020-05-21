@@ -21,7 +21,13 @@ logger = logging.getLogger("tls-warning-collector")
 
 
 def output(browser, version, case):
-    """Output for the test iteration"""
+    """
+    Output for the test iteration
+    :param browser: Browser
+    :param version: Browser version
+    :param case: Case to collect
+    :return: None
+    """
     logger.info("##################################################")
     logger.info("                                                  ")
     logger.info("           {} {} {}         ".format(browser, version, case))

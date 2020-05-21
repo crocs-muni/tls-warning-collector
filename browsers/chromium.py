@@ -10,7 +10,15 @@ CURRENT_DIR = os.getcwd()
 
 
 def chromium(browser, version, case, package, url):
-    """Opens Chromium and makes a screenshot of the desired website."""
+    """
+    Opens Chromium and makes a screenshot of the desired website.
+    :param browser: Browser
+    :param version: Browser version
+    :param case: Case to be collected
+    :param package: Browser package name
+    :param url: Case url
+    :return: None
+    """
     v_number = parse_browser_version(version)
     driver_path = set_chromium_driver_path(v_number)
     old_driver = v_number < 74
@@ -26,7 +34,11 @@ def chromium(browser, version, case, package, url):
 
 
 def set_chromium_driver_path(v_number):
-    """Setting driver path for Chromium."""
+    """
+    Setting driver path for Chromium.
+    :param v_number: Browser version
+    :return: Path to driver
+    """
     logger.info("Preparing driver path.")
     driver_version = set_chrome_driver_version(v_number)
     driver_path = CURRENT_DIR + "\\drivers\\chromedrivers\\chromedriver-" + driver_version + "\\chromedriver.exe"
@@ -35,7 +47,11 @@ def set_chromium_driver_path(v_number):
 
 
 def set_chrome_driver_version(v_number):
-    """Returns the folder name for chromedrivers of the given version."""
+    """
+    Returns the folder name for chromedrivers of the given version.
+    :param v_number: Browser version
+    :return: Driver version
+    """
     logger.info("Getting chromedriver version.")
     driver_version = ""
     if v_number >= 78:
@@ -89,7 +105,10 @@ def set_chrome_driver_version(v_number):
 
 
 def set_chromium_capabilities():
-    """Setting capabilities for Chromium."""
+    """
+    Setting capabilities for Chromium.
+    :return: Capabilities
+    """
     logger.info("Setting chromium capabilities.")
     opts = Options()
     opts.binary_location = "C:\\Program Files\\Chromium\\Application\\chrome.exe"
@@ -102,7 +121,12 @@ def set_chromium_capabilities():
 
 
 def set_chromium_driver(driver_path, capabilities):
-    """Setting Chromium driver with special windows size. Otherwise it won"t open maximized in older versions."""
+    """
+    Setting Chromium driver with special windows size. Otherwise it won"t open maximized in older versions.
+    :param driver_path: Path to driver
+    :param capabilities: Capabilities
+    :return: WebDriver
+    """
     driver = webdriver.Chrome(desired_capabilities=capabilities, executable_path=driver_path)
     driver.set_window_size(1024, 600)
     driver.maximize_window()
@@ -111,7 +135,17 @@ def set_chromium_driver(driver_path, capabilities):
 
 
 def open_chromium(driver, url, browser, version, package, case, old_driver=False):
-    """Runs the screenshot funciton in a different thread."""
+    """
+    Runs the screenshot funciton in a different thread.
+    :param driver: Browser driver
+    :param url: Case url
+    :param browser: Browser
+    :param version: Browser version
+    :param package: Browser package name
+    :param case: Case to collect
+    :param old_driver: True if the driver version is older than 74
+    :return: None
+    """
     try:
         if old_driver:
             try:

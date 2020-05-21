@@ -13,7 +13,15 @@ CURRENT_DIR = os.getcwd()
 
 
 def opera(browser, version, case, package, url):
-    """Opens Opera and makes a screenshot of the desired website."""
+    """
+    Opens Opera and makes a screenshot of the desired website.
+    :param browser: Browser
+    :param version: Browser version
+    :param case: Case to be collected
+    :param package: Browser package name
+    :param url: Case url
+    :return: None
+    """
     v_number = parse_browser_version(version)
     old_opera = check_opera_if_old(v_number)
     driver_path = set_opera_driver_path(v_number)
@@ -30,8 +38,12 @@ def opera(browser, version, case, package, url):
 
 
 def check_opera_if_old(v_number):
-    """Checking if Opera version is lower or equal to "40"."""
-    logger.info("Checking if the Opera version is lower or equal to 40")
+    """
+    Checking if Opera version is lower or equal to "57".
+    :param v_number: Browser version
+    :return: True if driver version is lower than 57, False otherwise
+    """
+    logger.info("Checking if the Opera version is lower or equal to 57")
     if v_number <= 57:
         logger.info("Opera version is using old driver. - True")
         return True
@@ -39,7 +51,11 @@ def check_opera_if_old(v_number):
 
 
 def set_opera_driver_path(v_number):
-    """Setting Opera driver path."""
+    """
+    Setting Opera driver path.
+    :param v_number: Browser version
+    :return: Path to driver
+    """
     logger.info("Preparing driver path.")
     driver_version = set_opera_driver_version(v_number)
     driver_path = CURRENT_DIR + "\\drivers\\operadrivers\\operadriver-" + driver_version + "\\operadriver.exe"
@@ -48,7 +64,11 @@ def set_opera_driver_path(v_number):
 
 
 def set_opera_driver_version(v_number):
-    """Returns the folder name for operadrivers of the given version."""
+    """
+    Returns the folder name for operadrivers of the given version.
+    :param v_number: Browser version
+    :return: Driver version
+    """
     logger.info("Getting operadriver version.")
     driver_version = ""
     if v_number >= 63:
@@ -92,11 +112,15 @@ def set_opera_driver_version(v_number):
 
 
 def set_opera_capabilities(old_opera, version):
-    """Setting capabilities for Opera."""
+    """
+    Setting capabilities for Opera.
+    :param old_opera: True if opera runs old driver, False otherwise
+    :param version: Browser version
+    :return: Capabilities
+    """
     logger.info("Setting capabilities.")
-    v_number = parse_browser_version(version)
     opts = Options()
-    if v_number > 40:
+    if not old_opera:
         # In older version these switches do not work, but alerts are there by default.
         opts.add_experimental_option("excludeSwitches", ["ignore-certificate-errors", "ignore-ssl-errors"])
     capabilities = DesiredCapabilities.OPERA
@@ -109,7 +133,12 @@ def set_opera_capabilities(old_opera, version):
 
 
 def set_opera_driver(driver_path, capabilities):
-    """Setting Opera driver."""
+    """
+    Setting Opera driver.
+    :param driver_path: Path to driver
+    :param capabilities: Capabilities
+    :return: WebDriver
+    """
     logger.info("Preparing driver.")
     webdriver_service = service.Service(driver_path)
     webdriver_service.start()
@@ -120,7 +149,17 @@ def set_opera_driver(driver_path, capabilities):
 
 
 def open_opera(driver, url, browser, version, package, case, old_driver=False):
-    """Run screenshot in different thread."""
+    """
+    Run screenshot in different thread.
+    :param driver: Driver
+    :param url: Case url
+    :param browser: Browser
+    :param version: Browser version
+    :param package: Browser package name
+    :param case: Case to collect
+    :param old_driver: True if opera runs old driver, False otherwise
+    :return: None
+    """
     try:
         if old_driver:
             logger.info("Starting timeout_and_screenshot.")
@@ -133,7 +172,16 @@ def open_opera(driver, url, browser, version, package, case, old_driver=False):
 
 
 def timeout_and_screenshot(driver, url, browser, version, package, case):
-    """Opens the url in different thread so that it is not waiting until the page is loaded."""
+    """
+    Opens the url in different thread so that it is not waiting until the page is loaded.
+    :param driver: Driver
+    :param url: Case url
+    :param browser: Browser
+    :param version: Browser version
+    :param package: Browser package name
+    :param case: Case to collect
+    :return: None
+    """
     try:
         p1 = multiprocessing.Process(name="p1", target=open_browser, args=(driver, url))
         logger.info("Starting process for open_browser.")
@@ -150,7 +198,11 @@ def timeout_and_screenshot(driver, url, browser, version, package, case):
 
 
 def terminate_thread(thread):
-    """Terminate the thread."""
+    """
+    Terminate the thread.
+    :param thread: Thread to be terminated
+    :return: None
+    """
     if thread.is_alive():
         logger.info("Terminating the thread")
         thread.terminate()
