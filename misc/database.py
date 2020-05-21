@@ -26,11 +26,10 @@ def create_db():
                      );"""
         cursor.execute(create_table_query)
         sqliteConn.commit()
-        print("DB 'collection' created successfully")
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Error while connecting to the DB - {}".format(error))
+        logger.error("Error while connecting to the DB - {}".format(error))
     finally:
         disconnect_db(sqliteConn)
 
@@ -46,10 +45,9 @@ def clear_db():
         delete_query = "DELETE FROM collection"
         cursor.execute(delete_query)
         sqliteConn.commit()
-        print("Table cleared successfully.")
         cursor.close()
     except sqlite3.Error as error:
-        print("Error while connecting to the DB - {}".format(error))
+        logger.error("Error while connecting to the DB - {}".format(error))
     finally:
         disconnect_db(sqliteConn)
 
