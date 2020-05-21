@@ -25,6 +25,8 @@ def check_if_admin():
     is_admin = subprocess.call(cmd, shell=True)
     if is_admin != 0:
         print("You are not and Administrator. Change to Administrator Command Line in order to run this.")
+        return False
+    return True
 
 
 def check_drivers():

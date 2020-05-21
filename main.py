@@ -57,7 +57,7 @@ def collect_warnings(all_versions, browser):
     all_versions_count = len(all_versions)
     for v_index, version in enumerate(all_versions):
         v_progress = set_progress_percentage(v_index, all_versions_count)
-        logger.info("######## Processing {} v({})", browser, version)
+        logger.info("######## Processing {} v({})".format(browser, version))
         if browser != "edge":
             return_code = install_browser(browser, version)
             if return_code != 0:
