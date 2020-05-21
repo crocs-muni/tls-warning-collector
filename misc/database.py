@@ -26,11 +26,10 @@ def create_db():
                      );"""
         cursor.execute(create_table_query)
         sqliteConn.commit()
-        print("DB 'collection' created successfully")
         cursor.close()
 
     except sqlite3.Error as error:
-        print("Error while connecting to the DB - {}".format(error))
+        logger.error("Error while connecting to the DB - {}".format(error))
     finally:
         disconnect_db(sqliteConn)
 
@@ -46,10 +45,9 @@ def clear_db():
         delete_query = "DELETE FROM collection"
         cursor.execute(delete_query)
         sqliteConn.commit()
-        print("Table cleared successfully.")
         cursor.close()
     except sqlite3.Error as error:
-        print("Error while connecting to the DB - {}".format(error))
+        logger.error("Error while connecting to the DB - {}".format(error))
     finally:
         disconnect_db(sqliteConn)
 
@@ -132,17 +130,19 @@ def get_sum_from_db(screenshots=True):
     try:
         sqliteConn = connect_db()
         if screenshots:
-            screenshots_query(sqliteConn)
+            screenshots_summary(sqliteConn)
+            browsers_summary(sqliteConn)
+            versions_summary(sqliteConn)
     except sqlite3.Error as error:
         print("Error while connecting to the DB - {}".format(error))
     finally:
         disconnect_db(sqliteConn)
 
 
-def screenshots_query(conn):
+def screenshots_summary(conn):
     """
     Creates and executes query to get all collected screenshots
-    :param conn: DB Conenction
+    :param conn: DB connection
     :return: None
     """
     cursor = conn.cursor()
@@ -154,4 +154,32 @@ def screenshots_query(conn):
     cursor.execute(get_query)
     record = cursor.fetchone()[0]
     logger.info("{} screenshots collected out of {}.".format(record, total * 9))
+    cursor.close()
+
+
+def browsers_summary(conn):
+    """
+    Creates and executes query to get all browsers
+    :param conn: DB connection
+    :return: None
+    """
+    cursor = conn.cursor()
+    brwosers_total = "SELECT COUNT(browser) FROM collection"
+    cursor.execute(brwosers_total)
+    record = cursor.fetchone()[0]
+    logger.info("{} browsers processed.".format(record))
+    cursor.close()
+
+
+def versions_summary(conn):
+    """
+    Creates and executes query to get all browsers
+    :param conn: DB connection
+    :return: None
+    """
+    cursor = conn.cursor()
+    brwosers_total = "SELECT COUNT(version) FROM collection"
+    cursor.execute(brwosers_total)
+    record = cursor.fetchone()[0]
+    logger.info("{} browser versions processed.".format(record))
     cursor.close()
