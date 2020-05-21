@@ -1,15 +1,25 @@
+import os
 from selenium.webdriver import DesiredCapabilities
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from misc.browser import parse_browser_version, open_browser
 from browsers.screenshot import screenshot_website, kill_browser
 from misc.setup_logger import logger
-import os
+
 
 CURRENT_DIR = os.getcwd()
 
 
 def firefox(browser, version, case, package, url):
-    """Opens Firefox and makes a screenshot of the desired website."""
+    """
+    Opens Firefox and makes a screenshot of the desired website.
+    :param browser: Browser
+    :param version: Browser version
+    :param case: Case to be collected
+    :param package: Browser package name
+    :param url: Case url
+    :return: None
+    """
     v_number = parse_browser_version(version)
     driver_path = set_firefox_driver_path(v_number)
     capabilities = set_firefox_capabilities(v_number)
@@ -17,7 +27,7 @@ def firefox(browser, version, case, package, url):
     try:
         open_browser(driver, url)
         screenshot_website(driver, browser, version, package, case)
-    except Exception as e:
+    except WebDriverException as e:
         logger.error("Exception from Selenium but going to take a screenshot. -- {}".format(e))
         screenshot_website(driver, browser, version, package, case)
     finally:
@@ -26,7 +36,11 @@ def firefox(browser, version, case, package, url):
 
 
 def set_firefox_driver_path(v_number):
-    """Setting Firefox driver path."""
+    """
+    Setting Firefox driver path.
+    :param v_number: Browser version
+    :return: Path to driver
+    """
     logger.info("Preparing driver path.")
     driver_version = set_firefox_driver_version(v_number)
     driver_path = CURRENT_DIR + "\\drivers\\firefoxdrivers\\geckodriver-" + driver_version + "\\geckodriver.exe"
@@ -35,7 +49,11 @@ def set_firefox_driver_path(v_number):
 
 
 def set_firefox_driver_version(v_number):
-    """Setting Firefox driver version."""
+    """
+    Setting Firefox driver version.
+    :param v_number: Browser version
+    :return: Driver version
+    """
     driver_version = ""
     logger.info("Getting geckodriver version.")
     if v_number >= 62:
@@ -51,7 +69,11 @@ def set_firefox_driver_version(v_number):
 
 
 def set_firefox_capabilities(v_number):
-    """Setting Firefox capabilities."""
+    """
+    Setting Firefox capabilities.
+    :param v_number: Browser version
+    :return: Capabilities
+    """
     # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
     capabilities = DesiredCapabilities.FIREFOX
     capabilities["marionette"] = True
@@ -65,7 +87,12 @@ def set_firefox_capabilities(v_number):
 
 
 def set_firefox_driver(driver_path, capabilities):
-    """Setting Firefox driver to be able to open URL."""
+    """
+    Setting Firefox driver to be able to open URL.
+    :param driver_path: Path to driver
+    :param capabilities: Capabilities
+    :return: WebDriver
+    """
     logger.info("Preparing driver.")
     driver = webdriver.Firefox(executable_path=driver_path, capabilities=capabilities)
     driver.maximize_window()

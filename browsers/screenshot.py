@@ -3,11 +3,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from misc.setup_logger import logger
-
+from misc.database import update_db
 import os
 import time
 import psutil
-
 
 CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
@@ -21,6 +20,7 @@ def screenshot_website(driver, browser, version, package, case, opera=False, ie=
     logger.info("Waiting until the website is loaded.")
     try:
         load_website(driver, browser, version, package, case, opera=opera, ie=ie)
+        update_db(browser, version)
     except Exception as e:
         logger.error("Error occured in function 'shot()' - {}".format(e))
     finally:
@@ -117,7 +117,8 @@ def kill_browser():
     logger.info("Going to kill browsers process.")
     for proc in psutil.process_iter():
         # check whether the process name matches
-        if any(procstr in proc.name() for procstr in ["Opera", "opera.exe", "Chromium", "chromium.exe", "Firefox", "firefox.exe"]):
+        if any(procstr in proc.name() for procstr in
+               ["Opera", "opera.exe", "Chromium", "chromium.exe", "Firefox", "firefox.exe"]):
             logger.info("Killing {}".format(proc.name()))
             proc.kill()
     logger.info("Browser killed.")
