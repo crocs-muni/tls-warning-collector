@@ -5,6 +5,7 @@ import subprocess
 from misc.setup_logger import output, logger
 from misc.progress_bar import set_progress_percentage, print_progress
 from misc.requirements import check_requirements, install_dependencies
+from misc.database import insert_into_db, get_sum_from_db, prepare_db
 
 from browsers.firefox import firefox
 from browsers.opera import opera
@@ -39,12 +40,14 @@ def main():
     install_dependencies()
     if not check_requirements():
         return
+    prepare_db()
     all_browsers_count = len(cfg.get("browserIDs"))
     for index, browserID in enumerate(cfg.get("browserIDs")):
         all_versions = cfg.get("browsers")[browserID].get("versions")
         collect_warnings(all_versions, browserID)
         progress = set_progress_percentage(index, all_browsers_count)
         print_progress(progress)
+    get_sum_from_db()
 
 
 def collect_warnings(all_versions, browser):
@@ -60,6 +63,7 @@ def collect_warnings(all_versions, browser):
         logger.info("######## Processing {} v({})".format(browser, version))
         if browser != "edge":
             return_code = install_browser(browser, version)
+            insert_into_db(browser, version, 0)
             if return_code != 0:
                 logger.error("# Installation failed...Skipping to the next browser version.")
                 continue
