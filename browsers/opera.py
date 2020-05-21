@@ -26,7 +26,7 @@ def opera(browser, version, case, package, url):
         logger.error("Exception in opera(): - {}".format(e))
     finally:
         driver.quit()
-        kill_browser()
+    kill_browser()
 
 
 def check_opera_if_old(v_number):

@@ -22,7 +22,7 @@ def chromium(browser, version, case, package, url):
         logger.error("Exception in chromium() - {}".format(e))
     finally:
         driver.quit()
-        kill_browser()
+    kill_browser()
 
 
 def set_chromium_driver_path(v_number):
