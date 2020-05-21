@@ -22,7 +22,7 @@ def firefox(browser, version, case, package, url):
         screenshot_website(driver, browser, version, package, case)
     finally:
         driver.quit()
-        kill_browser()
+    kill_browser()
 
 
 def set_firefox_driver_path(v_number):
