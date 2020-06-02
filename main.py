@@ -6,6 +6,7 @@ from misc.setup_logger import output, logger
 from misc.progress_bar import set_progress_percentage, print_progress
 from misc.requirements import check_requirements, install_dependencies
 from misc.database import insert_into_db, get_sum_from_db, prepare_db
+from misc.browser import Browser
 
 from browsers.firefox import firefox
 from browsers.opera import opera
@@ -157,7 +158,8 @@ def open_webpage(browser, url, case, version, package):
     :return: None
     """
     if browser == "firefox":
-        firefox(browser, version, case, package, url)
+        ff = Browser(browser, version, case, package, url, 0)
+        firefox(ff)
     elif browser == "opera":
         opera(browser, version, case, package, url)
     elif package == "chromium":

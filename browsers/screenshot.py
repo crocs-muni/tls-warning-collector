@@ -12,15 +12,15 @@ CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
 
-def screenshot_website(driver, browser, version, package, case, opera=False, ie=False):
+def screenshot_website(driver, browser, opera=False, ie=False):
     """Makes a screenshot of the opened website."""
     logger.info("Going to make screenshot.")
     new_directory(SCREENSHOT_PATH_BASE)
     # If alert window appears, Accept and continue to the website.
     logger.info("Waiting until the website is loaded.")
     try:
-        load_website(driver, browser, version, package, case, opera=opera, ie=ie)
-        update_db(browser, version)
+        load_website(driver, browser, opera=opera, ie=ie)
+        update_db(browser.name, browser.version)
     except Exception as e:
         logger.error("Error occured in function 'shot()' - {}".format(e))
     finally:
@@ -40,11 +40,11 @@ def new_directory(item):
     return
 
 
-def load_website(driver, browser, version, package, case, opera=False, ie=False):
+def load_website(driver, browser, opera=False, ie=False):
     """Loads the website and saves the screenshots to the path."""
     # If old opera then screenshot directly because there is an alert.
     if opera:
-        save_all_screenshots(browser, version, case, package)
+        save_all_screenshots(browser)
     else:
         # Otherwise check if the web is loaded and screenshot it afterwards.
         try:
@@ -55,14 +55,14 @@ def load_website(driver, browser, version, package, case, opera=False, ie=False)
         except Exception as e:
             logger.info("Exception occured: {}. Making screenshot.".format(e))
         finally:
-            save_all_screenshots(browser, version, case, package)
+            save_all_screenshots(browser)
 
 
-def save_all_screenshots(browser, version, case, package):
+def save_all_screenshots(browser):
     """Save screenshots to case path and default path as well."""
     time.sleep(5)
-    make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, package, version, case))
-    make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, package, version, case))
+    make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser))
+    make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser))
     time.sleep(2)
 
 
@@ -73,25 +73,25 @@ def make_and_save_screenshot(path):
     snapshot.save(path)
 
 
-def get_screenshot_path(path, browser, version, case):
+def get_screenshot_path(path, browser):
     """Gets the path for browsers directory where the screenshot will be saved."""
     logger.info("Preparing path where screenshot will be saved.")
-    directory = path + "\\browsers" + "\\" + browser + "\\" + version
+    directory = path + "\\browsers" + "\\" + browser.name + "\\" + browser.version
     if not os.path.exists(directory):
         os.makedirs(directory)
-    screenshot_name = case + ".png"
+    screenshot_name = browser.case + ".png"
     screenshot_path = directory + "\\" + screenshot_name
     logger.info("Screenshot BROWSER path set - {}".format(screenshot_path))
     return screenshot_path
 
 
-def get_screenshot_case_path(path, browser, version, case):
+def get_screenshot_case_path(path, browser):
     """Gets the path for case directory where the screenshot will be saved."""
     logger.info("Preparing path where screenshot will be saved.")
-    directory = path + "\\cases" + "\\" + case + "\\" + browser
+    directory = path + "\\cases" + "\\" + browser.case + "\\" + browser
     if not os.path.exists(directory):
         os.makedirs(directory)
-    screenshot_name = version + ".png"
+    screenshot_name = browser.version + ".png"
     screenshot_path = directory + "\\" + screenshot_name
     logger.info("Screenshot CASE path set - {}".format(screenshot_path))
     return screenshot_path
