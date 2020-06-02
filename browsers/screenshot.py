@@ -88,7 +88,7 @@ def get_screenshot_path(path, browser):
 def get_screenshot_case_path(path, browser):
     """Gets the path for case directory where the screenshot will be saved."""
     logger.info("Preparing path where screenshot will be saved.")
-    directory = path + "\\cases" + "\\" + browser.case + "\\" + browser
+    directory = path + "\\cases" + "\\" + browser.case + "\\" + browser.name
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = browser.version + ".png"
