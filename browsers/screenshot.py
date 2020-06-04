@@ -130,7 +130,7 @@ def remove_item(item):
         logger.info("# Removing item: {}".format(item))
         try:
             os.rmdir(item)
-        except:
+        except Exception:
             logger.error("Error occured while deleting item: {}".format(item))
     else:
         logger.info("# Item does not exist, not removing: {}".format(item))

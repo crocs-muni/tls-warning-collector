@@ -1,16 +1,20 @@
+import os
 from selenium.webdriver import DesiredCapabilities
 from misc.browser import Driver, open_browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from browsers.screenshot import screenshot_website, kill_browser
 from misc.setup_logger import logger
-import os
 
 CURRENT_DIR = os.getcwd()
 
 
 class ChromiumDriver(Driver):
-    def set_chromium_driver_path(self):
+    """
+    Class that represents Chromium Driver
+    """
+
+    def set_driver_path(self):
         """
         Setting driver path for Chromium.
         :return: None
@@ -19,7 +23,7 @@ class ChromiumDriver(Driver):
         self.path = CURRENT_DIR + "\\drivers\\chromedrivers\\chromedriver-" + self.version + "\\chromedriver.exe"
         logger.info("Driver path set.")
 
-    def set_chromium_driver_version(self, browser_version):
+    def set_driver_version(self, browser_version):
         """
         Returns the folder name for chromedrivers of the given version.
         :param browser_version: 
@@ -74,7 +78,7 @@ class ChromiumDriver(Driver):
             self.version = "2.6"
         logger.info("Chromedriver version - {}".format(self.version))
 
-    def set_chromium_capabilities(self):
+    def set_capabilities(self):
         """
         Setting capabilities for Chromium.
         :return: Capabilities
@@ -165,7 +169,7 @@ def prepare_driver(browser):
     :return: Driver object ready to be used
     """
     driver = ChromiumDriver("", 0, None)
-    driver.set_chromium_driver_version(browser.short_version)
-    driver.set_chromium_driver_path()
-    driver.set_chromium_capabilities()
+    driver.set_driver_version(browser.short_version)
+    driver.set_driver_path()
+    driver.set_capabilities()
     return driver

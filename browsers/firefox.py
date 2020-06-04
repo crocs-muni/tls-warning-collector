@@ -11,7 +11,7 @@ from misc.setup_logger import logger
 CURRENT_DIR = os.getcwd()
 
 
-class FFDriver(Driver):
+class FirefoxDriver(Driver):
     """
     Class that represents Firefox Driver
     """
@@ -25,7 +25,7 @@ class FFDriver(Driver):
         self.path = CURRENT_DIR + "\\drivers\\firefoxdrivers\\geckodriver-" + self.version + "\\geckodriver.exe"
         logger.info("Driver path set to - {}".format(self.path))
 
-    def set_firefox_driver_version(self, browser_version):
+    def set_driver_version(self, browser_version):
         """
         Setting Firefox driver version.
         :param browser_version: Browser version
@@ -97,8 +97,8 @@ def prepare_driver(browser):
     :param browser: Browser object
     :return: Driver object ready to be used
     """
-    ff_driver = FFDriver("", 0, None)
-    ff_driver.set_firefox_driver_version(browser.short_version)
-    ff_driver.set_driver_path()
-    ff_driver.set_capabilities(browser.short_version)
-    return ff_driver
+    driver = FirefoxDriver("", 0, None)
+    driver.set_driver_version(browser.short_version)
+    driver.set_driver_path()
+    driver.set_capabilities(browser.short_version)
+    return driver
