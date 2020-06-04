@@ -161,15 +161,15 @@ def open_webpage(browser, url, case, version, package):
     if browser == "firefox":
         firefox(browser_obj)
     elif browser == "opera":
-        opera(browser, version, case, package, url)
+        opera(browser)
     elif package == "chromium":
-        chromium(browser, version, case, package, url)
+        chromium(browser)
     elif browser == "chrome" and package != "chromium":
         chrome(browser, version, case, package, url)
     elif browser == "ie":
-        iexplorer(browser, version, case, package, url)
+        iexplorer(browser)
     elif browser == "edge":
-        edge(browser, version, case, package, url)
+        edge(browser)
 
 
 if __name__ == "__main__":
