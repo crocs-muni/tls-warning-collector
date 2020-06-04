@@ -80,7 +80,6 @@ def insert_into_db(browser, version, screenshots):
     :param browser: Browser
     :param version: Browser version
     :param screenshots: Number of screenshots collected
-    :param errors: Number of errors collected
     :return: None
     """
     try:
