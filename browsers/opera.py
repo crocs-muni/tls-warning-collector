@@ -193,7 +193,7 @@ def terminate_thread(thread):
 
 def prepare_driver(browser):
     """
-    Preparing Chromedriver to run Chromium via Selenium
+    Preparing Operadriver to run Opera via Selenium
     :param browser: Browser object
     :return: Driver object ready to be used
     """
