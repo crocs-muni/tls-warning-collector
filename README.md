@@ -1,7 +1,7 @@
 # TLS warning collector
 TLS warning collector is a tool to support the creation of an open dataset of TLS warnings and indicators in web browsers. It automatically downloads, installs and uninstalls browsers, and collects browser screenshots for comparison and analysis of TLS warnings.
 
-## Prerequisities
+## Prerequisites
 1. Windows 10 (download link for VM: https://developer.microsoft.com/en-us/windows/downloads/virtual-machines)
 2. Chocolatey (link: https://chocolatey.org/docs/installation)
 3. Python 3 (link: https://www.python.org/downloads/windows/)
