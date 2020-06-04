@@ -12,13 +12,25 @@ CURRENT_DIR = os.getcwd()
 
 
 class FFDriver(Driver):
+    """
+    Class that represents Firefox Driver
+    """
+
+    def set_driver_path(self):
+        """
+        Set a correct PATH to the Selenium Web driver
+        :return: None
+        """
+        logger.info("Preparing driver path.")
+        self.path = CURRENT_DIR + "\\drivers\\firefoxdrivers\\geckodriver-" + self.version + "\\geckodriver.exe"
+        logger.info("Driver path set to - {}".format(self.path))
+
     def set_firefox_driver_version(self, browser_version):
         """
         Setting Firefox driver version.
         :param browser_version: Browser version
         :return: Driver version
         """
-        driver_version = ""
         logger.info("Getting geckodriver version.")
         if browser_version >= 62:
             self.version = "24"
@@ -28,12 +40,13 @@ class FFDriver(Driver):
             self.version = "14"
         elif browser_version < 47:
             self.version = "11"
-        logger.info("Geckodriver version - {}".format(driver_version))
+        logger.info("Geckodriver version - {}".format(self.version))
 
     def set_capabilities(self, browser_version):
         """
         Setting Firefox capabilities.
-        :param: Object itself
+        :param browser_version: Browser version
+        :return: None
         """
         # Marionette is protocol used to communicate with Gecko Driver in versions 48 and higher.
         capabilities = DesiredCapabilities.FIREFOX
@@ -49,9 +62,7 @@ class FFDriver(Driver):
     def create_firefox_driver(self):
         """
         Setting Firefox driver to be able to open URL.
-        :param driver_path: Path to driver
-        :param capabilities: Capabilities
-        :return: WebDriver
+        :return: Selenium WebDriver
         """
         logger.info("Preparing driver.")
         driver = webdriver.Firefox(executable_path=self.path, capabilities=self.capabilities)
@@ -82,9 +93,9 @@ def firefox(browser):
 
 def prepare_driver(browser):
     """
-    Preparing the FF Driver
-    :param browser:
-    :return:
+    Preparing Geckodriver to run Firefox via Selenium
+    :param browser: Browser object
+    :return: Driver object ready to be used
     """
     ff_driver = FFDriver("", 0, None)
     ff_driver.set_firefox_driver_version(browser.short_version)
