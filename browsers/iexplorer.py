@@ -11,6 +11,7 @@ class IEDriver(Driver):
     """
     Class that represents Edge Driver
     """
+
     def set_driver_path(self):
         """
         Set a correct PATH to the Selenium Web driver
