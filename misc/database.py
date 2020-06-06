@@ -1,5 +1,7 @@
 import sqlite3
 import yaml
+import os
+
 from misc.setup_logger import logger
 
 
@@ -208,4 +210,19 @@ def versions_summary(conn):
     cursor.execute(brwosers_total)
     record = cursor.fetchone()[0]
     logger.info("{} browser versions processed.".format(record))
+    output_collection(cursor)
     cursor.close()
+
+
+def output_collection(cursor):
+    """
+    Writes the data from DB to a csv file.
+    :param cursor: DB cursor
+    :return: None
+    """
+    output = os.getcwd() + "\\db_output.csv"
+    with open(output, 'w') as csv_file:
+        for row in cursor.execute("SELECT * FROM collection"):
+            write_row = " ".join(str(row))
+            csv_file.write(write_row)
+        csv_file.close()
