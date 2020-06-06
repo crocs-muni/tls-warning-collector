@@ -94,14 +94,13 @@ class OperaDriver(Driver):
         logger.info("Capabilities are set.")
         self.capabilities = capabilities
 
-    def set_opera_oldness(self, browser_version):
+    def set_opera_driver_oldness(self):
         """
-        Checking if Opera version is lower or equal to "57". If yes, sets the old value to True, False otherwise
-        :param browser_version: Browser version
+        Checking if Opera driver version is lower than 2.40. If yes, sets the old value to True, False otherwise
         :return: None
         """
-        logger.info("Checking if the Opera version is lower or equal to 57")
-        if browser_version <= 57:
+        logger.info("Checking if the Opera version is lower than 2.40")
+        if float(self.version) < 2.40:
             logger.info("Opera version is using old driver. - True")
             self.old = True
 
@@ -198,7 +197,7 @@ def prepare_driver(browser):
     :return: Driver object ready to be used
     """
     driver = OperaDriver("", 0, None)
-    driver.set_opera_oldness(browser.short_version)
+    driver.set_opera_driver_oldness()
     driver.set_driver_version(browser.short_version)
     driver.set_driver_path()
     driver.set_capabilities(browser)
