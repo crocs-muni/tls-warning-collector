@@ -1,5 +1,7 @@
 import sqlite3
 import yaml
+import os
+
 from misc.setup_logger import logger
 
 
@@ -213,8 +215,9 @@ def versions_summary(conn):
 
 
 def output_collection(cursor):
-    with open("db_output.txt", 'w') as text_file:
-        cursor.execute("SELECT * FROM colletion")
+    output = os.getcwd() + "\\db_output.txt"
+    with open(output, 'w') as text_file:
+        cursor.execute("SELECT * FROM collection")
         for row in cursor:
             text_file.write(row)
         text_file.close()
