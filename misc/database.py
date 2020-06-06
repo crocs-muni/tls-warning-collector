@@ -224,5 +224,5 @@ def output_collection(cursor):
     with open(output, 'w') as csv_file:
         for row in cursor.execute("SELECT * FROM collection"):
             write_row = " ".join(str(row))
-            csv_file.write(write_row)
+            csv_file.write(write_row + "\n")
         csv_file.close()
