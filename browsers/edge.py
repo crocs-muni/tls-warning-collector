@@ -61,6 +61,7 @@ def prepare_driver():
     :return: Driver object ready to be used
     """
     driver = EdgeDriver("", 0, None)
-    driver.set_driver_path()
+    # Uncomment if you use different version of edge than 44 (pre-installed WebDriver)
+    # driver.set_driver_path()
     driver.set_capabilities()
     return driver
