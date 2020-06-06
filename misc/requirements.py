@@ -6,6 +6,7 @@ DRIVERS_PATH_BASE = CURRENT_DIR + "\\drivers"
 CHROME_DRIVERS = DRIVERS_PATH_BASE + "\\chromedrivers"
 FIREFOX_DRIVERS = DRIVERS_PATH_BASE + "\\firefoxdrivers"
 OPERA_DRIVERS = DRIVERS_PATH_BASE + "\\operadrivers"
+IE_DRIVERS = DRIVERS_PATH_BASE + "\\iedrivers"
 
 
 def check_requirements():
@@ -47,7 +48,8 @@ def check_driver_dirs():
     """
     return dir_exists(CHROME_DRIVERS) and dir_not_empty(CHROME_DRIVERS) and \
         dir_exists(FIREFOX_DRIVERS) and dir_not_empty(FIREFOX_DRIVERS) and \
-        dir_exists(OPERA_DRIVERS) and dir_not_empty(OPERA_DRIVERS)
+        dir_exists(OPERA_DRIVERS) and dir_not_empty(OPERA_DRIVERS) and \
+        dir_exists(IE_DRIVERS) and dir_not_empty(IE_DRIVERS)
 
 
 def dir_exists(directory):

@@ -1,11 +1,29 @@
 import sqlite3
+import yaml
 from misc.setup_logger import logger
+
+
+def read_config():
+    """
+    Loads data from config.yaml to cfg.
+    :return: Configuration in Python readable format
+    """
+    with open("config.yaml", "r") as yamlfile:
+        try:
+            conf = yaml.safe_load(yamlfile)
+        except yaml.YAMLError as exc:
+            logger.info("Some error occurred while reading config.yaml - {}".format(exc))
+    return conf
+
+
+# Global variable cfg for configuration file
+cfg = read_config()
 
 
 def prepare_db():
     """
     Prepares the DB for a new run by clearing all data.
-    :return:
+    :return: None
     """
     create_db()
     clear_db()
@@ -21,7 +39,7 @@ def create_db():
         cursor = sqliteConn.cursor()
         create_table_query = """CREATE TABLE collection (
                     browser TEXT,
-                    version REAL,
+                    version TEXT,
                     screenshots INTEGER
                      );"""
         cursor.execute(create_table_query)
@@ -80,14 +98,13 @@ def insert_into_db(browser, version, screenshots):
     :param browser: Browser
     :param version: Browser version
     :param screenshots: Number of screenshots collected
-    :param errors: Number of errors collected
     :return: None
     """
     try:
         sqliteConn = connect_db()
         cursor = sqliteConn.cursor()
         insert_query = """INSERT INTO collection(browser, version, screenshots) 
-                    VALUES ('{}', {}, {});""".format(browser, version, screenshots)
+                    VALUES ('{}', '{}', {});""".format(browser, version, screenshots)
         cursor.execute(insert_query)
         sqliteConn.commit()
         cursor.close()
@@ -97,21 +114,19 @@ def insert_into_db(browser, version, screenshots):
         disconnect_db(sqliteConn)
 
 
-def update_db(browser, version, screenshots=True):
+def update_db(browser, version):
     """
     Update DB
     :param browser: Browser
     :param version: Browser version
-    :param screenshots: True if screenshots needs to be incremented by 1, False otherwise
     :return: None
     """
     try:
         sqliteConn = connect_db()
         cursor = sqliteConn.cursor()
-        if screenshots:
-            update_query = """UPDATE collection 
+        update_query = """UPDATE collection 
                     SET screenshots = screenshots + 1 
-                    WHERE browser = '{}' AND version = {}""".format(browser, version)
+                    WHERE browser = '{}' AND version = '{}'""".format(browser, version)
         cursor.execute(update_query)
         sqliteConn.commit()
         cursor.close()
@@ -153,8 +168,19 @@ def screenshots_summary(conn):
     get_query = "SELECT SUM(screenshots) FROM collection"
     cursor.execute(get_query)
     record = cursor.fetchone()[0]
-    logger.info("{} screenshots collected out of {}.".format(record, total * 9))
+    logger.info("{} screenshots collected out of {} possible.".format(record, total * get_cases_from_conf()))
     cursor.close()
+
+
+def get_cases_from_conf():
+    """
+    Gets all cases which might be run from config.yaml file
+    :return: Number of cases in config.yaml file
+    """
+    cases_in_conf = 0
+    for count, case in enumerate(cfg.get("cases")):
+        cases_in_conf = count + 1
+    return cases_in_conf
 
 
 def browsers_summary(conn):

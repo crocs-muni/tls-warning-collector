@@ -5,31 +5,14 @@ import subprocess
 from misc.setup_logger import output, logger
 from misc.progress_bar import set_progress_percentage, print_progress
 from misc.requirements import check_requirements, install_dependencies
-from misc.database import insert_into_db, get_sum_from_db, prepare_db
+from misc.database import insert_into_db, get_sum_from_db, prepare_db, cfg
+from misc.browser import Browser
 
 from browsers.firefox import firefox
 from browsers.opera import opera
 from browsers.chromium import chromium
-from browsers.chrome import chrome
 from browsers.iexplorer import iexplorer
 from browsers.edge import edge
-
-
-def read_config():
-    """
-    Loads data from config.yaml to cfg.
-    :return: Configuration in Python readable format
-    """
-    with open("config.yaml", "r") as yamlfile:
-        try:
-            conf = yaml.safe_load(yamlfile)
-        except yaml.YAMLError as exc:
-            logger.info("Some error occurred while reading config.yaml - {}".format(exc))
-    return conf
-
-
-# Global variable cfg for configuration file
-cfg = read_config()
 
 
 def main():
@@ -156,18 +139,17 @@ def open_webpage(browser, url, case, version, package):
     :param package: Browser package name
     :return: None
     """
+    browser_obj = Browser(browser, version, case, package, url)
     if browser == "firefox":
-        firefox(browser, version, case, package, url)
+        firefox(browser_obj)
     elif browser == "opera":
-        opera(browser, version, case, package, url)
+        opera(browser_obj)
     elif package == "chromium":
-        chromium(browser, version, case, package, url)
-    elif browser == "chrome" and package != "chromium":
-        chrome(browser, version, case, package, url)
+        chromium(browser_obj)
     elif browser == "ie":
-        iexplorer(browser, version, case, package, url)
+        iexplorer(browser_obj)
     elif browser == "edge":
-        edge(browser, version, case, package, url)
+        edge(browser_obj)
 
 
 if __name__ == "__main__":
