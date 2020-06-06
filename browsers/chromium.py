@@ -115,7 +115,7 @@ def chromium(browser):
     browser.set_short_browser_version()
     chromium_driver = prepare_driver(browser)
     driver = chromium_driver.create_chromium_driver()
-    old_driver = browser.version < 74
+    old_driver = browser.short_version < 74
     try:
         open_chromium(driver, browser, old_driver=old_driver)
     except Exception as e:
