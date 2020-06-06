@@ -5,7 +5,7 @@ from misc.setup_logger import logger
 def prepare_db():
     """
     Prepares the DB for a new run by clearing all data.
-    :return:
+    :return: None
     """
     create_db()
     clear_db()
