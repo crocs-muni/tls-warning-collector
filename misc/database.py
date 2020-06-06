@@ -215,9 +215,14 @@ def versions_summary(conn):
 
 
 def output_collection(cursor):
-    output = os.getcwd() + "\\db_output.txt"
-    with open(output, 'w') as text_file:
-        cursor.execute("SELECT * FROM collection")
-        for row in cursor:
-            text_file.write(row)
-        text_file.close()
+    """
+    Writes the data from DB to a csv file.
+    :param cursor: DB cursor
+    :return: None
+    """
+    output = os.getcwd() + "\\db_output.csv"
+    with open(output, 'w') as csv_file:
+        for row in cursor.execute("SELECT * FROM collection"):
+            write_row = " ".join(str(row))
+            csv_file.write(write_row)
+        csv_file.close()
