@@ -149,7 +149,7 @@ def screenshots_summary(conn):
     cursor.execute(total_query)
     total = len(cursor.fetchall())
 
-    get_query = "SELECT SUM(screenshots) FROM collection"
+    get_query = "SELECT COUNT(screenshots) FROM collection"
     cursor.execute(get_query)
     record = cursor.fetchone()[0]
     logger.info("{} screenshots collected out of {}.".format(record, total * 9))
