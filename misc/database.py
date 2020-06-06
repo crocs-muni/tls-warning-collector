@@ -173,6 +173,10 @@ def screenshots_summary(conn):
 
 
 def get_cases_from_conf():
+    """
+    Gets all cases which might be run from config.yaml file
+    :return: Number of cases in config.yaml file
+    """
     cases_in_conf = 0
     for count, case in enumerate(cfg.get("cases")):
         cases_in_conf = count + 1
