@@ -1,5 +1,23 @@
 import sqlite3
+import yaml
 from misc.setup_logger import logger
+
+
+def read_config():
+    """
+    Loads data from config.yaml to cfg.
+    :return: Configuration in Python readable format
+    """
+    with open("config.yaml", "r") as yamlfile:
+        try:
+            conf = yaml.safe_load(yamlfile)
+        except yaml.YAMLError as exc:
+            logger.info("Some error occurred while reading config.yaml - {}".format(exc))
+    return conf
+
+
+# Global variable cfg for configuration file
+cfg = read_config()
 
 
 def prepare_db():
@@ -86,7 +104,7 @@ def insert_into_db(browser, version, screenshots):
         sqliteConn = connect_db()
         cursor = sqliteConn.cursor()
         insert_query = """INSERT INTO collection(browser, version, screenshots) 
-                    VALUES ('{}', '{}, {});""".format(browser, version, screenshots)
+                    VALUES ('{}', '{}', {});""".format(browser, version, screenshots)
         cursor.execute(insert_query)
         sqliteConn.commit()
         cursor.close()
@@ -96,19 +114,17 @@ def insert_into_db(browser, version, screenshots):
         disconnect_db(sqliteConn)
 
 
-def update_db(browser, version, screenshots=True):
+def update_db(browser, version):
     """
     Update DB
     :param browser: Browser
     :param version: Browser version
-    :param screenshots: True if screenshots needs to be incremented by 1, False otherwise
     :return: None
     """
     try:
         sqliteConn = connect_db()
         cursor = sqliteConn.cursor()
-        if screenshots:
-            update_query = """UPDATE collection 
+        update_query = """UPDATE collection 
                     SET screenshots = screenshots + 1 
                     WHERE browser = '{}' AND version = '{}'""".format(browser, version)
         cursor.execute(update_query)
@@ -149,11 +165,18 @@ def screenshots_summary(conn):
     cursor.execute(total_query)
     total = len(cursor.fetchall())
 
-    get_query = "SELECT COUNT(screenshots) FROM collection"
+    get_query = "SELECT SUM(screenshots) FROM collection"
     cursor.execute(get_query)
     record = cursor.fetchone()[0]
-    logger.info("{} screenshots collected out of {}.".format(record, total * 9))
+    logger.info("{} screenshots collected out of {}.".format(record, total * get_cases_from_conf()))
     cursor.close()
+
+
+def get_cases_from_conf():
+    cases_in_conf = 0
+    for count, case in enumerate(cfg.get("cases")):
+        cases_in_conf = count + 1
+    return cases_in_conf
 
 
 def browsers_summary(conn):

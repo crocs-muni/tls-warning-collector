@@ -28,7 +28,6 @@ def screenshot_website(driver, browser, opera=False, ie=False):
     logger.info("Waiting until the website is loaded.")
     try:
         load_website(driver, browser, opera=opera, ie=ie)
-        update_db(browser.name, browser.version)
     except Exception as e:
         logger.error("Error occured in function 'shot()' - {}".format(e))
     finally:
@@ -47,7 +46,7 @@ def new_directory(item):
         logger.info("# Creating directory: {}".format(item))
         try:
             os.makedirs(item)
-        except:
+        except OSError:
             logger.error("Error occured while creating: {}".format(item))
 
 
@@ -84,6 +83,10 @@ def save_all_screenshots(browser):
     time.sleep(5)
     make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser))
     make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser))
+    if browser.package == "chromium":
+        update_db(browser.package, browser.version)
+    else:
+        update_db(browser.name, browser.version)
     time.sleep(2)
 
 
@@ -176,7 +179,7 @@ def remove_item(item):
         logger.info("# Removing item: {}".format(item))
         try:
             os.rmdir(item)
-        except Exception:
+        except OSError:
             logger.error("Error occured while deleting item: {}".format(item))
     else:
         logger.info("# Item does not exist, not removing: {}".format(item))

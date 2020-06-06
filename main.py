@@ -5,7 +5,7 @@ import subprocess
 from misc.setup_logger import output, logger
 from misc.progress_bar import set_progress_percentage, print_progress
 from misc.requirements import check_requirements, install_dependencies
-from misc.database import insert_into_db, get_sum_from_db, prepare_db
+from misc.database import insert_into_db, get_sum_from_db, prepare_db, cfg
 from misc.browser import Browser
 
 from browsers.firefox import firefox
@@ -13,23 +13,6 @@ from browsers.opera import opera
 from browsers.chromium import chromium
 from browsers.iexplorer import iexplorer
 from browsers.edge import edge
-
-
-def read_config():
-    """
-    Loads data from config.yaml to cfg.
-    :return: Configuration in Python readable format
-    """
-    with open("config.yaml", "r") as yamlfile:
-        try:
-            conf = yaml.safe_load(yamlfile)
-        except yaml.YAMLError as exc:
-            logger.info("Some error occurred while reading config.yaml - {}".format(exc))
-    return conf
-
-
-# Global variable cfg for configuration file
-cfg = read_config()
 
 
 def main():
