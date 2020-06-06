@@ -1,4 +1,5 @@
 import os
+
 from misc.setup_logger import logger
 
 CURRENT_DIR = os.getcwd()
@@ -29,7 +30,7 @@ class Browser:
         Parsing the whole version string to the first part only.
     """
 
-    def __init__(self, name, version, case, package, url, short_version):
+    def __init__(self, name, version, case, package, url, short_version=0):
         """
         :param name: Browser name
         :param version: Browser version

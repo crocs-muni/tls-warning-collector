@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 import os
+
 from selenium.webdriver import DesiredCapabilities
 from misc.browser import Driver, open_browser
 from selenium import webdriver

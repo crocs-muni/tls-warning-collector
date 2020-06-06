@@ -156,7 +156,7 @@ def open_webpage(browser, url, case, version, package):
     :param package: Browser package name
     :return: None
     """
-    browser_obj = Browser(browser, version, case, package, url, 0)
+    browser_obj = Browser(browser, version, case, package, url)
     if browser == "firefox":
         firefox(browser_obj)
     elif browser == "opera":

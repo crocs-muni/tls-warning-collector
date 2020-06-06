@@ -1,12 +1,13 @@
+import os
+import time
+import psutil
+
 from PIL import ImageGrab
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from misc.setup_logger import logger
 from misc.database import update_db
-import os
-import time
-import psutil
 
 CURRENT_DIRECTORY = os.getcwd()
 SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
