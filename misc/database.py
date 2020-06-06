@@ -208,4 +208,13 @@ def versions_summary(conn):
     cursor.execute(brwosers_total)
     record = cursor.fetchone()[0]
     logger.info("{} browser versions processed.".format(record))
+    output_collection(cursor)
     cursor.close()
+
+
+def output_collection(cursor):
+    with open("db_output.txt", 'w') as text_file:
+        cursor.execute("SELECT * FROM colletion")
+        for row in cursor:
+            text_file.write(row)
+        text_file.close()
