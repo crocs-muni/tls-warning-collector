@@ -86,7 +86,7 @@ class ChromiumDriver(Driver):
         """
         logger.info("Setting chromium capabilities.")
         opts = Options()
-        opts.binary_location = "C:\\Program Files\\Chromium\\Application\\chrome.exe"
+        opts.binary_location = "C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe"
         opts.add_experimental_option("excludeSwitches", ["ignore-certificate-errors", "ignore-ssl-errors"])
         capabilities = DesiredCapabilities.CHROME
         capabilities.update(opts.to_capabilities())

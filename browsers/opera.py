@@ -45,7 +45,7 @@ class OperaDriver(Driver):
         if 58 < browser_version < 62:
             self.version = "2.45"
         if 56 < browser_version <= 58:
-            self.version = "2.41"
+            self.version = "2.36"
         if browser_version == 56:
             self.version = "2.40"
         if browser_version == 55:
@@ -76,7 +76,7 @@ class OperaDriver(Driver):
             self.version = "0.1.0"
         logger.info("Operadriver version - {}".format(self.version))
 
-    def set_capabilities(self):
+    def set_capabilities(self, browser):
         """
         Setting capabilities for Opera.
         :return: Capabilities
@@ -90,7 +90,7 @@ class OperaDriver(Driver):
         capabilities.update(opts.to_capabilities())
         capabilities["acceptInsecureCerts"] = False
         capabilities["acceptSslCerts"] = False
-        capabilities["operaOptions"] = {"binary": "C:\\Program Files\\Opera\\" + self.version + "\\opera.exe"}
+        capabilities["operaOptions"] = {"binary": "C:\\Program Files\\Opera\\" + browser.version + "\\opera.exe"}
         logger.info("Capabilities are set.")
         self.capabilities = capabilities
 
@@ -104,7 +104,6 @@ class OperaDriver(Driver):
         if browser_version <= 57:
             logger.info("Opera version is using old driver. - True")
             self.old = True
-        self.old = False
 
     def create_opera_driver(self):
         """
@@ -202,5 +201,5 @@ def prepare_driver(browser):
     driver.set_opera_oldness(browser.short_version)
     driver.set_driver_version(browser.short_version)
     driver.set_driver_path()
-    driver.set_capabilities()
+    driver.set_capabilities(browser)
     return driver
