@@ -223,6 +223,7 @@ def output_collection(cursor):
     output = os.getcwd() + "\\db_output.csv"
     with open(output, 'w') as csv_file:
         for row in cursor.execute("SELECT * FROM collection"):
-            write_row = " ".join(str(row))
-            csv_file.write(write_row)
+            for field in row:
+                csv_file.write(str(field) + " ")
+            csv_file.write("\n")
         csv_file.close()
