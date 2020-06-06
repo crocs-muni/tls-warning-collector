@@ -168,7 +168,7 @@ def screenshots_summary(conn):
     get_query = "SELECT SUM(screenshots) FROM collection"
     cursor.execute(get_query)
     record = cursor.fetchone()[0]
-    logger.info("{} screenshots collected out of {}.".format(record, total * get_cases_from_conf()))
+    logger.info("{} screenshots collected out of {} possible.".format(record, total * get_cases_from_conf()))
     cursor.close()
 
 
