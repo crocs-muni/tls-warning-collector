@@ -21,7 +21,7 @@ def create_db():
         cursor = sqliteConn.cursor()
         create_table_query = """CREATE TABLE collection (
                     browser TEXT,
-                    version REAL,
+                    version TEXT,
                     screenshots INTEGER
                      );"""
         cursor.execute(create_table_query)
@@ -86,7 +86,7 @@ def insert_into_db(browser, version, screenshots):
         sqliteConn = connect_db()
         cursor = sqliteConn.cursor()
         insert_query = """INSERT INTO collection(browser, version, screenshots) 
-                    VALUES ('{}', {}, {});""".format(browser, version, screenshots)
+                    VALUES ('{}', '{}, {});""".format(browser, version, screenshots)
         cursor.execute(insert_query)
         sqliteConn.commit()
         cursor.close()
@@ -110,7 +110,7 @@ def update_db(browser, version, screenshots=True):
         if screenshots:
             update_query = """UPDATE collection 
                     SET screenshots = screenshots + 1 
-                    WHERE browser = '{}' AND version = {}""".format(browser, version)
+                    WHERE browser = '{}' AND version = '{}'""".format(browser, version)
         cursor.execute(update_query)
         sqliteConn.commit()
         cursor.close()
