@@ -18,9 +18,9 @@ def screenshot_website(driver, browser, opera=False, ie=False):
     Makes a screenshot of the opened website.
     :param driver: Browser WebDriver
     :param browser: Browser
-    :param opera:
-    :param ie:
-    :return:
+    :param opera: True if older opera version, False otherwise
+    :param ie: True if IE is the actual browser, False otherwise
+    :return: None
     """
     logger.info("Going to make screenshot.")
     new_directory(SCREENSHOT_PATH_BASE)
@@ -38,8 +38,8 @@ def screenshot_website(driver, browser, opera=False, ie=False):
 def new_directory(item):
     """
     Creates new directory if does not exist.
-    :param item:
-    :return:
+    :param item: Directory to be created
+    :return: None
     """
     if os.path.exists(item):
         logger.info("# Directory exists, not creating: {}".format(item))
