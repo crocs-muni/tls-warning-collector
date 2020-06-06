@@ -11,7 +11,6 @@ from misc.browser import Browser
 from browsers.firefox import firefox
 from browsers.opera import opera
 from browsers.chromium import chromium
-from browsers.chrome import chrome
 from browsers.iexplorer import iexplorer
 from browsers.edge import edge
 
@@ -164,8 +163,6 @@ def open_webpage(browser, url, case, version, package):
         opera(browser)
     elif package == "chromium":
         chromium(browser)
-    elif browser == "chrome" and package != "chromium":
-        chrome(browser, version, case, package, url)
     elif browser == "ie":
         iexplorer(browser)
     elif browser == "edge":
