@@ -14,7 +14,14 @@ SCREENSHOT_PATH_BASE = CURRENT_DIRECTORY + "\\screenshots"
 
 
 def screenshot_website(driver, browser, opera=False, ie=False):
-    """Makes a screenshot of the opened website."""
+    """
+    Makes a screenshot of the opened website.
+    :param driver: Browser WebDriver
+    :param browser: Browser
+    :param opera:
+    :param ie:
+    :return:
+    """
     logger.info("Going to make screenshot.")
     new_directory(SCREENSHOT_PATH_BASE)
     # If alert window appears, Accept and continue to the website.
@@ -29,7 +36,11 @@ def screenshot_website(driver, browser, opera=False, ie=False):
 
 
 def new_directory(item):
-    """Creates new directory if does not exist."""
+    """
+    Creates new directory if does not exist.
+    :param item:
+    :return:
+    """
     if os.path.exists(item):
         logger.info("# Directory exists, not creating: {}".format(item))
     else:
@@ -38,11 +49,17 @@ def new_directory(item):
             os.makedirs(item)
         except:
             logger.error("Error occured while creating: {}".format(item))
-    return
 
 
 def load_website(driver, browser, opera=False, ie=False):
-    """Loads the website and saves the screenshots to the path."""
+    """
+    Loads the website and saves the screenshots to the path.
+    :param driver: Browser WebDriver
+    :param browser: Browser
+    :param opera: True if older opera version, False otherwise
+    :param ie: True if IE is the actual browser, False otherwise
+    :return: None
+    """
     # If old opera then screenshot directly because there is an alert.
     if opera:
         save_all_screenshots(browser)
@@ -50,7 +67,6 @@ def load_website(driver, browser, opera=False, ie=False):
         # Otherwise check if the web is loaded and screenshot it afterwards.
         try:
             logger.info("Waiting for the page to load.")
-            # Wait until the page is loaded
             id = set_id(ie)
             WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, id)))
         except Exception as e:
@@ -60,7 +76,11 @@ def load_website(driver, browser, opera=False, ie=False):
 
 
 def save_all_screenshots(browser):
-    """Save screenshots to case path and default path as well."""
+    """
+    Save screenshots to case path and default path as well.
+    :param browser: Browser
+    :return: None
+    """
     time.sleep(5)
     make_and_save_screenshot(get_screenshot_path(SCREENSHOT_PATH_BASE, browser))
     make_and_save_screenshot(get_screenshot_case_path(SCREENSHOT_PATH_BASE, browser))
@@ -68,14 +88,23 @@ def save_all_screenshots(browser):
 
 
 def make_and_save_screenshot(path):
-    """Makes and saves the screenshot into correct path."""
+    """
+    Makes and saves the screenshot into correct path.
+    :param path: PATH where screenshots will be saved
+    :return: None
+    """
     logger.info("Saving screenshot to - {}".format(path))
     snapshot = ImageGrab.grab()
     snapshot.save(path)
 
 
 def get_screenshot_path(path, browser):
-    """Gets the path for browsers directory where the screenshot will be saved."""
+    """
+    Gets the path for browsers directory where the screenshot will be saved.
+    :param path: Screenshots directory path
+    :param browser: Browser
+    :return: Finalized PATH where browsers screenshots will be saved
+    """
     logger.info("Preparing path where screenshot will be saved.")
     directory = path + "\\browsers" + "\\" + browser.name + "\\" + browser.version
     if not os.path.exists(directory):
@@ -87,7 +116,12 @@ def get_screenshot_path(path, browser):
 
 
 def get_screenshot_case_path(path, browser):
-    """Gets the path for case directory where the screenshot will be saved."""
+    """
+    Gets the path for case directory where the screenshot will be saved.
+    :param path: Screenshots directory path
+    :param browser: Browser
+    :return: Finalized PATH where case screenshots will be saved
+    """
     logger.info("Preparing path where screenshot will be saved.")
     directory = path + "\\cases" + "\\" + browser.case + "\\" + browser.name
     if not os.path.exists(directory):
@@ -99,7 +133,11 @@ def get_screenshot_case_path(path, browser):
 
 
 def set_id(ie):
-    """Set the ID of element present on the cert page"""
+    """
+    Set the ID of element present on the cert page
+    :param ie: True if IE is the actual browser, False otherwise
+    :return: ID of element that Selenium will look for on current case web site
+    """
     # ID for internet explorer page
     id_ie = "invalidcert_mainTitle"
     # ID for other browsers page
@@ -114,7 +152,10 @@ def set_id(ie):
 
 
 def kill_browser():
-    """Process kill function for browsers so that removing files after uninstall works."""
+    """
+    Process kill function for browsers so that removing files after uninstall works.
+    :return: None
+    """
     logger.info("Going to kill browsers process.")
     for proc in psutil.process_iter():
         # check whether the process name matches
@@ -126,7 +167,11 @@ def kill_browser():
 
 
 def remove_item(item):
-    """Removes the given directory."""
+    """
+    Removes the given directory.
+    :param item: Directory to be removed
+    :return: None
+    """
     if os.path.exists(item):
         logger.info("# Removing item: {}".format(item))
         try:
@@ -135,4 +180,3 @@ def remove_item(item):
             logger.error("Error occured while deleting item: {}".format(item))
     else:
         logger.info("# Item does not exist, not removing: {}".format(item))
-    return
