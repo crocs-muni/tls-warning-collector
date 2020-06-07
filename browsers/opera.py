@@ -197,8 +197,8 @@ def prepare_driver(browser):
     :return: Driver object ready to be used
     """
     driver = OperaDriver("", 0, None)
-    driver.set_opera_driver_oldness()
     driver.set_driver_version(browser.short_version)
+    driver.set_opera_driver_oldness()
     driver.set_driver_path()
     driver.set_capabilities(browser)
     return driver
