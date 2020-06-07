@@ -2,3 +2,4 @@ pillow
 selenium==3.141.0
 pyyaml
 psutil
+sqlite3
