@@ -47,7 +47,7 @@ def create_db():
         cursor.execute(create_table_query)
         sqliteConn.commit()
         cursor.close()
-
+        logger.info("Successfully created DB.")
     except sqlite3.Error as error:
         logger.error("Error while connecting to the DB - {}".format(error))
     finally:
@@ -66,6 +66,7 @@ def clear_db():
         cursor.execute(delete_query)
         sqliteConn.commit()
         cursor.close()
+        logger.info("Successfully cleared DB from previous run.")
     except sqlite3.Error as error:
         logger.error("Error while connecting to the DB - {}".format(error))
     finally:
@@ -110,6 +111,7 @@ def insert_into_db(browser, version, screenshots):
         cursor.execute(insert_query)
         sqliteConn.commit()
         cursor.close()
+        logger.info("Successfully inserted into DB.")
     except sqlite3.Error as error:
         logger.error("Error while inserting - {}".format(error))
     finally:
@@ -132,6 +134,7 @@ def update_db(browser, version):
         cursor.execute(update_query)
         sqliteConn.commit()
         cursor.close()
+        logger.info("Successfully updated DB.")
     except sqlite3.Error as error:
         logger.error("Error while updating - {}".format(error))
     finally:
