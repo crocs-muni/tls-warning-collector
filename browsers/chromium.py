@@ -127,7 +127,7 @@ def chromium(browser):
 
 def open_chromium(driver, browser, old_driver=False):
     """
-    Opens Firefox and makes a screenshot of the desired website. If the driver version is older,
+    Opens Chromium and makes a screenshot of the desired website. If the driver version is older,
     it sets a timeout for the script to finish.
     :param driver: Browser driver
     :param browser: Browser
