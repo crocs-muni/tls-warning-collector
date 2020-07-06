@@ -100,6 +100,9 @@ class OperaDriver(Driver):
         :return: None
         """
         logger.info("Checking if the Opera version is lower than 2.40")
+        if self.version == "0.2.2":
+            self.version = "0.2"
+
         if self.version == "0.2.0":
             self.version = "0.2"
 
