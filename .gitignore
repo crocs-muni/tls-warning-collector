@@ -17,6 +17,9 @@ var/
 # pyenv
 .python-version
 
+# MacOS
+.DS_Store
+
 # Environments
 .env
 .venv
