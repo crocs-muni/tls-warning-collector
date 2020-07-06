@@ -12,9 +12,9 @@ TLS warning collector is a tool to support the creation of an open dataset of TL
 1. Install `python3`. On the installation screen, check the option to automatically set path (to use pip).
 2. Clone the repository to your computer via `git clone https://github.com/crocs-muni/tls-warning-collector.git`
 3. Download the browser driver -- follow the instructions in `README.md` in `drivers` folder.
+4. Using Administrator `cmd.exe`, change directory to the `tls-warning-collector-master` and run `pip3 install --quiet -r requirements.txt`.
 
 ## Configuration
-
 
 You can change the configuration of the project in the `config.yaml` file. By commenting out the line with `#` you can choose which browsers and cases wont be in the dataset. 
 If you dont want to run all of the browser versions then you can use "one-version", but you have to change the `main.py` file (`all_versions = cfg.get("browsers")[browserID].get("versions")` --> `all_versions = cfg.get("browsers")[browserID].get("one-version")`).
