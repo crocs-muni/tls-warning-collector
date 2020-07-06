@@ -100,6 +100,12 @@ class OperaDriver(Driver):
         :return: None
         """
         logger.info("Checking if the Opera version is lower than 2.40")
+        if self.version == "0.2.0":
+            self.version = "0.2"
+
+        if self.version == "0.1.0":
+            self.version = "0.1"
+
         if float(self.version) < 2.40:
             logger.info("Opera version is using old driver. - True")
             self.old = True
@@ -198,7 +204,7 @@ def prepare_driver(browser):
     """
     driver = OperaDriver("", 0, None)
     driver.set_driver_version(browser.short_version)
-    driver.set_opera_driver_oldness()
     driver.set_driver_path()
+    driver.set_opera_driver_oldness()
     driver.set_capabilities(browser)
     return driver
