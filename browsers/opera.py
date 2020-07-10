@@ -90,7 +90,7 @@ class OperaDriver(Driver):
         capabilities.update(opts.to_capabilities())
         capabilities["acceptInsecureCerts"] = False
         capabilities["acceptSslCerts"] = False
-        capabilities["operaOptions"] = {"binary": "C:\\Program Files (x86)\\Opera\\" + browser.version + "\\opera.exe"}
+        capabilities["operaOptions"] = {"binary": "C:\\Program Files\\Opera\\" + browser.version + "\\opera.exe"}
         logger.info("Capabilities are set.")
         self.capabilities = capabilities
 
