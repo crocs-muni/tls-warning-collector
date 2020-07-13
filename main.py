@@ -81,7 +81,6 @@ def uninstall_browser(browser):
     cmd = "choco uninstall " + str(cfg.get("browsers")[browser].get("package")) + \
           " --allversions --yes --nocolor --limit-output --log-file=choco-log.log"
     logger.info("# Uninstalling the browsers.")
-    subprocess.Popen(cmd)
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     logger.info("# Please wait...")
     for _ in process.stdout.readlines():
