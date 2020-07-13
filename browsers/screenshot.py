@@ -109,7 +109,7 @@ def get_screenshot_path(path, browser):
     :return: Finalized PATH where browsers screenshots will be saved
     """
     logger.info("Preparing path where screenshot will be saved.")
-    directory = path + "\\browsers" + "\\" + browser.name + "\\" + browser.version
+    directory = path + "\\browsers" + "\\" + browser.package + "\\" + browser.version
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = browser.case + ".png"
@@ -126,7 +126,7 @@ def get_screenshot_case_path(path, browser):
     :return: Finalized PATH where case screenshots will be saved
     """
     logger.info("Preparing path where screenshot will be saved.")
-    directory = path + "\\cases" + "\\" + browser.case + "\\" + browser.name
+    directory = path + "\\cases" + "\\" + browser.case + "\\" + browser.package
     if not os.path.exists(directory):
         os.makedirs(directory)
     screenshot_name = browser.version + ".png"
